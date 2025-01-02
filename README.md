@@ -61,3 +61,6 @@
 
 ![img.png](docs/img/sequencediagram/결제_2.png)
 </details>
+
+## ERD
+![img.png](docs/img/erd/ERD_3.png)
