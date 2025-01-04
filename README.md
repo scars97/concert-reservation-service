@@ -238,11 +238,11 @@ Authorization: Bearer {tokenId}
 <details>
 <summary><b>좌석 조회</b></summary>
 
-### `GET /schedules/:scheduleId/seats`
+### `GET /concerts/:concertId/schedules/:scheduleId/seats`
 
 ### **Endpoint**
 ```http request
-GET /schedules/1/seats HTTP/1.1
+GET /concerts/1/schedules/1/seats HTTP/1.1
 HOST: localhost:8080
 Authorization: Bearer {tokenId}
 ```

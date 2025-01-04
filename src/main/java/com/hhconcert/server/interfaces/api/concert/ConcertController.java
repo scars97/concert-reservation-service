@@ -1,11 +1,13 @@
 package com.hhconcert.server.interfaces.api.concert;
 
-import com.hhconcert.server.exception.ConcertException;
-import com.hhconcert.server.exception.TokenException;
-import com.hhconcert.server.exception.UnAuthorizationException;
+import com.hhconcert.server.global.exception.ConcertException;
+import com.hhconcert.server.global.exception.TokenException;
+import com.hhconcert.server.global.exception.UnAuthorizationException;
 import com.hhconcert.server.interfaces.api.concert.dto.ConcertResponse;
 import com.hhconcert.server.interfaces.api.concert.dto.ConcertScheduleResponse;
-import com.hhconcert.server.interfaces.api.schedule.dto.ScheduleResponse;
+import com.hhconcert.server.interfaces.api.concert.dto.ScheduleResponse;
+import com.hhconcert.server.interfaces.api.concert.dto.ScheduleSeatResponse;
+import com.hhconcert.server.interfaces.api.concert.dto.SeatResponse;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
@@ -64,6 +66,34 @@ public class ConcertController {
                     new ScheduleResponse(2L, LocalDate.of(2025,1,1))
                 )
             )
+        );
+    }
+
+    @GetMapping("/{concertId}/schedules/{scheduleId}/seats")
+    public ResponseEntity<ScheduleSeatResponse> getAvailableSeats(
+            @RequestHeader HttpHeaders headers,
+            @PathVariable("concertId") Long concertId,
+            @PathVariable("scheduleId") Long scheduleId) {
+
+        String token = headers.getFirst("Authorization");
+        if (token == null) {
+            throw new UnAuthorizationException("토큰 정보가 누락되었습니다.");
+        }
+
+        if (StringUtils.hasText(token) && token.startsWith("Bearer ")) {
+            token.substring(7);
+        } else {
+            throw new TokenException("잘못된 토큰입니다.");
+        }
+
+        return ResponseEntity.ok(
+                new ScheduleSeatResponse(
+                        scheduleId,
+                        List.of(
+                                new SeatResponse(1L, "A1", 75000, "Y"),
+                                new SeatResponse(2L, "B1", 60000, "N")
+                        )
+                )
         );
     }
 
