@@ -1,4 +1,4 @@
-package com.hhconcert.server.exception;
+package com.hhconcert.server.global.exception;
 
 public class ConcertException extends RuntimeException {
 
