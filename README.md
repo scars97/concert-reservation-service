@@ -47,7 +47,7 @@
 <details>
 <summary><b>좌석 예약</b></summary>
 
-![img.png](docs/img/sequencediagram/좌석_예약_3.png)
+![img.png](docs/img/sequencediagram/좌석_예약_4.png)
 </details>
 
 <details>
@@ -59,7 +59,7 @@
 <details>
 <summary><b>결제</b></summary>
 
-![img.png](docs/img/sequencediagram/결제_2.png)
+![img.png](docs/img/sequencediagram/결제_3.png)
 </details>
 
 ## ERD
