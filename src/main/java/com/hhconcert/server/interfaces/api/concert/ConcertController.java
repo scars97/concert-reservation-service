@@ -1,0 +1,70 @@
+package com.hhconcert.server.interfaces.api.concert;
+
+import com.hhconcert.server.exception.ConcertException;
+import com.hhconcert.server.exception.TokenException;
+import com.hhconcert.server.exception.UnAuthorizationException;
+import com.hhconcert.server.interfaces.api.concert.dto.ConcertResponse;
+import com.hhconcert.server.interfaces.api.concert.dto.ConcertScheduleResponse;
+import com.hhconcert.server.interfaces.api.schedule.dto.ScheduleResponse;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
+import java.util.List;
+
+@RestController
+@RequestMapping("/concerts")
+public class ConcertController {
+
+    @GetMapping("")
+    public ResponseEntity<List<ConcertResponse>> getConcerts() {
+        return ResponseEntity.ok(
+            List.of(
+                new ConcertResponse(1L, "콘서트명1", LocalDate.of(2024,12,31), LocalDate.of(2025,1,1)),
+                new ConcertResponse(2L, "콘서트명2", LocalDate.of(2025,1,1), LocalDate.of(2025,1,2))
+            )
+        );
+    }
+
+    @GetMapping("/{concertId}")
+    public ResponseEntity<ConcertResponse> findConcert(@PathVariable("concertId") Long concertId) {
+
+        if (concertId != 1L) {
+            throw new ConcertException("등록되지 않은 콘서트입니다.");
+        }
+
+        return ResponseEntity.ok(
+            new ConcertResponse(concertId, "콘서트명1", LocalDate.of(2024,12,31), LocalDate.of(2025,1,1))
+        );
+    }
+
+    @GetMapping("/{concertId}/schedules")
+    public ResponseEntity<ConcertScheduleResponse> findConcertSchedule(
+            @RequestHeader HttpHeaders headers,
+            @PathVariable("concertId") Long concertId) {
+
+        String token = headers.getFirst("Authorization");
+        if (token == null) {
+            throw new UnAuthorizationException("토큰 정보가 누락되었습니다.");
+        }
+
+        if (StringUtils.hasText(token) && token.startsWith("Bearer ")) {
+            token.substring(7);
+        } else {
+            throw new TokenException("잘못된 토큰입니다.");
+        }
+
+        return ResponseEntity.ok(
+            new ConcertScheduleResponse(
+                concertId,
+                List.of(
+                    new ScheduleResponse(1L, LocalDate.of(2024,12,31)),
+                    new ScheduleResponse(2L, LocalDate.of(2025,1,1))
+                )
+            )
+        );
+    }
+
+}
