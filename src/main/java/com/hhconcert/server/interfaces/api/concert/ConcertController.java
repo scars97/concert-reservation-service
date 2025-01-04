@@ -8,6 +8,9 @@ import com.hhconcert.server.interfaces.api.concert.dto.ConcertScheduleResponse;
 import com.hhconcert.server.interfaces.api.concert.dto.ScheduleResponse;
 import com.hhconcert.server.interfaces.api.concert.dto.ScheduleSeatResponse;
 import com.hhconcert.server.interfaces.api.concert.dto.SeatResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
@@ -16,10 +19,12 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.List;
 
+@Tag(name = "콘서트 API", description = "콘서트, 날짜, 좌석 조회")
 @RestController
 @RequestMapping("/concerts")
 public class ConcertController {
 
+    @Operation(summary = "콘서트 목록 조회")
     @GetMapping("")
     public ResponseEntity<List<ConcertResponse>> getConcerts() {
         return ResponseEntity.ok(
@@ -30,6 +35,7 @@ public class ConcertController {
         );
     }
 
+    @Operation(summary = "콘서트 상세 조회")
     @GetMapping("/{concertId}")
     public ResponseEntity<ConcertResponse> findConcert(@PathVariable("concertId") Long concertId) {
 
@@ -42,6 +48,7 @@ public class ConcertController {
         );
     }
 
+    @Operation(summary = "콘서트 예약 가능 날짜 조회", security = @SecurityRequirement(name = "queue-token"))
     @GetMapping("/{concertId}/schedules")
     public ResponseEntity<ConcertScheduleResponse> findConcertSchedule(
             @RequestHeader HttpHeaders headers,

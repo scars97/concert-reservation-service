@@ -1,10 +1,13 @@
 package com.hhconcert.server.interfaces.api.payment;
 
-import com.hhconcert.server.exception.PaymentException;
-import com.hhconcert.server.exception.TokenException;
-import com.hhconcert.server.exception.UnAuthorizationException;
+import com.hhconcert.server.global.exception.PaymentException;
+import com.hhconcert.server.global.exception.TokenException;
+import com.hhconcert.server.global.exception.UnAuthorizationException;
 import com.hhconcert.server.interfaces.api.payment.dto.PaymentRequest;
 import com.hhconcert.server.interfaces.api.payment.dto.PaymentResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,10 +16,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 
+@Tag(name = "결제 API")
 @RestController
 @RequestMapping("/payments")
 public class PaymentController {
 
+    @Operation(summary = "예약건 결제", security = @SecurityRequirement(name = "queue-token"))
     @PostMapping("")
     public ResponseEntity<PaymentResponse> payment(
             @RequestHeader HttpHeaders headers,
