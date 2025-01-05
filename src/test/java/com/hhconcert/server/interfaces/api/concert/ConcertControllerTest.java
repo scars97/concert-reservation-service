@@ -78,4 +78,19 @@ class ConcertControllerTest extends ControllerTestSupport {
                 );
     }
 
+    @DisplayName("예약 가능한 날짜의 좌석 목록이 조회된다.")
+    @Test
+    void getAvailableSeats() throws Exception {
+        mockMvc.perform(get("/concerts/{concertId}/schedules/{scheduleId}/seats", 1L, 1L)
+                        .header("Authorization", "Bearer asdf")
+                )
+                .andExpectAll(
+                        status().isOk(),
+                        jsonPath("$.scheduleId", is(1)),
+                        jsonPath("$.seats", hasSize(2)),
+                        jsonPath("$.seats[0].seatId", is(1)),
+                        jsonPath("$.seats[1].seatId", is(2))
+                );
+    }
+
 }

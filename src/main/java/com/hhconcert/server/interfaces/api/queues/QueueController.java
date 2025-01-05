@@ -1,9 +1,12 @@
 package com.hhconcert.server.interfaces.api.queues;
 
-import com.hhconcert.server.exception.TokenException;
-import com.hhconcert.server.exception.UnAuthorizationException;
+import com.hhconcert.server.global.exception.TokenException;
+import com.hhconcert.server.global.exception.UnAuthorizationException;
 import com.hhconcert.server.interfaces.api.queues.dto.TokenRequest;
 import com.hhconcert.server.interfaces.api.queues.dto.TokenResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,10 +15,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
+@Tag(name = "대기열 API", description = "토큰 발급 및 대기열 상태 요청")
 @RestController
 @RequestMapping("/queues")
 public class QueueController {
 
+    @Operation(summary = "토큰 발급")
     @PostMapping("/token")
     public ResponseEntity<TokenResponse> createQueueToken(@RequestBody TokenRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(
@@ -23,6 +28,7 @@ public class QueueController {
         );
     }
 
+    @Operation(summary = "대기열 상태 요청", security = @SecurityRequirement(name = "queue-token"))
     @GetMapping("/{userId}")
     public ResponseEntity<TokenResponse> getQueueStatus(
             @RequestHeader HttpHeaders header,

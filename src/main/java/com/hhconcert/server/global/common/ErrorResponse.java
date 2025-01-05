@@ -1,4 +1,4 @@
-package com.hhconcert.server.common;
+package com.hhconcert.server.global.common;
 
 public record ErrorResponse (
         String status,

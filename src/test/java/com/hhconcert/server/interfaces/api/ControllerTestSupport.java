@@ -6,14 +6,12 @@ import com.hhconcert.server.interfaces.api.payment.PaymentController;
 import com.hhconcert.server.interfaces.api.point.PointController;
 import com.hhconcert.server.interfaces.api.queues.QueueController;
 import com.hhconcert.server.interfaces.api.reservation.ReservationController;
-import com.hhconcert.server.interfaces.api.schedule.ScheduleController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(controllers = {
         ConcertController.class,
-        ScheduleController.class,
         QueueController.class,
         ReservationController.class,
         PointController.class,

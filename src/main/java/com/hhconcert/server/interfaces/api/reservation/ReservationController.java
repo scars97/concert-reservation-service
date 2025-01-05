@@ -1,10 +1,13 @@
 package com.hhconcert.server.interfaces.api.reservation;
 
-import com.hhconcert.server.exception.TokenException;
-import com.hhconcert.server.exception.UnAuthorizationException;
+import com.hhconcert.server.global.exception.TokenException;
+import com.hhconcert.server.global.exception.UnAuthorizationException;
 import com.hhconcert.server.interfaces.api.concert.dto.ConcertResponse;
 import com.hhconcert.server.interfaces.api.reservation.dto.ReservationRequest;
 import com.hhconcert.server.interfaces.api.reservation.dto.ReservationResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,10 +17,12 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+@Tag(name = "예약 API")
 @RestController
 @RequestMapping("/reservations")
 public class ReservationController {
 
+    @Operation(summary = "콘서트 좌석 예약", security = @SecurityRequirement(name = "queue-token"))
     @PostMapping("")
     public ResponseEntity<ReservationResponse> createReservation(
             @RequestHeader HttpHeaders headers,

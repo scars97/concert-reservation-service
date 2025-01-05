@@ -1,4 +1,4 @@
-package com.hhconcert.server.interfaces.api.schedule.dto;
+package com.hhconcert.server.interfaces.api.concert.dto;
 
 import java.util.List;
 

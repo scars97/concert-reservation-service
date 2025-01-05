@@ -1,9 +1,9 @@
-package com.hhconcert.server.common;
+package com.hhconcert.server.global.common;
 
-import com.hhconcert.server.exception.ConcertException;
-import com.hhconcert.server.exception.PaymentException;
-import com.hhconcert.server.exception.TokenException;
-import com.hhconcert.server.exception.UnAuthorizationException;
+import com.hhconcert.server.global.exception.ConcertException;
+import com.hhconcert.server.global.exception.PaymentException;
+import com.hhconcert.server.global.exception.TokenException;
+import com.hhconcert.server.global.exception.UnAuthorizationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
