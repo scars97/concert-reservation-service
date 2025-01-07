@@ -54,6 +54,6 @@ public class TokenService {
             throw new TokenException("유효하지 않은 토큰입니다.");
         }
 
-        tokenRepository.deleteToken(token);
+        tokenRepository.dropToken(token);
     }
 }

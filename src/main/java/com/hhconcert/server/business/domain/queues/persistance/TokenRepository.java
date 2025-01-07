@@ -64,5 +64,5 @@ public interface TokenRepository {
      * 만료된 토큰 삭제
      * @param token
      */
-    void deleteToken(Token token);
+    void dropToken(Token token);
 }

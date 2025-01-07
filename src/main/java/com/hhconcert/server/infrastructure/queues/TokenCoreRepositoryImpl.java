@@ -57,7 +57,7 @@ public class TokenCoreRepositoryImpl implements TokenRepository {
     }
 
     @Override
-    public void deleteToken(Token token) {
+    public void dropToken(Token token) {
         repository.delete(token);
     }
 }

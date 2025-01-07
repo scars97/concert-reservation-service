@@ -15,8 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -123,7 +122,7 @@ class TokenServiceTest {
 
         tokenService.expireToken(tokenId);
 
-        verify(tokenRepository, times(1)).deleteToken(token);
+        verify(tokenRepository, times(1)).dropToken(token);
     }
 
     @DisplayName("토큰 만료 처리 시, ACTIVE 상태가 아닌 토큰인 경우 예외가 발생한다.")
