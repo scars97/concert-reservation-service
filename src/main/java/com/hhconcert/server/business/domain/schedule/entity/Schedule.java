@@ -1,0 +1,33 @@
+package com.hhconcert.server.business.domain.schedule.entity;
+
+import com.hhconcert.server.business.domain.BaseEntity;
+import com.hhconcert.server.business.domain.concert.entity.Concert;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDate;
+
+@Entity
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+public class Schedule extends BaseEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "concert_id")
+    private Concert concert;
+
+    private LocalDate date;
+
+    public Schedule(Concert concert, LocalDate date) {
+        this.concert = concert;
+        this.date = date;
+    }
+
+}
