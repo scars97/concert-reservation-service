@@ -16,6 +16,7 @@ public class Concert extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "concert_id")
     private Long id;
 
     @Column(nullable = false)
