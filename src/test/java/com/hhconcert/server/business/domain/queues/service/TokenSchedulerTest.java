@@ -4,6 +4,8 @@ import com.hhconcert.server.business.domain.queues.entity.Token;
 import com.hhconcert.server.business.domain.queues.entity.TokenGenerator;
 import com.hhconcert.server.business.domain.queues.entity.TokenStatus;
 import com.hhconcert.server.business.domain.queues.persistance.TokenRepository;
+import com.hhconcert.server.infrastructure.queues.TokenJpaRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,14 @@ class TokenSchedulerTest {
 
     @Autowired
     private TokenRepository tokenRepository;
+
+    @Autowired
+    private TokenJpaRepository tokenJpaRepository;
+
+    @AfterEach
+    void tearDown() {
+        tokenJpaRepository.deleteAllInBatch();
+    }
 
     @DisplayName("대기열 통과 시, WAIT 상태 토큰 1개를 ACTIVE 상태로 변경한다.")
     @Test

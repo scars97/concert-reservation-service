@@ -2,6 +2,8 @@ package com.hhconcert.server.business.domain.queues.persistance;
 
 import com.hhconcert.server.business.domain.queues.entity.Token;
 import com.hhconcert.server.business.domain.queues.entity.TokenStatus;
+import com.hhconcert.server.infrastructure.queues.TokenJpaRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,14 @@ class TokenRepositoryTest {
 
     @Autowired
     private TokenRepository repository;
+
+    @Autowired
+    private TokenJpaRepository tokenJpaRepository;
+
+    @AfterEach
+    void tearDown() {
+        tokenJpaRepository.deleteAllInBatch();
+    }
 
     @DisplayName("토큰 생성")
     @Test
