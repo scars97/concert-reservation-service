@@ -12,7 +12,7 @@ public class TestContainerConfig {
 
     static {
         MYSQL_CONTAINER = new MySQLContainer<>(DockerImageName.parse("mysql:8.0"))
-                .withDatabaseName("concert")
+                .withDatabaseName("concert-test")
                 .withUsername("test")
                 .withPassword("test");
         MYSQL_CONTAINER.start();

@@ -16,7 +16,7 @@ class QueueControllerTest extends ControllerTestSupport {
     @DisplayName("대기열 토큰 발급 요청 시, 토큰 생성에 성공한다.")
     @Test
     void createQueueToken() throws Exception {
-        TokenRequest request = new TokenRequest("test1234", 1L);
+        TokenRequest request = new TokenRequest("test1234");
 
         mockMvc.perform(post("/queues/token")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -40,7 +40,7 @@ class QueueControllerTest extends ControllerTestSupport {
                 .andExpectAll(
                         status().isOk(),
                         jsonPath("$.tokenId", notNullValue()),
-                        jsonPath("$.status", is("ACTIVE"))
+                        jsonPath("$.status", is("WAIT"))
                 );
     }
 
