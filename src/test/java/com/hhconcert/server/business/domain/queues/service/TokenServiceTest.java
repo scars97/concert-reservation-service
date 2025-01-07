@@ -84,27 +84,6 @@ class TokenServiceTest {
                 .hasMessage("이미 토큰이 존재합니다.");
     }
 
-    @DisplayName("사용자 순서 도달 시, 토큰 상태가 ACTIVE로 수정된다.")
-    @Test
-    void checkQueueStatus_whenReachingOrder_thenUpdateTokenInfo() {
-        String tokenId = UUID.randomUUID().toString();
-        Token token = Token.builder()
-                .tokenId(tokenId)
-                .userId("test1234")
-                .status(TokenStatus.WAIT)
-                .priority(1)
-                .build();
-
-        when(tokenRepository.findToken(tokenId)).thenReturn(token);
-        when(tokenRepository.getTokensFor(TokenStatus.ACTIVE)).thenReturn(7);
-
-        TokenResult result = tokenService.checkQueueStatus(tokenId);
-
-        assertThat(result.status()).isEqualTo(TokenStatus.ACTIVE);
-        assertThat(token.getActiveAt()).isBefore(token.getExpiredAt());
-        assertThat(token.getExpiredAt()).isAfter(token.getActiveAt());
-    }
-
     @DisplayName("토큰 만료 처리 시, 토큰 상태가 EXPIRE 로 수정된다.")
     @Test
     void expireToken() {

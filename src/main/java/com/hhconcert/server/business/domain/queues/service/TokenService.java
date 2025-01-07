@@ -32,19 +32,8 @@ public class TokenService {
     }
 
     @Transactional
-    public TokenResult checkQueueStatus(String tokenId) {
-        Token token = tokenRepository.findToken(tokenId);
-        if (token.getStatus() != TokenStatus.WAIT) {
-            throw new TokenException("유효하지 않은 토큰입니다.");
-        }
-
-        int activeCount = tokenRepository.getTokensFor(TokenStatus.ACTIVE);
-
-        if (activeCount < MAX_ACTIVE_TOKEN_COUNT) {
-            token.activeForMinutes(5);
-        }
-
-        return TokenResult.from(token);
+    public TokenResult findToken(String tokenId) {
+        return TokenResult.from(tokenRepository.findToken(tokenId));
     }
 
     @Transactional
