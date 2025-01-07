@@ -1,5 +1,6 @@
 package com.hhconcert.server.interfaces.api.queues;
 
+import com.hhconcert.server.business.domain.queues.entity.TokenStatus;
 import com.hhconcert.server.global.exception.TokenException;
 import com.hhconcert.server.global.exception.UnAuthorizationException;
 import com.hhconcert.server.interfaces.api.queues.dto.TokenRequest;
@@ -13,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Tag(name = "대기열 API", description = "토큰 발급 및 대기열 상태 요청")
@@ -24,7 +26,7 @@ public class QueueController {
     @PostMapping("/token")
     public ResponseEntity<TokenResponse> createQueueToken(@RequestBody TokenRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(
-            new TokenResponse(UUID.randomUUID().toString(), request.userId(), request.concertId(), 34, "WAIT")
+            new TokenResponse(UUID.randomUUID().toString(), request.userId(), 34, TokenStatus.WAIT, LocalDateTime.now(), null, null)
         );
     }
 
@@ -46,7 +48,7 @@ public class QueueController {
         }
 
         return ResponseEntity.ok(
-                new TokenResponse(token, userId, 1L, 0, "ACTIVE")
+                new TokenResponse(token, userId, 4, TokenStatus.WAIT, LocalDateTime.now(), null, null)
         );
     }
 }
