@@ -18,6 +18,4 @@ public class User extends BaseEntity {
     @Column(name = "user_id")
     private String id;
 
-    private Integer point;
-
 }
