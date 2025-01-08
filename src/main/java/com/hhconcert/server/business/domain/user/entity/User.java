@@ -18,4 +18,13 @@ public class User extends BaseEntity {
     @Column(name = "user_id")
     private String id;
 
+    private Integer point;
+
+    public void chargePoint(Integer amount) {
+        this.point += amount;
+    }
+
+    public void usePoint(Integer amount) {
+        this.point -= amount;
+    }
 }
