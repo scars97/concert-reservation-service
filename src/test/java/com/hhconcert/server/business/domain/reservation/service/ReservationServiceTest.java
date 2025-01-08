@@ -52,7 +52,7 @@ class ReservationServiceTest {
 
     @BeforeEach
     void setUp() {
-        user = new User("test1234", 80000);
+        user = new User("test1234");
         concert = new Concert(1L, "콘서트", LocalDate.now(), LocalDate.now().plusDays(1));
         schedule = new Schedule(1L, concert, LocalDate.now());
         seat = new Seat(1L, schedule, "A1", 75000, SeatStatus.AVAILABLE);
