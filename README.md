@@ -13,7 +13,7 @@
 
 **1/4 ~ 1/10**
 - 유저 토큰 발급 API
-- polling 또는 WebSocket을 통한 대기열 상태 확인 기능
+- 대기열 상태 확인 기능
 - 예약 가능 날짜/좌석 조회 API
 - 좌석 예약 API
 - 잔액 충전/조회 API
@@ -35,7 +35,7 @@
 <details>
 <summary><b>유저 대기열 토큰 발급</b></summary>
 
-![img.png](docs/img/sequencediagram/대기열_토큰_4.png)
+![img.png](docs/img/sequencediagram/대기열_토큰_5.png)
 </details>
 
 <details>
@@ -47,7 +47,7 @@
 <details>
 <summary><b>좌석 예약</b></summary>
 
-![img.png](docs/img/sequencediagram/좌석_예약_4.png)
+![img.png](docs/img/sequencediagram/좌석_예약_5.png)
 </details>
 
 <details>
@@ -59,13 +59,17 @@
 <details>
 <summary><b>결제</b></summary>
 
-![img.png](docs/img/sequencediagram/결제_3.png)
+![img.png](docs/img/sequencediagram/결제_4.png)
 </details>
 
 ## ERD
-![img.png](docs/img/erd/ERD_3.png)
+![img.png](docs/img/erd/ERD_4.png)
 
 ## [API Specs](docs/api-spec.md)
+
+http://localhost:8080/swagger-ui/index.html
+
+![img.png](docs/img/swagger.png)
 
 <details>
 <summary><b>콘서트 목록/상세 조회</b></summary>
