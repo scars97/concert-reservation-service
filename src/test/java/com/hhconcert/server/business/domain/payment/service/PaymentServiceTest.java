@@ -12,7 +12,6 @@ import com.hhconcert.server.business.domain.reservation.entity.ReservationStatus
 import com.hhconcert.server.business.domain.reservation.persistance.ReservationRepository;
 import com.hhconcert.server.business.domain.schedule.entity.Schedule;
 import com.hhconcert.server.business.domain.seat.entity.Seat;
-import com.hhconcert.server.business.domain.seat.entity.SeatStatus;
 import com.hhconcert.server.business.domain.user.entity.User;
 import com.hhconcert.server.business.domain.user.persistance.UserRepository;
 import com.hhconcert.server.global.exception.PaymentException;
@@ -27,7 +26,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -57,7 +57,7 @@ class PaymentServiceTest {
         user = new User("test1234", 80000);
         concert = new Concert(1L, "콘서트", LocalDate.now(), LocalDate.now().plusDays(1));
         schedule = new Schedule(1L, concert, LocalDate.now());
-        seat = new Seat(1L, schedule, "A1", 75000, SeatStatus.AVAILABLE);
+        seat = new Seat(1L, schedule, "A1", 75000);
         reservation = new Reservation(1L, user, concert, schedule, seat,
                 75000, ReservationStatus.TEMP, LocalDateTime.now().plusMinutes(5));
         payment = new Payment(1L, user, reservation, 75000, PaymentStatus.SUCCESS);

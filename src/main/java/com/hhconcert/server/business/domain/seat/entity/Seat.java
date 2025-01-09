@@ -28,13 +28,9 @@ public class Seat extends BaseEntity {
     @Column(nullable = false)
     private Integer price;
 
-    @Enumerated(EnumType.STRING)
-    private SeatStatus status;
-
-    public Seat(Schedule schedule, String seatNumber, Integer price, SeatStatus status) {
+    public Seat(Schedule schedule, String seatNumber, Integer price) {
         this.schedule = schedule;
         this.seatNumber = seatNumber;
         this.price = price;
-        this.status = status;
     }
 }
