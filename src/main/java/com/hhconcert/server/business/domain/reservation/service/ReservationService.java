@@ -15,12 +15,14 @@ import com.hhconcert.server.business.domain.user.entity.User;
 import com.hhconcert.server.business.domain.user.persistance.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class ReservationService {
 
     private final ReservationRepository reservationRepository;
@@ -29,6 +31,7 @@ public class ReservationService {
     private final SeatRepository seatRepository;
     private final UserRepository userRepository;
 
+    @Transactional
     public ReservationResult creatTempReserve(ReservationInfo info) {
         User user = userRepository.findUser(info.userId());
         Concert concert = concertRepository.findConcert(info.concertId());
@@ -58,9 +61,4 @@ public class ReservationService {
         return ReservationResult.from(reservationRepository.findReserve(reserveId));
     }
 
-    public void updateStatusForComplete(Long reserveId) {
-        Reservation reserve = reservationRepository.findReserve(reserveId);
-
-        reserve.updateForComplete();
-    }
 }

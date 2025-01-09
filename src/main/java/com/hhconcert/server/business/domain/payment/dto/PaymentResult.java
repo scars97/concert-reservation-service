@@ -22,7 +22,7 @@ public record PaymentResult(
                 UserResult.from(payment.getUser()),
                 payment.getPrice(),
                 payment.getStatus(),
-                payment.getCreateAt()
+                payment.getCreatedAt()
         );
     }
 }

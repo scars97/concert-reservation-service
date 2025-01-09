@@ -10,7 +10,7 @@ public record TokenResponse(
         String userId,
         Integer priority,
         TokenStatus status,
-        LocalDateTime createAt,
+        LocalDateTime createdAt,
         LocalDateTime activeAt,
         LocalDateTime expireAt
 ) {

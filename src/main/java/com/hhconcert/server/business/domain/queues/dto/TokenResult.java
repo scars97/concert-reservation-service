@@ -20,7 +20,7 @@ public record TokenResult(
                 token.getUserId(),
                 0,
                 token.getStatus(),
-                token.getCreateAt(),
+                token.getCreatedAt(),
                 token.getActiveAt(),
                 token.getExpiredAt()
         );
@@ -31,7 +31,7 @@ public record TokenResult(
                 token.getUserId(),
                 priority,
                 token.getStatus(),
-                token.getCreateAt(),
+                token.getCreatedAt(),
                 token.getActiveAt(),
                 token.getExpiredAt()
         );

@@ -33,7 +33,7 @@ public class TokenService {
         return TokenResult.from(tokenRepository.createToken(Token.createForWait(userId)), waitingCount + 1);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public TokenResult checkQueueStatus(String userId) {
         Token token = tokenRepository.findTokenByUserId(userId);
 
@@ -43,7 +43,7 @@ public class TokenService {
         if (token.getStatus() == TokenStatus.WAIT) {
             List<Token> waitTokens = tokenRepository.getTokensBy(TokenStatus.WAIT);
             currentPriority = (int) waitTokens.stream()
-                    .filter(t -> t.getCreateAt().isBefore(token.getCreateAt()))
+                    .filter(t -> t.getCreatedAt().isBefore(token.getCreatedAt()))
                     .count() + 1;
         }
 

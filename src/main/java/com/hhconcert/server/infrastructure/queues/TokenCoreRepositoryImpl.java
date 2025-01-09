@@ -28,7 +28,7 @@ public class TokenCoreRepositoryImpl implements TokenRepository {
 
     @Override
     public Token findNextTokenToActivate(TokenStatus status) {
-        return repository.findFirstByStatusOrderByCreateAtAsc(status);
+        return repository.findFirstByStatusOrderByCreatedAtAsc(status);
     }
 
     @Override

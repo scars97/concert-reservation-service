@@ -10,7 +10,6 @@ import com.hhconcert.server.business.domain.reservation.persistance.ReservationR
 import com.hhconcert.server.business.domain.schedule.entity.Schedule;
 import com.hhconcert.server.business.domain.schedule.persistance.ScheduleRepository;
 import com.hhconcert.server.business.domain.seat.entity.Seat;
-import com.hhconcert.server.business.domain.seat.entity.SeatStatus;
 import com.hhconcert.server.business.domain.seat.persistance.SeatRepository;
 import com.hhconcert.server.business.domain.user.entity.User;
 import com.hhconcert.server.business.domain.user.persistance.UserRepository;
@@ -55,7 +54,7 @@ class ReservationServiceTest {
         user = new User("test1234", 80000);
         concert = new Concert(1L, "콘서트", LocalDate.now(), LocalDate.now().plusDays(1));
         schedule = new Schedule(1L, concert, LocalDate.now());
-        seat = new Seat(1L, schedule, "A1", 75000, SeatStatus.AVAILABLE);
+        seat = new Seat(1L, schedule, "A1", 75000);
     }
 
     @DisplayName("임시 예약 내역이 생성된다.")
