@@ -29,4 +29,6 @@ public interface TokenJpaRepository extends JpaRepository<Token, String> {
 
     @Query("select t from Token t where t.status = 'ACTIVE' and t.expiredAt <= :now")
     List<Token> getExpiredTokens(@Param("now") LocalDateTime now);
+
+    void deleteByUserId(String userId);
 }
