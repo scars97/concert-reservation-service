@@ -60,4 +60,9 @@ public class TokenCoreRepositoryImpl implements TokenRepository {
     public void dropToken(Token token) {
         repository.delete(token);
     }
+
+    @Override
+    public void dropTokenByUserId(String userId) {
+        repository.deleteByUserId(userId);
+    }
 }

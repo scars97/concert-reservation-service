@@ -58,4 +58,9 @@ public class ReservationService {
         return ReservationResult.from(reservationRepository.findReserve(reserveId));
     }
 
+    public void updateStatusForComplete(Long reserveId) {
+        Reservation reserve = reservationRepository.findReserve(reserveId);
+
+        reserve.updateForComplete();
+    }
 }

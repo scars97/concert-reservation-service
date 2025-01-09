@@ -65,4 +65,10 @@ public interface TokenRepository {
      * @param token
      */
     void dropToken(Token token);
+
+    /**
+     * 결제 후 토큰 만료 처리
+     * @param userId
+     */
+    void dropTokenByUserId(String userId);
 }
