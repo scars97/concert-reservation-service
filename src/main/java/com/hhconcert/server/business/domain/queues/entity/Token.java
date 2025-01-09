@@ -2,10 +2,7 @@ package com.hhconcert.server.business.domain.queues.entity;
 
 import com.hhconcert.server.business.domain.BaseEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -26,25 +23,21 @@ public class Token extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private TokenStatus status;
 
-    private Integer priority;
-
     private LocalDateTime activeAt;
 
     private LocalDateTime expiredAt;
 
-    public Token(String tokenId, String userId, TokenStatus status, Integer priority) {
+    public Token(String tokenId, String userId, TokenStatus status) {
         this.tokenId = tokenId;
         this.userId = userId;
         this.status = status;
-        this.priority = priority;
     }
 
-    public static Token createForWait(String userId, Integer priority) {
+    public static Token createForWait(String userId) {
         return Token.builder()
                 .tokenId(TokenGenerator.generateToken(userId))
                 .userId(userId)
                 .status(TokenStatus.WAIT)
-                .priority(priority)
                 .build();
     }
 

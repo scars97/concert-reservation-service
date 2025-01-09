@@ -12,12 +12,12 @@ class TokenTest {
     void createTokenForWait() {
         String userId = "test1234";
 
-        Token token = Token.createForWait(userId, 1);
+        Token token = Token.createForWait(userId);
 
         assertThat(token.getTokenId()).isNotNull();
         assertThat(token)
-                .extracting("userId", "status", "priority")
-                .containsExactly(userId, TokenStatus.WAIT, 1);
+                .extracting("userId", "status")
+                .containsExactly(userId, TokenStatus.WAIT);
     }
 
 
@@ -40,7 +40,7 @@ class TokenTest {
     @Test
     void updateTokenStatus_withActiveTimeAndExpireTime() {
         String userId = "test1234";
-        Token token = Token.createForWait(userId, 1);
+        Token token = Token.createForWait(userId);
 
         token.activeForMinutes(5);
 

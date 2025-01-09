@@ -1,7 +1,6 @@
 package com.hhconcert.server.business.domain.queues.service;
 
 import com.hhconcert.server.business.domain.queues.entity.Token;
-import com.hhconcert.server.business.domain.queues.entity.TokenStatus;
 import com.hhconcert.server.business.domain.queues.persistance.TokenRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,26 +16,9 @@ import java.util.List;
 @EnableScheduling
 @Component
 @RequiredArgsConstructor
-public class TokenScheduler {
+public class TokenExpireScheduler {
 
-    private final static int MAX_ACTIVE_TOKEN_COUNT = 10;
     private final TokenRepository tokenRepository;
-
-    @Scheduled(cron = "*/30 * * * * *") // 30초마다 실행
-    @Transactional
-    public void activateTokens() {
-        int activeCount = tokenRepository.getTokensFor(TokenStatus.ACTIVE);
-        if (activeCount >= MAX_ACTIVE_TOKEN_COUNT) {
-            return;
-        }
-
-        Token nextToken = tokenRepository.findNextTokenToActivate();
-        if (nextToken != null) {
-            nextToken.activeForMinutes(5);
-            tokenRepository.updateWaitingTokensPriority(nextToken.getPriority());
-            log.info("update active token : {}", nextToken.getUserId());
-        }
-    }
 
     @Scheduled(cron = "0 * * * * *") // 1분마다 실행
     @Transactional

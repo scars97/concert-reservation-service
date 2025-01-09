@@ -18,7 +18,18 @@ public record TokenResult(
         return new TokenResult(
                 token.getTokenId(),
                 token.getUserId(),
-                token.getPriority(),
+                0,
+                token.getStatus(),
+                token.getCreateAt(),
+                token.getActiveAt(),
+                token.getExpiredAt()
+        );
+    }
+    public static TokenResult from(Token token, int priority) {
+        return new TokenResult(
+                token.getTokenId(),
+                token.getUserId(),
+                priority,
                 token.getStatus(),
                 token.getCreateAt(),
                 token.getActiveAt(),

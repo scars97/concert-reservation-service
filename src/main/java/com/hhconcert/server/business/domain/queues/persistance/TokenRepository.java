@@ -23,16 +23,10 @@ public interface TokenRepository {
     Token createToken(Token token);
 
     /**
-     * 대기 순서 채번
-     * @return
-     */
-    Integer nextPriority();
-
-    /**
      * 우선순위가 가장 높은 WAIT 토큰 조회
      * @return
      */
-    Token findNextTokenToActivate();
+    Token findNextTokenToActivate(TokenStatus status);
 
     /**
      * 토큰 조회
@@ -41,17 +35,21 @@ public interface TokenRepository {
      */
     Token findToken(String tokenId);
 
+    Token findTokenByUserId(String userId);
+
     /**
-     * ACTIVE 토큰 개수 조회
+     * 특정 상태의 토큰 개수 조회
      * @param status
      * @return
      */
-    int getTokensFor(TokenStatus status);
+    int getTokenCountFor(TokenStatus status);
 
     /**
-     * 대기 순번 업데이트
+     * 특정 상태의 토큰 목록 조회
+     * @param status
+     * @return
      */
-    void updateWaitingTokensPriority(Integer currentPriority);
+    List<Token> getTokensBy(TokenStatus status);
 
     /**
      * 만료된 ACTIVE 토큰 조회

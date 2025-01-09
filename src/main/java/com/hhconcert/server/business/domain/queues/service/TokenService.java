@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class TokenService {
@@ -22,27 +24,30 @@ public class TokenService {
             throw new TokenException("이미 토큰이 존재합니다.");
         }
 
-        int activeCount = tokenRepository.getTokensFor(TokenStatus.ACTIVE);
-
-        Token token = activeCount < MAX_ACTIVE_TOKEN_COUNT ?
-                Token.createForActive(userId) :
-                Token.createForWait(userId, tokenRepository.nextPriority());
-
-        return TokenResult.from(tokenRepository.createToken(token));
-    }
-
-    @Transactional
-    public TokenResult findToken(String tokenId) {
-        return TokenResult.from(tokenRepository.findToken(tokenId));
-    }
-
-    @Transactional
-    public void expireToken(String tokenId) {
-        Token token = tokenRepository.findToken(tokenId);
-        if (token.getStatus() != TokenStatus.ACTIVE) {
-            throw new TokenException("유효하지 않은 토큰입니다.");
+        int activeCount = tokenRepository.getTokenCountFor(TokenStatus.ACTIVE);
+        if (activeCount < MAX_ACTIVE_TOKEN_COUNT) {
+            return TokenResult.from(tokenRepository.createToken(Token.createForActive(userId)));
         }
 
-        tokenRepository.dropToken(token);
+        int waitingCount = tokenRepository.getTokenCountFor(TokenStatus.WAIT);
+        return TokenResult.from(tokenRepository.createToken(Token.createForWait(userId)), waitingCount + 1);
     }
+
+    @Transactional
+    public TokenResult checkQueueStatus(String userId) {
+        Token token = tokenRepository.findTokenByUserId(userId);
+
+        int currentPriority = 0;
+
+        // WAIT 상태인 경우, 대기 순서 연산
+        if (token.getStatus() == TokenStatus.WAIT) {
+            List<Token> waitTokens = tokenRepository.getTokensBy(TokenStatus.WAIT);
+            currentPriority = (int) waitTokens.stream()
+                    .filter(t -> t.getCreateAt().isBefore(token.getCreateAt()))
+                    .count() + 1;
+        }
+
+        return TokenResult.from(token, currentPriority);
+    }
+
 }
