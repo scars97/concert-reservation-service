@@ -27,13 +27,8 @@ public class TokenCoreRepositoryImpl implements TokenRepository {
     }
 
     @Override
-    public Integer nextPriority() {
-        return repository.nextPriority();
-    }
-
-    @Override
-    public Token findNextTokenToActivate() {
-        return repository.findNextTokenToActivate();
+    public Token findNextTokenToActivate(TokenStatus status) {
+        return repository.findFirstByStatusOrderByCreateAtAsc(status);
     }
 
     @Override
@@ -42,18 +37,23 @@ public class TokenCoreRepositoryImpl implements TokenRepository {
     }
 
     @Override
-    public int getTokensFor(TokenStatus status) {
+    public Token findTokenByUserId(String userId) {
+        return repository.findByUserId(userId).orElseThrow(() -> new NoSuchElementException("등록되지 않은 토큰입니다."));
+    }
+
+    @Override
+    public int getTokenCountFor(TokenStatus status) {
+        return repository.countByStatus(status);
+    }
+
+    @Override
+    public List<Token> getTokensBy(TokenStatus status) {
         return repository.findByStatus(status);
     }
 
     @Override
-    public void updateWaitingTokensPriority(Integer currentPriority) {
-        repository.updateWaitingTokensPriority(currentPriority);
-    }
-
-    @Override
     public List<Token> getExpiredTokens(LocalDateTime now) {
-        return repository.getExpiredTokens(now);
+        return repository.findByStatusAndExpiredAtLessThanEqual(TokenStatus.ACTIVE, now);
     }
 
     @Override

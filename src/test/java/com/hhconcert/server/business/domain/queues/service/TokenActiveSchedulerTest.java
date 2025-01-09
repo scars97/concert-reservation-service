@@ -24,8 +24,8 @@ class TokenActiveSchedulerTest {
     @DisplayName("대기열 통과 시, WAIT 상태 토큰 1개를 ACTIVE 상태로 변경한다.")
     @Test
     void whenPassedQueue_thenUpdateStatusIsActivate() {
-        Token token1 = tokenRepository.createToken(Token.createForWait("test1", 1));
-        Token token2 = tokenRepository.createToken(Token.createForWait("test2", 2));
+        Token token1 = tokenRepository.createToken(Token.createForWait("test1"));
+        Token token2 = tokenRepository.createToken(Token.createForWait("test2"));
 
         tokenActiveScheduler.activateTokens();
 
@@ -33,8 +33,7 @@ class TokenActiveSchedulerTest {
         assertThat(findToken1.getStatus()).isEqualTo(TokenStatus.ACTIVE);
 
         Token findToken2 = tokenRepository.findToken(token2.getTokenId());
-        assertThat(findToken2).extracting("status", "priority")
-                        .containsExactly(TokenStatus.WAIT, 1);
+        assertThat(findToken2.getStatus()).isEqualTo(TokenStatus.WAIT);
     }
 
 }

@@ -22,15 +22,14 @@ public class TokenActiveScheduler {
     @Scheduled(cron = "*/30 * * * * *") // 30초마다 실행
     @Transactional
     public void activateTokens() {
-        int activeCount = tokenRepository.getTokensFor(TokenStatus.ACTIVE);
+        int activeCount = tokenRepository.getTokenCountFor(TokenStatus.ACTIVE);
         if (activeCount >= MAX_ACTIVE_TOKEN_COUNT) {
             return;
         }
 
-        Token nextToken = tokenRepository.findNextTokenToActivate();
+        Token nextToken = tokenRepository.findNextTokenToActivate(TokenStatus.WAIT);
         if (nextToken != null) {
             nextToken.activeForMinutes(5);
-            tokenRepository.updateWaitingTokensPriority(nextToken.getPriority());
             log.info("update active token : {}", nextToken.getUserId());
         }
     }
