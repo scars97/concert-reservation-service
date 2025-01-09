@@ -12,7 +12,7 @@ public interface TokenJpaRepository extends JpaRepository<Token, String> {
 
     boolean existsByUserId(String userId);
 
-    Token findFirstByStatusOrderByCreateAtAsc(TokenStatus status);
+    Token findFirstByStatusOrderByCreatedAtAsc(TokenStatus status);
 
     Optional<Token> findByUserId(String userId);
 

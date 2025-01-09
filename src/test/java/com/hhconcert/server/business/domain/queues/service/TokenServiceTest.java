@@ -98,11 +98,11 @@ class TokenServiceTest {
     @Test
     void checkQueueStatus() {
         Token targetToken = Token.createForWait("test1234");
-        targetToken.setCreateAt(now);
+        targetToken.setCreatedAt(now);
         Token token1 = Token.createForWait("test1");
-        token1.setCreateAt(now.minusMinutes(4));
+        token1.setCreatedAt(now.minusMinutes(4));
         Token token2 = Token.createForWait("test2");
-        token2.setCreateAt(now.minusMinutes(2));
+        token2.setCreatedAt(now.minusMinutes(2));
 
         when(tokenRepository.findTokenByUserId("test1234")).thenReturn(targetToken);
         when(tokenRepository.getTokensBy(TokenStatus.WAIT)).thenReturn(List.of(token1, token2));
