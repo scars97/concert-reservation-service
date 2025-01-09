@@ -7,17 +7,19 @@ import org.springframework.http.HttpStatus;
 
 import java.time.LocalDate;
 
-import static org.hamcrest.Matchers.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class ConcertControllerTest extends ControllerTestSupport {
+class MockConcertControllerTest extends ControllerTestSupport {
 
     @DisplayName("콘서트 목록을 조회한다.")
     @Test
     void getConcerts() throws Exception {
 
-        mockMvc.perform(get("/concerts"))
+        mockMvc.perform(get("/mock/concerts"))
                 .andExpectAll(
                         status().isOk(),
                         jsonPath("$", hasSize(2)),
@@ -37,7 +39,7 @@ class ConcertControllerTest extends ControllerTestSupport {
     void findConcert() throws Exception {
         Long concertId = 1L;
 
-        mockMvc.perform(get("/concerts/{concertId}",concertId))
+        mockMvc.perform(get("/mock/concerts/{concertId}",concertId))
                 .andExpectAll(
                         status().isOk(),
                         jsonPath("$.id", is(1)),
@@ -52,7 +54,7 @@ class ConcertControllerTest extends ControllerTestSupport {
     void invalidConcert_thenThrowException() throws Exception {
         Long invalidId = 99L;
 
-        mockMvc.perform(get("/concerts/{concertId}", invalidId))
+        mockMvc.perform(get("/mock/concerts/{concertId}", invalidId))
                 .andExpectAll(
                         status().isNotFound(),
                         jsonPath("$.status", is(HttpStatus.NOT_FOUND.toString())),
@@ -64,7 +66,7 @@ class ConcertControllerTest extends ControllerTestSupport {
     @Test
     void findConcertSchedule() throws Exception {
 
-        mockMvc.perform(get("/concerts/{concertId}/schedules", 1L)
+        mockMvc.perform(get("/mock/concerts/{concertId}/schedules", 1L)
                         .header("Authorization", "Bearer asdf")
                 )
                 .andExpectAll(
@@ -81,7 +83,7 @@ class ConcertControllerTest extends ControllerTestSupport {
     @DisplayName("예약 가능한 날짜의 좌석 목록이 조회된다.")
     @Test
     void getAvailableSeats() throws Exception {
-        mockMvc.perform(get("/concerts/{concertId}/schedules/{scheduleId}/seats", 1L, 1L)
+        mockMvc.perform(get("/mock/concerts/{concertId}/schedules/{scheduleId}/seats", 1L, 1L)
                         .header("Authorization", "Bearer asdf")
                 )
                 .andExpectAll(

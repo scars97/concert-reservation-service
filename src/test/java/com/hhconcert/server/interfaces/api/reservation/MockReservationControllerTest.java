@@ -14,14 +14,14 @@ import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-class ReservationControllerTest extends ControllerTestSupport {
+class MockReservationControllerTest extends ControllerTestSupport {
 
     @DisplayName("좌석 예약 성공 시, 임시 예약 내역이 생성된다.")
     @Test
     void createReservation() throws Exception {
         ReservationRequest request = new ReservationRequest("test1234", 1L, 1L, 1L);
 
-        mockMvc.perform(post("/reservations")
+        mockMvc.perform(post("/mock/reservations")
                 .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer asdf")
                         .content(objectMapper.writeValueAsString(request))
@@ -34,7 +34,7 @@ class ReservationControllerTest extends ControllerTestSupport {
                         jsonPath("$.concert", notNullValue(ConcertResponse.class)),
                         jsonPath("$.price", is(75000)),
                         jsonPath("$.status", is("TEMP")),
-                        jsonPath("$.reservedAt", is(LocalDateTime.of(2024,12,30,0,5).withSecond(0).withNano(1).toString())),
+                        jsonPath("$.createdAt", is(LocalDateTime.of(2024,12,30,0,5).withSecond(0).withNano(1).toString())),
                         jsonPath("$.expiredAt", is(LocalDateTime.of(2024,12,30,0,10).withSecond(0).withNano(1).toString()))
                 );
 

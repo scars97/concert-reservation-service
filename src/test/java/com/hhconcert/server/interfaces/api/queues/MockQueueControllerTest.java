@@ -11,14 +11,14 @@ import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-class QueueControllerTest extends ControllerTestSupport {
+class MockQueueControllerTest extends ControllerTestSupport {
 
     @DisplayName("대기열 토큰 발급 요청 시, 토큰 생성에 성공한다.")
     @Test
     void createQueueToken() throws Exception {
         TokenRequest request = new TokenRequest("test1234");
 
-        mockMvc.perform(post("/queues/token")
+        mockMvc.perform(post("/mock/queues/token")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request))
         )
@@ -34,7 +34,7 @@ class QueueControllerTest extends ControllerTestSupport {
     void getQueueStatus() throws Exception {
         String userId = "test1234";
 
-        mockMvc.perform(get("/queues/{userId}", userId)
+        mockMvc.perform(get("/mock/queues/{userId}", userId)
                         .header("Authorization", "Bearer asdf")
                 )
                 .andExpectAll(
@@ -47,7 +47,7 @@ class QueueControllerTest extends ControllerTestSupport {
     @DisplayName("인증 정보가 없는 경우, 예외가 발생한다.")
     @Test
     void unauthorized_thenThrowException() throws Exception {
-        mockMvc.perform(get("/queues/{userId}", "test1234")
+        mockMvc.perform(get("/mock/queues/{userId}", "test1234")
                 )
                 .andExpectAll(
                         status().isUnauthorized(),
@@ -59,7 +59,7 @@ class QueueControllerTest extends ControllerTestSupport {
     @DisplayName("잘못된 토큰인 경우, 예외가 발생한다.")
     @Test
     void invalidToken_thenThrowException() throws Exception {
-        mockMvc.perform(get("/queues/{userId}", "test1234")
+        mockMvc.perform(get("/mock/queues/{userId}", "test1234")
                         .header("Authorization", "")
                 )
                 .andExpectAll(

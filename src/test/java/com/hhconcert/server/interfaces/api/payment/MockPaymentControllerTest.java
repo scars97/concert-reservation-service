@@ -13,14 +13,14 @@ import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-class PaymentControllerTest extends ControllerTestSupport {
+class MockPaymentControllerTest extends ControllerTestSupport {
 
     @DisplayName("예약 내역 결제에 성공한다.")
     @Test
     void payment() throws Exception {
         PaymentRequest request = new PaymentRequest("test1234", 1L, 75000);
 
-        mockMvc.perform(post("/payments")
+        mockMvc.perform(post("/mock/payments")
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("Authorization", "Bearer asdf")
                 .content(objectMapper.writeValueAsString(request))
@@ -31,7 +31,7 @@ class PaymentControllerTest extends ControllerTestSupport {
                         jsonPath("$.reserveId", is(1)),
                         jsonPath("$.userId", is("test1234")),
                         jsonPath("$.price", is(75000)),
-                        jsonPath("$.status", is("COMPLETE")),
+                        jsonPath("$.status", is("SUCCESS")),
                         jsonPath("$.createdAt", is(LocalDateTime.of(2024,12,30,0,13,0,1).toString()))
                 );
     }
@@ -42,7 +42,7 @@ class PaymentControllerTest extends ControllerTestSupport {
         Integer invalidAmount = 50000;
         PaymentRequest request = new PaymentRequest("test1234", 1L, invalidAmount);
 
-        mockMvc.perform(post("/payments")
+        mockMvc.perform(post("/mock/payments")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer asdf")
                         .content(objectMapper.writeValueAsString(request))

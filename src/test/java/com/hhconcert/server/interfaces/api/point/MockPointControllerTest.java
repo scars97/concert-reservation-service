@@ -10,14 +10,14 @@ import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-class PointControllerTest extends ControllerTestSupport {
+class MockPointControllerTest extends ControllerTestSupport {
 
     @DisplayName("포인트 충전에 성공한다.")
     @Test
     void chargePoint() throws Exception {
         PointRequest request = new PointRequest("test1234", 10000);
 
-        mockMvc.perform(patch("/points")
+        mockMvc.perform(patch("/mock/points")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request))
         )
@@ -31,7 +31,7 @@ class PointControllerTest extends ControllerTestSupport {
     @DisplayName("포인트 조회에 성공한다.")
     @Test
     void getPoint() throws Exception {
-        mockMvc.perform(get("/points/{userId}", "test1234"))
+        mockMvc.perform(get("/mock/points/{userId}", "test1234"))
                 .andExpectAll(
                         status().isOk(),
                         jsonPath("$.userId", is("test1234")),
