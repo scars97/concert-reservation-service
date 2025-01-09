@@ -19,11 +19,13 @@ public class Seat extends BaseEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "schedule_id")
+    @JoinColumn(name = "schedule_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Schedule schedule;
 
+    @Column(nullable = false)
     private String seatNumber;
 
+    @Column(nullable = false)
     private Integer price;
 
     @Enumerated(EnumType.STRING)

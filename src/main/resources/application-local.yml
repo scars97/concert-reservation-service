@@ -2,3 +2,13 @@ spring:
   config:
     activate:
       on-profile: local
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/concert-local
+    username: application
+    password: application
+    driver-class-name: com.mysql.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
