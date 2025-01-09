@@ -15,7 +15,7 @@ public class UserCoreRepository implements UserRepository {
 
     @Override
     public User findUser(String userId) {
-        return repository.findById(userId).orElseThrow(() -> new NoSuchElementException("등록되지 않은 사용자입니다."));
+        return repository.findByUserId(userId).orElseThrow(() -> new NoSuchElementException("등록되지 않은 사용자입니다."));
     }
 
 }

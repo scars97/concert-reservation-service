@@ -7,6 +7,6 @@ public record PointResult(
         Integer point
 ) {
     public static PointResult from(User user) {
-        return new PointResult(user.getId(), user.getPoint());
+        return new PointResult(user.getUserId(), user.getPoint());
     }
 }

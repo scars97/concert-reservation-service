@@ -2,9 +2,7 @@ package com.hhconcert.server.business.domain.user.entity;
 
 import com.hhconcert.server.business.domain.BaseEntity;
 import com.hhconcert.server.global.exception.PointException;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,10 +14,19 @@ import lombok.NoArgsConstructor;
 public class User extends BaseEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_seq")
+    private Long id;
+
     @Column(name = "user_id")
-    private String id;
+    private String userId;
 
     private Integer point;
+
+    public User(String userId, Integer point) {
+        this.userId = userId;
+        this.point = point;
+    }
 
     public void chargePoint(Integer amount) {
         this.point += amount;

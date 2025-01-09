@@ -17,7 +17,7 @@ public class BaseEntity {
 
     @Setter
     @CreatedDate
-    protected LocalDateTime createAt;
+    protected LocalDateTime createdAt;
 
     @LastModifiedDate
     protected LocalDateTime modifiedAt;

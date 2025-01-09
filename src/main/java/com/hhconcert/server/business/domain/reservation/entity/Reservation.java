@@ -27,7 +27,7 @@ public class Reservation extends BaseEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+    @JoinColumn(name = "user_seq", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -51,7 +51,8 @@ public class Reservation extends BaseEntity {
 
     private LocalDateTime expiredAt;
 
-    public Reservation(Concert concert, Schedule schedule, Seat seat, Integer price, ReservationStatus status, LocalDateTime expiredAt) {
+    public Reservation(User user, Concert concert, Schedule schedule, Seat seat, Integer price, ReservationStatus status, LocalDateTime expiredAt) {
+        this.user = user;
         this.concert = concert;
         this.schedule = schedule;
         this.seat = seat;
@@ -77,5 +78,6 @@ public class Reservation extends BaseEntity {
             throw new ReservationException("결제할 수 없는 예약 내역입니다.");
         }
         this.status = ReservationStatus.COMPLETE;
+        this.expiredAt = null;
     }
 }

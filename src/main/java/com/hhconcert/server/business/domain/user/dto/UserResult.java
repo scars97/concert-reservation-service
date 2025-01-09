@@ -8,7 +8,7 @@ public record UserResult (
 ) {
     public static UserResult from(User user) {
         return new UserResult(
-                user.getId(),
+                user.getUserId(),
                 user.getPoint()
         );
     }
