@@ -30,7 +30,7 @@ public record ReservationResult(
                 SeatResult.from(reservation.getSeat()),
                 reservation.getPrice(),
                 reservation.getStatus(),
-                reservation.getCreateAt(),
+                reservation.getCreatedAt(),
                 reservation.getExpiredAt(),
                 reservation.getModifiedAt()
         );

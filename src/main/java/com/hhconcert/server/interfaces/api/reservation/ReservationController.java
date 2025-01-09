@@ -1,54 +1,31 @@
 package com.hhconcert.server.interfaces.api.reservation;
 
-import com.hhconcert.server.global.exception.TokenException;
-import com.hhconcert.server.global.exception.UnAuthorizationException;
-import com.hhconcert.server.interfaces.api.concert.dto.ConcertResponse;
 import com.hhconcert.server.interfaces.api.reservation.dto.ReservationRequest;
 import com.hhconcert.server.interfaces.api.reservation.dto.ReservationResponse;
+import com.hhconcert.server.interfaces.facade.ReservationFacade;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.http.HttpHeaders;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "예약 API")
 @RestController
 @RequestMapping("/reservations")
+@RequiredArgsConstructor
 public class ReservationController {
 
-    @Operation(summary = "콘서트 좌석 예약", security = @SecurityRequirement(name = "queue-token"))
+    private final ReservationFacade reservationFacade;
+
+    @Operation(summary = "콘서트 좌석 임시 예약", security = @SecurityRequirement(name = "queue-token"))
     @PostMapping("")
-    public ResponseEntity<ReservationResponse> createReservation(
-            @RequestHeader HttpHeaders headers,
-            @RequestBody ReservationRequest request) {
-        String token = headers.getFirst("Authorization");
-        if (token == null) {
-            throw new UnAuthorizationException("토큰 정보가 누락되었습니다.");
-        }
-
-        if (StringUtils.hasText(token) && token.startsWith("Bearer ")) {
-            token.substring(7);
-        } else {
-            throw new TokenException("잘못된 토큰입니다.");
-        }
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(
-            new ReservationResponse(
-                1L,
-                    LocalDate.of(2025,1,1),
-                    "A1",
-                    new ConcertResponse(1L, "콘서트명1", LocalDate.of(2024,12,31), LocalDate.of(2025,1,1)),
-                    75000,
-                    "TEMP",
-                    LocalDateTime.of(2024,12,30,0,5).withSecond(0).withNano(1),
-                    LocalDateTime.of(2024,12,30,0,10).withSecond(0).withNano(1)
-            )
-        );
+    public ResponseEntity<ReservationResponse> createTempReserve(@RequestBody ReservationRequest request) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(reservationFacade.tempReserve(request));
     }
+
 }
