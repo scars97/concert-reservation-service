@@ -13,7 +13,7 @@
 
 **1/4 ~ 1/10**
 - 유저 토큰 발급 API
-- polling 또는 WebSocket을 통한 대기열 상태 확인 기능
+- 대기열 상태 확인 기능
 - 예약 가능 날짜/좌석 조회 API
 - 좌석 예약 API
 - 잔액 충전/조회 API
@@ -35,7 +35,7 @@
 <details>
 <summary><b>유저 대기열 토큰 발급</b></summary>
 
-![img.png](docs/img/sequencediagram/대기열_토큰_4.png)
+![img.png](docs/img/sequencediagram/대기열_토큰_5.png)
 </details>
 
 <details>
@@ -47,7 +47,7 @@
 <details>
 <summary><b>좌석 예약</b></summary>
 
-![img.png](docs/img/sequencediagram/좌석_예약_4.png)
+![img.png](docs/img/sequencediagram/좌석_예약_5.png)
 </details>
 
 <details>
@@ -59,13 +59,17 @@
 <details>
 <summary><b>결제</b></summary>
 
-![img.png](docs/img/sequencediagram/결제_3.png)
+![img.png](docs/img/sequencediagram/결제_4.png)
 </details>
 
 ## ERD
-![img.png](docs/img/erd/ERD_3.png)
+![img.png](docs/img/erd/ERD_5.png)
 
 ## [API Specs](docs/api-spec.md)
+
+http://localhost:8080/swagger-ui/index.html
+
+![img.png](docs/img/swagger.png)
 
 <details>
 <summary><b>콘서트 목록/상세 조회</b></summary>
@@ -127,30 +131,44 @@ HOST: localhost:8080
 <details>
 <summary><b>대기열 토큰 발급</b></summary>
 
-### `POST /queues/tokens`
+### `POST /queues`
 
 ### **Endpoint**
 ```http request
-POST /queues/tokens
+POST /queues
 Content-Type: application/json
 ```
 
 ### **Request**
 ```json
 {
-  "userId": "test1234",
-  "concertId": 1
+  "userId": "test1234"
 }
 ```
 
 ### **201 Created**
+**대기 상태**
 ```json
 {
   "tokenId": "15e859ae-9bf2-4f08-ae68-465e9dcd54bf",
   "userId": "test1234",
-  "concertId": 1,
-  "priority": 34,
-  "status": "WAIT"
+  "priority": 3,
+  "status": "WAIT",
+  "createdAt": "2024-01-01T00:05:33Z",
+  "activeAt": null,
+  "expireAt": null
+}
+```
+**활성화 상태**
+```json
+{
+  "tokenId": "15e859ae-9bf2-4f08-ae68-465e9dcd54bf",
+  "userId": "test1234",
+  "priority": 0,
+  "status": "WAIT",
+  "createdAt": "2024-01-01T00:05:33Z",
+  "activeAt": "2024-01-01T00:08:33Z",
+  "expireAt": "2024-01-01T00:13:33Z"
 }
 ```
 </details>
@@ -171,9 +189,11 @@ Authorization: Bearer {tokenId}
 {
   "tokenId": "15e859ae-9bf2-4f08-ae68-465e9dcd54bf",
   "userId": "test1234",
-  "concertId": 1,
   "priority": 1,
-  "status": "WAIT"
+  "status": "WAIT",
+  "createdAt": "2024-01-01T00:05:33Z",
+  "activeAt": null,
+  "expireAt": null
 }
 ```
 사용자 순서 도달 시 토큰 상태 활성화 및 만료 시간을 5분으로 설정
@@ -181,16 +201,17 @@ Authorization: Bearer {tokenId}
 {
   "tokenId": "15e859ae-9bf2-4f08-ae68-465e9dcd54bf",
   "userId": "test1234",
-  "concertId": 1,
   "priority": 0,
-  "status": "ACTIVE"
+  "status": "ACTIVE",
+  "createdAt": "2024-01-01T00:05:33Z",
+  "activeAt": "2024-01-01T00:08:33Z",
+  "expireAt": "2024-01-01T00:13:33Z"
 }
 ```
 ### **401 Unauthorized**
 Authorization 정보가 없는 경우
 ```json
 {
-  "status": "UNAUTHORIZED",
   "message": "토큰 정보가 누락되었습니다."
 }
 ```
@@ -198,8 +219,7 @@ Authorization 정보가 없는 경우
 잘못된 토큰인 경우
 ```json
 {
-  "status": "FORBIDDEN",
-  "message": "유효하지 않은 토큰입니다."
+  "message": "잘못된 토큰입니다."
 }
 ```
 </details>
@@ -238,11 +258,11 @@ Authorization: Bearer {tokenId}
 <details>
 <summary><b>좌석 조회</b></summary>
 
-### `GET /concerts/:concertId/schedules/:scheduleId/seats`
+### `GET /concerts/schedules/:scheduleId/seats`
 
 ### **Endpoint**
 ```http request
-GET /concerts/1/schedules/1/seats HTTP/1.1
+GET /concerts/schedules/1/seats HTTP/1.1
 HOST: localhost:8080
 Authorization: Bearer {tokenId}
 ```
@@ -255,14 +275,12 @@ Authorization: Bearer {tokenId}
     {
       "seatId": 1,
       "seatNumber": "A1",
-      "price": 75000,
-      "available": "Y"
+      "price": 75000
     },
     {
       "seatId": 2,
       "seatNumber": "B1",
-      "price": 60000,
-      "available": "N"
+      "price": 60000
     }
   ]
 }
@@ -306,8 +324,8 @@ Authorization: Bearer {tokenId}
   },
   "price": 75000,
   "status": "TEMP",
-  "reservedAt": "2024-12-30T00:05:33Z",
-  "expiredAt": "2024-12-30T00:10:33Z"
+  "createdAt": "2025-01-01T00:15:33Z",
+  "expiredAt": "2024-01-01T00:20:33Z"
 }
 ```
 </details>
@@ -381,12 +399,12 @@ Authorization: Bearer {tokenId}
 ### **201 Created**
 ```json
 {
-  "payment_id": 1,
+  "paymentId": 1,
   "reserveId": 1,
-  "user_id": "test1234",
+  "userId": "test1234",
   "price": 75000,
-  "status": "COMPLETE",
-  "created_at": "2024-12-30T00:13:33Z"
+  "status": "SUCCESS",
+  "createdAt": "2025-01-01T00:22:33Z"
 }
 ```
 ### **402 Payment Required**
