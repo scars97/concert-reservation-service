@@ -26,7 +26,7 @@ public class PaymentService {
     @Transactional
     public PaymentResult payment(PaymentInfo info) {
         Reservation reservation = reservationRepository.findReserve(info.reserveId());
-        if (reservation.getPrice() != info.amount()) {
+        if (reservation.isNotMatchAmount(info.amount())) {
             throw new PaymentException("결제 금액이 일치하지 않습니다.");
         }
 

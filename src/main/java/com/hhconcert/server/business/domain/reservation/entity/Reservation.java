@@ -73,9 +73,16 @@ public class Reservation extends BaseEntity {
                 .build();
     }
 
+    public boolean isNotMatchAmount(int amount) {
+        return this.price != amount;
+    }
+
     public void updateForComplete() {
         if (this.status != ReservationStatus.TEMP) {
             throw new ReservationException("결제할 수 없는 예약 내역입니다.");
+        }
+        if (this.expiredAt.isBefore(LocalDateTime.now())) {
+            throw new ReservationException("임시 예약 시간이 만료되었습니다.");
         }
         this.status = ReservationStatus.COMPLETE;
         this.expiredAt = null;
