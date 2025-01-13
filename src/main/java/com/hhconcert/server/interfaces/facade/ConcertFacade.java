@@ -30,28 +30,28 @@ public class ConcertFacade {
     }
 
     // 콘서트 조회
-    public ConcertResponse findConcert(Long concertId) {
-        return ConcertResponse.from(concertService.findConcert(concertId));
+    public ConcertResponse findConcert(ConcertRequest request) {
+        return ConcertResponse.from(concertService.findConcert(request.concertId()));
     }
 
     // 콘서트 예약 가능 날짜 조회
-    public ConcertScheduleResponse getSchedules(Long concertId) {
-        List<ScheduleResponse> schedules = scheduleService.getSchedulesByConcert(concertId).stream()
+    public ConcertScheduleResponse getSchedules(ConcertRequest request) {
+        List<ScheduleResponse> schedules = scheduleService.getSchedulesByConcert(request.concertId()).stream()
                 .map(ScheduleResponse::from)
                 .toList();
-        return ConcertScheduleResponse.from(concertId, schedules);
+        return ConcertScheduleResponse.from(request.concertId(), schedules);
     }
 
     // 콘서트 예약 가능 좌석 조회
-    public ScheduleSeatResponse getAvailableSeats(Long scheduleId) {
-        List<SeatResult> availableSeats = seatService.getAvailableSeats(scheduleId).stream()
+    public ScheduleSeatResponse getAvailableSeats(ScheduleRequest request) {
+        List<SeatResult> availableSeats = seatService.getAvailableSeats(request.scheduleId()).stream()
                 .filter(seat -> !reservationService.isSeatReserved(seat.seatId()))
                 .toList();
 
         List<SeatResponse> responses = availableSeats.stream()
                 .map(SeatResponse::from)
                 .toList();
-        return ScheduleSeatResponse.from(scheduleId, responses);
+        return ScheduleSeatResponse.from(request.scheduleId(), responses);
     };
 
 }

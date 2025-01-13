@@ -22,8 +22,8 @@ public class QueueFacade {
         return TokenResponse.from(tokenService.createToken(user.userId()));
     }
 
-    public TokenResponse checkQueueStatus(String userId) {
-        TokenResult result = tokenService.checkQueueStatus(userId);
+    public TokenResponse checkQueueStatus(TokenRequest request) {
+        TokenResult result = tokenService.checkQueueStatus(request.userId());
         return TokenResponse.from(result);
     }
 

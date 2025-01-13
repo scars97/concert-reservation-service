@@ -6,6 +6,7 @@ import com.hhconcert.server.interfaces.facade.ReservationFacade;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +25,7 @@ public class ReservationController {
 
     @Operation(summary = "콘서트 좌석 임시 예약", security = @SecurityRequirement(name = "queue-token"))
     @PostMapping("")
-    public ResponseEntity<ReservationResponse> createTempReserve(@RequestBody ReservationRequest request) {
+    public ResponseEntity<ReservationResponse> createTempReserve(@Valid @RequestBody ReservationRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(reservationFacade.tempReserve(request));
     }
 

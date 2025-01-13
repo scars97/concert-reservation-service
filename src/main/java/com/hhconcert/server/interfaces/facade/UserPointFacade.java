@@ -3,6 +3,7 @@ package com.hhconcert.server.interfaces.facade;
 import com.hhconcert.server.business.domain.user.service.UserService;
 import com.hhconcert.server.interfaces.api.point.dto.PointRequest;
 import com.hhconcert.server.interfaces.api.point.dto.PointResponse;
+import com.hhconcert.server.interfaces.api.point.dto.UserRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -16,7 +17,7 @@ public class UserPointFacade {
         return PointResponse.from(userService.chargePoint(request.toInfo()));
     }
 
-    public PointResponse getPoint(String userId) {
-        return PointResponse.from(userService.findUser(userId));
+    public PointResponse getPoint(UserRequest request) {
+        return PointResponse.from(userService.findUser(request.userId()));
     }
 }
