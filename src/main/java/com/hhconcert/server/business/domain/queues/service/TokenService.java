@@ -4,7 +4,8 @@ import com.hhconcert.server.business.domain.queues.dto.TokenResult;
 import com.hhconcert.server.business.domain.queues.entity.Token;
 import com.hhconcert.server.business.domain.queues.entity.TokenStatus;
 import com.hhconcert.server.business.domain.queues.persistance.TokenRepository;
-import com.hhconcert.server.global.common.exception.TokenException;
+import com.hhconcert.server.global.common.error.TokenErrorCode;
+import com.hhconcert.server.global.common.exception.definitions.TokenException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +22,7 @@ public class TokenService {
     @Transactional
     public TokenResult createToken(String userId) {
         if (tokenRepository.isDuplicate(userId)) {
-            throw new TokenException("이미 토큰이 존재합니다.");
+            throw new TokenException(TokenErrorCode.DUPLICATED_TOKEN);
         }
 
         int activeCount = tokenRepository.getTokenCountFor(TokenStatus.ACTIVE);

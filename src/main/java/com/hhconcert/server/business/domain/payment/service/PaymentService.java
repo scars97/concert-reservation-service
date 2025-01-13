@@ -9,7 +9,8 @@ import com.hhconcert.server.business.domain.reservation.entity.Reservation;
 import com.hhconcert.server.business.domain.reservation.persistance.ReservationRepository;
 import com.hhconcert.server.business.domain.user.entity.User;
 import com.hhconcert.server.business.domain.user.persistance.UserRepository;
-import com.hhconcert.server.global.common.exception.PaymentException;
+import com.hhconcert.server.global.common.error.PaymentErrorCode;
+import com.hhconcert.server.global.common.exception.definitions.PaymentException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,7 +28,7 @@ public class PaymentService {
     public PaymentResult payment(PaymentInfo info) {
         Reservation reservation = reservationRepository.findReserve(info.reserveId());
         if (reservation.isNotMatchAmount(info.amount())) {
-            throw new PaymentException("결제 금액이 일치하지 않습니다.");
+            throw new PaymentException(PaymentErrorCode.NOT_MATCH_PAYMENT_AMOUNT);
         }
 
         User user = userRepository.findUser(info.userId());
