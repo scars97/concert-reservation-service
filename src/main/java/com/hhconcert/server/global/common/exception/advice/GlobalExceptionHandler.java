@@ -1,16 +1,25 @@
-package com.hhconcert.server.global.common;
+package com.hhconcert.server.global.common.exception.advice;
 
-import com.hhconcert.server.global.exception.ConcertException;
-import com.hhconcert.server.global.exception.PaymentException;
-import com.hhconcert.server.global.exception.TokenException;
-import com.hhconcert.server.global.exception.UnAuthorizationException;
+import com.hhconcert.server.global.common.model.ErrorResponse;
+import com.hhconcert.server.global.common.exception.ConcertException;
+import com.hhconcert.server.global.common.exception.PaymentException;
+import com.hhconcert.server.global.common.exception.TokenException;
+import com.hhconcert.server.global.common.exception.UnAuthorizationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.util.NoSuchElementException;
+
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler(NoSuchElementException.class)
+    public ResponseEntity<ErrorResponse> handleNoSuchElementException(NoSuchElementException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ErrorResponse(HttpStatus.NOT_FOUND.toString(), e.getMessage()));
+    }
 
     @ExceptionHandler(ConcertException.class)
     public ResponseEntity<ErrorResponse> handleConcertException(ConcertException ex) {

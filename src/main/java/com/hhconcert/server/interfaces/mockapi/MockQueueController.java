@@ -1,8 +1,8 @@
 package com.hhconcert.server.interfaces.mockapi;
 
 import com.hhconcert.server.business.domain.queues.entity.TokenStatus;
-import com.hhconcert.server.global.exception.TokenException;
-import com.hhconcert.server.global.exception.UnAuthorizationException;
+import com.hhconcert.server.global.common.exception.TokenException;
+import com.hhconcert.server.global.common.exception.UnAuthorizationException;
 import com.hhconcert.server.interfaces.api.queues.dto.TokenRequest;
 import com.hhconcert.server.interfaces.api.queues.dto.TokenResponse;
 import io.swagger.v3.oas.annotations.Operation;

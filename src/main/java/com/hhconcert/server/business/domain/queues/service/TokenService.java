@@ -4,7 +4,7 @@ import com.hhconcert.server.business.domain.queues.dto.TokenResult;
 import com.hhconcert.server.business.domain.queues.entity.Token;
 import com.hhconcert.server.business.domain.queues.entity.TokenStatus;
 import com.hhconcert.server.business.domain.queues.persistance.TokenRepository;
-import com.hhconcert.server.global.exception.TokenException;
+import com.hhconcert.server.global.common.exception.TokenException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

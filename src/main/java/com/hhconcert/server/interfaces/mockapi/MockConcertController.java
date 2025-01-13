@@ -1,8 +1,8 @@
 package com.hhconcert.server.interfaces.mockapi;
 
-import com.hhconcert.server.global.exception.ConcertException;
-import com.hhconcert.server.global.exception.TokenException;
-import com.hhconcert.server.global.exception.UnAuthorizationException;
+import com.hhconcert.server.global.common.exception.ConcertException;
+import com.hhconcert.server.global.common.exception.TokenException;
+import com.hhconcert.server.global.common.exception.UnAuthorizationException;
 import com.hhconcert.server.interfaces.api.concert.dto.*;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;

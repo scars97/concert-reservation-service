@@ -1,7 +1,7 @@
 package com.hhconcert.server.business.domain.user.entity;
 
 import com.hhconcert.server.business.domain.BaseEntity;
-import com.hhconcert.server.global.exception.PointException;
+import com.hhconcert.server.global.common.exception.PointException;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,9 +1,9 @@
 package com.hhconcert.server.interfaces.mockapi;
 
 import com.hhconcert.server.business.domain.payment.entity.PaymentStatus;
-import com.hhconcert.server.global.exception.PaymentException;
-import com.hhconcert.server.global.exception.TokenException;
-import com.hhconcert.server.global.exception.UnAuthorizationException;
+import com.hhconcert.server.global.common.exception.PaymentException;
+import com.hhconcert.server.global.common.exception.TokenException;
+import com.hhconcert.server.global.common.exception.UnAuthorizationException;
 import com.hhconcert.server.interfaces.api.payment.dto.PaymentRequest;
 import com.hhconcert.server.interfaces.api.payment.dto.PaymentResponse;
 import io.swagger.v3.oas.annotations.Operation;

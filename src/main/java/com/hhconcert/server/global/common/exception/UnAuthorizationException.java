@@ -1,4 +1,4 @@
-package com.hhconcert.server.global.exception;
+package com.hhconcert.server.global.common.exception;
 
 public class UnAuthorizationException extends RuntimeException{
 
