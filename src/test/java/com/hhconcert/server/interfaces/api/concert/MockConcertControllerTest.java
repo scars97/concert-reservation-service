@@ -3,7 +3,6 @@ package com.hhconcert.server.interfaces.api.concert;
 import com.hhconcert.server.interfaces.api.ControllerTestSupport;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.HttpStatus;
 
 import java.time.LocalDate;
 
@@ -46,19 +45,6 @@ class MockConcertControllerTest extends ControllerTestSupport {
                         jsonPath("$.title", is("콘서트명1")),
                         jsonPath("$.startDate", is(LocalDate.of(2024,12,31).toString())),
                         jsonPath("$.endDate", is(LocalDate.of(2025,1,1).toString()))
-                );
-    }
-
-    @DisplayName("등록되지 않은 콘서트 조회 시, 예외가 발생한다.")
-    @Test
-    void invalidConcert_thenThrowException() throws Exception {
-        Long invalidId = 99L;
-
-        mockMvc.perform(get("/mock/concerts/{concertId}", invalidId))
-                .andExpectAll(
-                        status().isNotFound(),
-                        jsonPath("$.status", is(HttpStatus.NOT_FOUND.toString())),
-                        jsonPath("$.message", is("등록되지 않은 콘서트입니다."))
                 );
     }
 

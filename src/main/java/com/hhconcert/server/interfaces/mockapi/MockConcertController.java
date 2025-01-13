@@ -1,8 +1,7 @@
 package com.hhconcert.server.interfaces.mockapi;
 
-import com.hhconcert.server.global.common.exception.ConcertException;
-import com.hhconcert.server.global.common.exception.TokenException;
-import com.hhconcert.server.global.common.exception.UnAuthorizationException;
+import com.hhconcert.server.global.common.exception.definitions.TokenException;
+import com.hhconcert.server.global.common.exception.definitions.UnAuthorizationException;
 import com.hhconcert.server.interfaces.api.concert.dto.*;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -28,11 +27,6 @@ public class MockConcertController {
 
     @GetMapping("/{concertId}")
     public ResponseEntity<ConcertResponse> findConcert(@PathVariable("concertId") Long concertId) {
-
-        if (concertId != 1L) {
-            throw new ConcertException("등록되지 않은 콘서트입니다.");
-        }
-
         return ResponseEntity.ok(
             new ConcertResponse(concertId, "콘서트명1", LocalDate.of(2024,12,31), LocalDate.of(2025,1,1))
         );

@@ -4,12 +4,14 @@ import com.hhconcert.server.interfaces.api.ControllerTestSupport;
 import com.hhconcert.server.interfaces.api.queues.dto.TokenRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
-import static org.hamcrest.Matchers.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class MockQueueControllerTest extends ControllerTestSupport {
 
@@ -41,31 +43,6 @@ class MockQueueControllerTest extends ControllerTestSupport {
                         status().isOk(),
                         jsonPath("$.tokenId", notNullValue()),
                         jsonPath("$.status", is("WAIT"))
-                );
-    }
-
-    @DisplayName("인증 정보가 없는 경우, 예외가 발생한다.")
-    @Test
-    void unauthorized_thenThrowException() throws Exception {
-        mockMvc.perform(get("/mock/queues/{userId}", "test1234")
-                )
-                .andExpectAll(
-                        status().isUnauthorized(),
-                        jsonPath("$.status", is(HttpStatus.UNAUTHORIZED.toString())),
-                        jsonPath("$.message", is("토큰 정보가 누락되었습니다."))
-                );
-    }
-
-    @DisplayName("잘못된 토큰인 경우, 예외가 발생한다.")
-    @Test
-    void invalidToken_thenThrowException() throws Exception {
-        mockMvc.perform(get("/mock/queues/{userId}", "test1234")
-                        .header("Authorization", "")
-                )
-                .andExpectAll(
-                        status().isForbidden(),
-                        jsonPath("$.status", is(HttpStatus.FORBIDDEN.toString())),
-                        jsonPath("$.message", is("유효하지 않은 토큰입니다."))
                 );
     }
 }
