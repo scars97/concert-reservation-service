@@ -1,9 +1,11 @@
 package com.hhconcert.server.business.domain.user.entity;
 
-import com.hhconcert.server.global.common.exception.PointException;
+import com.hhconcert.server.global.common.error.PointErrorCode;
+import com.hhconcert.server.global.common.exception.definitions.PointException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpStatus;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -43,7 +45,10 @@ class UserTest {
 
         assertThatThrownBy(() -> user.usePoint(amount))
                 .isInstanceOf(PointException.class)
-                .hasMessage("잔액이 부족합니다.");
+                .hasFieldOrPropertyWithValue("errorCode", PointErrorCode.INSUFFICIENT_POINTS)
+                .extracting("errorCode")
+                .extracting("status", "message")
+                .containsExactly(HttpStatus.PAYMENT_REQUIRED, "잔액이 부족합니다.");
     }
 
 }

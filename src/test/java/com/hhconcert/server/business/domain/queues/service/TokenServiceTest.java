@@ -5,7 +5,8 @@ import com.hhconcert.server.business.domain.queues.entity.Token;
 import com.hhconcert.server.business.domain.queues.entity.TokenGenerator;
 import com.hhconcert.server.business.domain.queues.entity.TokenStatus;
 import com.hhconcert.server.business.domain.queues.persistance.TokenRepository;
-import com.hhconcert.server.global.common.exception.TokenException;
+import com.hhconcert.server.global.common.error.TokenErrorCode;
+import com.hhconcert.server.global.common.exception.definitions.TokenException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,6 +14,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -91,7 +93,10 @@ class TokenServiceTest {
 
         assertThatThrownBy(() -> tokenService.createToken("test1234"))
                 .isInstanceOf(TokenException.class)
-                .hasMessage("이미 토큰이 존재합니다.");
+                .hasFieldOrPropertyWithValue("errorCode", TokenErrorCode.DUPLICATED_TOKEN)
+                .extracting("errorCode")
+                .extracting("status", "message")
+                .containsExactly(HttpStatus.CONFLICT, "이미 토큰이 존재합니다.");
     }
 
     @DisplayName("대기열 상태 요청 시, WAIT 상태인 경우 대기 순서가 연산되어 반환된다.")

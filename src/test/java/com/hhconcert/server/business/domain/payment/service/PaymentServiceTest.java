@@ -14,7 +14,8 @@ import com.hhconcert.server.business.domain.schedule.entity.Schedule;
 import com.hhconcert.server.business.domain.seat.entity.Seat;
 import com.hhconcert.server.business.domain.user.entity.User;
 import com.hhconcert.server.business.domain.user.persistance.UserRepository;
-import com.hhconcert.server.global.common.exception.PaymentException;
+import com.hhconcert.server.global.common.error.PaymentErrorCode;
+import com.hhconcert.server.global.common.exception.definitions.PaymentException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,6 +23,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -88,7 +90,10 @@ class PaymentServiceTest {
 
         assertThatThrownBy(() -> paymentService.payment(new PaymentInfo("test1234", 1L, 70000)))
                 .isInstanceOf(PaymentException.class)
-                .hasMessage("결제 금액이 일치하지 않습니다.");
+                .hasFieldOrPropertyWithValue("errorCode", PaymentErrorCode.NOT_MATCH_PAYMENT_AMOUNT)
+                .extracting("errorCode")
+                .extracting("status", "message")
+                .containsExactly(HttpStatus.BAD_REQUEST, "결제 금액이 일치하지 않습니다.");
     }
 
 }

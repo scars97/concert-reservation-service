@@ -4,8 +4,10 @@ import com.hhconcert.server.business.domain.concert.entity.Concert;
 import com.hhconcert.server.business.domain.schedule.entity.Schedule;
 import com.hhconcert.server.business.domain.seat.entity.Seat;
 import com.hhconcert.server.business.domain.user.entity.User;
-import com.hhconcert.server.global.common.exception.ReservationException;
+import com.hhconcert.server.global.common.error.ReservationErrorCode;
+import com.hhconcert.server.global.common.exception.definitions.ReservationException;
 import org.junit.jupiter.api.*;
+import org.springframework.http.HttpStatus;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -61,14 +63,20 @@ class ReservationTest {
 
                 assertThatThrownBy(reservation::updateForComplete)
                         .isInstanceOf(ReservationException.class)
-                        .hasMessage("결제할 수 없는 예약 내역입니다.");
+                        .hasFieldOrPropertyWithValue("errorCode", ReservationErrorCode.INVALID_RESERVATION_STATUS)
+                        .extracting("errorCode")
+                        .extracting("status", "message")
+                        .containsExactly(HttpStatus.CONFLICT, "결제할 수 없는 예약 내역입니다.");
             }),
             DynamicTest.dynamicTest("임시 예약 만료 시간이 지난 경우, 예약건을 결제할 수 없다.", () -> {
                 Reservation reservation = new Reservation(user, concert, schedule, seat, 75000, ReservationStatus.TEMP, LocalDateTime.now().minusMinutes(1));
 
                 assertThatThrownBy(reservation::updateForComplete)
                         .isInstanceOf(ReservationException.class)
-                        .hasMessage("임시 예약 시간이 만료되었습니다.");
+                        .hasFieldOrPropertyWithValue("errorCode", ReservationErrorCode.EXPIRED_RESERVATION)
+                        .extracting("errorCode")
+                        .extracting("status", "message")
+                        .containsExactly(HttpStatus.GONE, "임시 예약 시간이 만료되었습니다.");
             })
         );
     }
