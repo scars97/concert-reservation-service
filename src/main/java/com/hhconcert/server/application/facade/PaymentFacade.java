@@ -1,8 +1,8 @@
-package com.hhconcert.server.interfaces.facade;
+package com.hhconcert.server.application.facade;
 
+import com.hhconcert.server.application.dto.PaymentResult;
 import com.hhconcert.server.business.domain.payment.service.PaymentService;
 import com.hhconcert.server.interfaces.api.payment.dto.PaymentRequest;
-import com.hhconcert.server.interfaces.api.payment.dto.PaymentResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -12,8 +12,8 @@ public class PaymentFacade {
 
     private final PaymentService paymentService;
 
-    public PaymentResponse payment(PaymentRequest request) {
-        return PaymentResponse.from(paymentService.payment(request.toInfo()));
+    public PaymentResult payment(PaymentRequest request) {
+        return PaymentResult.from(paymentService.payment(request.toCommand()));
     }
 
 }

@@ -2,8 +2,8 @@ package com.hhconcert.server.business.domain.reservation.service;
 
 import com.hhconcert.server.business.domain.concert.entity.Concert;
 import com.hhconcert.server.business.domain.concert.persistance.ConcertRepository;
+import com.hhconcert.server.business.domain.reservation.dto.ReservationCommand;
 import com.hhconcert.server.business.domain.reservation.dto.ReservationInfo;
-import com.hhconcert.server.business.domain.reservation.dto.ReservationResult;
 import com.hhconcert.server.business.domain.reservation.entity.Reservation;
 import com.hhconcert.server.business.domain.reservation.entity.ReservationStatus;
 import com.hhconcert.server.business.domain.reservation.persistance.ReservationRepository;
@@ -69,7 +69,7 @@ class ReservationServiceTest {
         when(seatRepository.findSeat(1L)).thenReturn(seat);
         when(reservationRepository.createTempReserve(any(Reservation.class))).thenReturn(reservation);
 
-        ReservationResult result = reservationService.creatTempReserve(new ReservationInfo("test1234", 1L, 1L, 1L));
+        ReservationInfo result = reservationService.creatTempReserve(new ReservationCommand("test1234", 1L, 1L, 1L));
 
         assertThat(result.user().userId()).isEqualTo("test1234");
         assertThat(result.concert().id()).isEqualTo(1L);

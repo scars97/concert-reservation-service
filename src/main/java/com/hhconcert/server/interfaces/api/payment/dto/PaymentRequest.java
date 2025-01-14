@@ -1,6 +1,6 @@
 package com.hhconcert.server.interfaces.api.payment.dto;
 
-import com.hhconcert.server.business.domain.payment.dto.PaymentInfo;
+import com.hhconcert.server.business.domain.payment.dto.PaymentCommand;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
@@ -14,7 +14,7 @@ public record PaymentRequest (
         @Positive(message = "가격은 0보다 큰 값이어야 합니다.")
         int amount
 ){
-    public PaymentInfo toInfo() {
-        return new PaymentInfo(userId, reserveId, amount);
+    public PaymentCommand toCommand() {
+        return new PaymentCommand(userId, reserveId, amount);
     }
 }

@@ -1,6 +1,6 @@
 package com.hhconcert.server.business.domain.queues.service;
 
-import com.hhconcert.server.business.domain.queues.dto.TokenResult;
+import com.hhconcert.server.business.domain.queues.dto.TokenInfo;
 import com.hhconcert.server.business.domain.queues.entity.Token;
 import com.hhconcert.server.business.domain.queues.entity.TokenStatus;
 import com.hhconcert.server.business.domain.queues.persistance.TokenRepository;
@@ -20,22 +20,22 @@ public class TokenService {
     private final TokenRepository tokenRepository;
 
     @Transactional
-    public TokenResult createToken(String userId) {
+    public TokenInfo createToken(String userId) {
         if (tokenRepository.isDuplicate(userId)) {
             throw new TokenException(TokenErrorCode.DUPLICATED_TOKEN);
         }
 
         int activeCount = tokenRepository.getTokenCountFor(TokenStatus.ACTIVE);
         if (activeCount < MAX_ACTIVE_TOKEN_COUNT) {
-            return TokenResult.from(tokenRepository.createToken(Token.createForActive(userId)));
+            return TokenInfo.from(tokenRepository.createToken(Token.createForActive(userId)));
         }
 
         int waitingCount = tokenRepository.getTokenCountFor(TokenStatus.WAIT);
-        return TokenResult.from(tokenRepository.createToken(Token.createForWait(userId)), waitingCount + 1);
+        return TokenInfo.from(tokenRepository.createToken(Token.createForWait(userId)), waitingCount + 1);
     }
 
     @Transactional(readOnly = true)
-    public TokenResult checkQueueStatus(String userId) {
+    public TokenInfo checkQueueStatus(String userId) {
         Token token = tokenRepository.findTokenByUserId(userId);
 
         int currentPriority = 0;
@@ -48,7 +48,7 @@ public class TokenService {
                     .count() + 1;
         }
 
-        return TokenResult.from(token, currentPriority);
+        return TokenInfo.from(token, currentPriority);
     }
 
 }

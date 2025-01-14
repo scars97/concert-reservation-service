@@ -1,6 +1,6 @@
 package com.hhconcert.server.business.domain.seat.service;
 
-import com.hhconcert.server.business.domain.seat.dto.SeatResult;
+import com.hhconcert.server.business.domain.seat.dto.SeatInfo;
 import com.hhconcert.server.business.domain.seat.entity.Seat;
 import com.hhconcert.server.business.domain.seat.persistance.SeatRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,15 +14,15 @@ public class SeatService {
 
     private final SeatRepository seatRepository;
 
-    public List<SeatResult> getAvailableSeats(Long scheduleId) {
-        List<Seat> availableSeats = seatRepository.getAvailableSeats(scheduleId);
+    public List<SeatInfo> getAvailableSeats(Long scheduleId) {
+        List<Seat> availableSeats = seatRepository.getSeats(scheduleId);
         return availableSeats.stream()
-                .map(SeatResult::from)
+                .map(SeatInfo::from)
                 .toList();
     }
 
-    public SeatResult findSeat(Long seatId) {
-        return SeatResult.from(seatRepository.findSeat(seatId));
+    public SeatInfo findSeat(Long seatId) {
+        return SeatInfo.from(seatRepository.findSeat(seatId));
     }
 
 }

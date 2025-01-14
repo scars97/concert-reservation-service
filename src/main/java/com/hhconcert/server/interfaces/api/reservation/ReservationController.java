@@ -1,8 +1,8 @@
 package com.hhconcert.server.interfaces.api.reservation;
 
+import com.hhconcert.server.application.facade.ReservationFacade;
 import com.hhconcert.server.interfaces.api.reservation.dto.ReservationRequest;
 import com.hhconcert.server.interfaces.api.reservation.dto.ReservationResponse;
-import com.hhconcert.server.interfaces.facade.ReservationFacade;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -26,7 +26,8 @@ public class ReservationController {
     @Operation(summary = "콘서트 좌석 임시 예약", security = @SecurityRequirement(name = "queue-token"))
     @PostMapping("")
     public ResponseEntity<ReservationResponse> createTempReserve(@Valid @RequestBody ReservationRequest request) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(reservationFacade.tempReserve(request));
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(ReservationResponse.from(reservationFacade.tempReserve(request)));
     }
 
 }

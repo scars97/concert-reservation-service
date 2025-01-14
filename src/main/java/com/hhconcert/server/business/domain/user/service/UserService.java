@@ -1,8 +1,8 @@
 package com.hhconcert.server.business.domain.user.service;
 
+import com.hhconcert.server.business.domain.user.dto.PointCommand;
 import com.hhconcert.server.business.domain.user.dto.PointInfo;
-import com.hhconcert.server.business.domain.user.dto.PointResult;
-import com.hhconcert.server.business.domain.user.dto.UserResult;
+import com.hhconcert.server.business.domain.user.dto.UserInfo;
 import com.hhconcert.server.business.domain.user.entity.User;
 import com.hhconcert.server.business.domain.user.persistance.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,17 +16,17 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public UserResult findUser(String userId) {
-        return UserResult.from(userRepository.findUser(userId));
+    public UserInfo findUser(String userId) {
+        return UserInfo.from(userRepository.findUser(userId));
     }
 
     @Transactional
-    public PointResult chargePoint(PointInfo info) {
-        User user = userRepository.findUser(info.userId());
+    public PointInfo chargePoint(PointCommand command) {
+        User user = userRepository.findUser(command.userId());
 
-        user.chargePoint(info.amount());
+        user.chargePoint(command.amount());
 
-        return PointResult.from(user);
+        return PointInfo.from(user);
     }
 
 }

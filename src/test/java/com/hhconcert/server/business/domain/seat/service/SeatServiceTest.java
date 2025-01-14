@@ -1,7 +1,7 @@
 package com.hhconcert.server.business.domain.seat.service;
 
 import com.hhconcert.server.business.domain.schedule.entity.Schedule;
-import com.hhconcert.server.business.domain.seat.dto.SeatResult;
+import com.hhconcert.server.business.domain.seat.dto.SeatInfo;
 import com.hhconcert.server.business.domain.seat.entity.Seat;
 import com.hhconcert.server.business.domain.seat.persistance.SeatRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -45,9 +45,9 @@ class SeatServiceTest {
                 new Seat(3L, mockSchedule, "C1", 50000)
         );
 
-        when(seatRepository.getAvailableSeats(scheduleId)).thenReturn(seats);
+        when(seatRepository.getSeats(scheduleId)).thenReturn(seats);
 
-        List<SeatResult> results = seatService.getAvailableSeats(scheduleId);
+        List<SeatInfo> results = seatService.getAvailableSeats(scheduleId);
 
         assertThat(results).hasSize(3)
                 .extracting("seatId", "seatNumber", "price")
@@ -66,7 +66,7 @@ class SeatServiceTest {
 
         when(seatRepository.findSeat(seatId)).thenReturn(seat);
 
-        SeatResult result = seatService.findSeat(seatId);
+        SeatInfo result = seatService.findSeat(seatId);
 
         assertThat(result).extracting("seatId", "seatNumber", "price")
                 .containsExactly(1L, "A1", 75000);

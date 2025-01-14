@@ -1,6 +1,6 @@
 package com.hhconcert.server.interfaces.api.concert.dto;
 
-import com.hhconcert.server.business.domain.schedule.dto.ScheduleResult;
+import com.hhconcert.server.application.dto.ScheduleResult;
 
 import java.time.LocalDate;
 
@@ -10,7 +10,7 @@ public record ScheduleResponse (
 ) {
     public static ScheduleResponse from(ScheduleResult result) {
         return new ScheduleResponse(
-                result.id(),
+                result.scheduleId(),
                 result.date()
         );
     }

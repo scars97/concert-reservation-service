@@ -1,6 +1,6 @@
 package com.hhconcert.server.interfaces.api.concert.dto;
 
-import com.hhconcert.server.business.domain.concert.dto.ConcertResult;
+import com.hhconcert.server.application.dto.ConcertResult;
 
 import java.time.LocalDate;
 

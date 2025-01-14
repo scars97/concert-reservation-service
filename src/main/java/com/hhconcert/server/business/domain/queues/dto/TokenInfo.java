@@ -5,7 +5,7 @@ import com.hhconcert.server.business.domain.queues.entity.TokenStatus;
 
 import java.time.LocalDateTime;
 
-public record TokenResult(
+public record TokenInfo(
         String tokenId,
         String userId,
         Integer priority,
@@ -14,8 +14,8 @@ public record TokenResult(
         LocalDateTime activeAt,
         LocalDateTime expireAt
 ){
-    public static TokenResult from(Token token) {
-        return new TokenResult(
+    public static TokenInfo from(Token token) {
+        return new TokenInfo(
                 token.getTokenId(),
                 token.getUserId(),
                 0,
@@ -25,8 +25,8 @@ public record TokenResult(
                 token.getExpiredAt()
         );
     }
-    public static TokenResult from(Token token, int priority) {
-        return new TokenResult(
+    public static TokenInfo from(Token token, int priority) {
+        return new TokenInfo(
                 token.getTokenId(),
                 token.getUserId(),
                 priority,

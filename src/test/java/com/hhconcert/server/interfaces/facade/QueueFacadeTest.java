@@ -1,12 +1,13 @@
 package com.hhconcert.server.interfaces.facade;
 
+import com.hhconcert.server.application.dto.TokenResult;
+import com.hhconcert.server.application.facade.QueueFacade;
 import com.hhconcert.server.business.domain.queues.entity.Token;
 import com.hhconcert.server.business.domain.queues.entity.TokenStatus;
 import com.hhconcert.server.business.domain.user.entity.User;
 import com.hhconcert.server.infrastructure.queues.TokenJpaRepository;
 import com.hhconcert.server.infrastructure.user.UserJpaRepository;
 import com.hhconcert.server.interfaces.api.queues.dto.TokenRequest;
-import com.hhconcert.server.interfaces.api.queues.dto.TokenResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DynamicTest;
@@ -56,20 +57,20 @@ class QueueFacadeTest {
     Collection<DynamicTest> createToken() {
         return List.of(
             DynamicTest.dynamicTest("활성화 인원이 10명 미만인 경우, ACTIVE 상태의 토큰이 생성된다.", () -> {
-                TokenResponse response = queueFacade.createToken(new TokenRequest("test10"));
+                TokenResult result = queueFacade.createToken(new TokenRequest("test10"));
 
-                assertThat(response.tokenId()).isEqualTo(UUID.nameUUIDFromBytes("test10".getBytes()).toString());
-                assertThat(response.priority()).isZero();
-                assertThat(response.status()).isEqualTo(TokenStatus.ACTIVE);
-                assertThat(response.activeAt()).isBefore(response.expireAt());
-                assertThat(response.expireAt()).isAfter(response.activeAt());
+                assertThat(result.tokenId()).isEqualTo(UUID.nameUUIDFromBytes("test10".getBytes()).toString());
+                assertThat(result.priority()).isZero();
+                assertThat(result.status()).isEqualTo(TokenStatus.ACTIVE);
+                assertThat(result.activeAt()).isBefore(result.expireAt());
+                assertThat(result.expireAt()).isAfter(result.activeAt());
             }),
             DynamicTest.dynamicTest("활성화 인원이 10명 이상인 경우, WAIT 상태의 토큰이 생성된다.", () -> {
-                TokenResponse response = queueFacade.createToken(new TokenRequest("test11"));
+                TokenResult result = queueFacade.createToken(new TokenRequest("test11"));
 
-                assertThat(response.tokenId()).isEqualTo(UUID.nameUUIDFromBytes("test11".getBytes()).toString());
-                assertThat(response.priority()).isOne();
-                assertThat(response.status()).isEqualTo(TokenStatus.WAIT);
+                assertThat(result.tokenId()).isEqualTo(UUID.nameUUIDFromBytes("test11".getBytes()).toString());
+                assertThat(result.priority()).isOne();
+                assertThat(result.status()).isEqualTo(TokenStatus.WAIT);
             })
         );
     }

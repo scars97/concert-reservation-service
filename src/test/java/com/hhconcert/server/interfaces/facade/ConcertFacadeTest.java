@@ -1,5 +1,9 @@
 package com.hhconcert.server.interfaces.facade;
 
+import com.hhconcert.server.application.dto.ConcertResult;
+import com.hhconcert.server.application.dto.ScheduleResult;
+import com.hhconcert.server.application.dto.SeatResult;
+import com.hhconcert.server.application.facade.ConcertFacade;
 import com.hhconcert.server.business.domain.concert.entity.Concert;
 import com.hhconcert.server.business.domain.payment.entity.Payment;
 import com.hhconcert.server.business.domain.payment.entity.PaymentStatus;
@@ -85,9 +89,9 @@ class ConcertFacadeTest {
     @DisplayName("콘서트 목록을 조회한다.")
     @Test
     void getConcerts() {
-        List<ConcertResponse> responses = concertFacade.getConcerts();
+        List<ConcertResult> results = concertFacade.getConcerts();
 
-        assertThat(responses).extracting("id", "title", "startDate", "endDate")
+        assertThat(results).extracting("id", "title", "startDate", "endDate")
                 .containsExactly(
                         tuple(1L, "콘서트1", nowDate, nowDate.plusDays(1)),
                         tuple(2L, "콘서트2", nowDate.plusDays(1), nowDate.plusDays(2))
@@ -97,18 +101,18 @@ class ConcertFacadeTest {
     @DisplayName("단일 콘서트를 조회한다.")
     @Test
     void findConcert() {
-        ConcertResponse response = concertFacade.findConcert(new ConcertRequest(1L));
+        ConcertResult result = concertFacade.findConcert(new ConcertRequest(1L));
 
-        assertThat(response).extracting("id", "title", "startDate", "endDate")
+        assertThat(result).extracting("id", "title", "startDate", "endDate")
                 .containsExactly(1L, "콘서트1", nowDate, nowDate.plusDays(1));
     }
 
     @DisplayName("특정 콘서트의 예약 날짜를 조회한다.")
     @Test
     void getSchedules() {
-        ConcertScheduleResponse response = concertFacade.getSchedules(new ConcertRequest(1L));
+        List<ScheduleResult> results = concertFacade.getSchedules(new ConcertRequest(1L));
 
-        assertThat(response.schedules()).extracting("scheduleId", "date")
+        assertThat(results).extracting("scheduleId", "date")
                 .containsExactly(
                         tuple(1L, nowDate),
                         tuple(2L, nowDate.plusDays(1))
@@ -118,9 +122,9 @@ class ConcertFacadeTest {
     @DisplayName("예약 가능 좌석을 조회한다.")
     @Test
     void getAvailableSeats() {
-        ScheduleSeatResponse response = concertFacade.getAvailableSeats(new ScheduleRequest(1L));
+        List<SeatResult> results = concertFacade.getAvailableSeats(new ScheduleRequest(1L));
 
-        assertThat(response.seats()).extracting("seatId", "seatNumber" , "price")
+        assertThat(results).extracting("seatId", "seatNumber" , "price")
                 .containsExactly(
                         tuple(2L, "B1", 60000)
                 );

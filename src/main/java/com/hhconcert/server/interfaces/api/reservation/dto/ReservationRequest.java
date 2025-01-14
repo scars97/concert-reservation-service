@@ -1,6 +1,6 @@
 package com.hhconcert.server.interfaces.api.reservation.dto;
 
-import com.hhconcert.server.business.domain.reservation.dto.ReservationInfo;
+import com.hhconcert.server.business.domain.reservation.dto.ReservationCommand;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
@@ -17,7 +17,7 @@ public record ReservationRequest (
         @Positive(message = "좌석 ID 는 0보다 큰 값이어야 합니다.")
         Long seatId
 ){
-    public ReservationInfo toInfo() {
-        return new ReservationInfo(userId, concertId, scheduleId, seatId);
+    public ReservationCommand toInfo() {
+        return new ReservationCommand(userId, concertId, scheduleId, seatId);
     }
 }

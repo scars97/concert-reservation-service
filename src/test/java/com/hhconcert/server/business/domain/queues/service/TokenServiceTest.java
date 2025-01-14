@@ -1,6 +1,6 @@
 package com.hhconcert.server.business.domain.queues.service;
 
-import com.hhconcert.server.business.domain.queues.dto.TokenResult;
+import com.hhconcert.server.business.domain.queues.dto.TokenInfo;
 import com.hhconcert.server.business.domain.queues.entity.Token;
 import com.hhconcert.server.business.domain.queues.entity.TokenGenerator;
 import com.hhconcert.server.business.domain.queues.entity.TokenStatus;
@@ -65,7 +65,7 @@ class TokenServiceTest {
         when(tokenRepository.getTokenCountFor(TokenStatus.ACTIVE)).thenReturn(15);
         when(tokenRepository.createToken(any(Token.class))).thenReturn(waitToken);
 
-        TokenResult result = tokenService.createToken("test1234");
+        TokenInfo result = tokenService.createToken("test1234");
 
         assertThat(result)
                 .extracting("tokenId", "userId", "priority", "status")
@@ -79,7 +79,7 @@ class TokenServiceTest {
         when(tokenRepository.getTokenCountFor(TokenStatus.ACTIVE)).thenReturn(5);
         when(tokenRepository.createToken(any(Token.class))).thenReturn(activeToken);
 
-        TokenResult result = tokenService.createToken("test1234");
+        TokenInfo result = tokenService.createToken("test1234");
 
         assertThat(result)
                 .extracting("tokenId", "userId", "priority", "status", "activeAt", "expireAt")
@@ -112,7 +112,7 @@ class TokenServiceTest {
         when(tokenRepository.findTokenByUserId("test1234")).thenReturn(targetToken);
         when(tokenRepository.getTokensBy(TokenStatus.WAIT)).thenReturn(List.of(token1, token2));
 
-        TokenResult result = tokenService.checkQueueStatus("test1234");
+        TokenInfo result = tokenService.checkQueueStatus("test1234");
 
         assertThat(result.priority()).isEqualTo(3);
     }

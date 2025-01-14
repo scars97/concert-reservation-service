@@ -1,5 +1,7 @@
 package com.hhconcert.server.interfaces.facade;
 
+import com.hhconcert.server.application.dto.ReservationResult;
+import com.hhconcert.server.application.facade.ReservationFacade;
 import com.hhconcert.server.business.domain.concert.entity.Concert;
 import com.hhconcert.server.business.domain.reservation.entity.ReservationStatus;
 import com.hhconcert.server.business.domain.schedule.entity.Schedule;
@@ -10,7 +12,6 @@ import com.hhconcert.server.infrastructure.schedule.ScheduleJpaRepository;
 import com.hhconcert.server.infrastructure.seat.SeatJpaRepository;
 import com.hhconcert.server.infrastructure.user.UserJpaRepository;
 import com.hhconcert.server.interfaces.api.reservation.dto.ReservationRequest;
-import com.hhconcert.server.interfaces.api.reservation.dto.ReservationResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -58,14 +59,14 @@ class ReservationFacadeTest {
     @DisplayName("좌석 임시 예약에 성공한다.")
     @Test
     void tempReserve() {
-        ReservationResponse response = reservationFacade.tempReserve(new ReservationRequest("test1234", 1L, 1L, 1L));
+        ReservationResult result = reservationFacade.tempReserve(new ReservationRequest("test1234", 1L, 1L, 1L));
 
-        assertThat(response)
+        assertThat(result)
                 .extracting("reserveId", "schedule", "seatNumber", "price", "status")
                 .containsExactly(1L, nowDate, "A1", 75000, ReservationStatus.TEMP);
-        assertThat(response.concert().id()).isEqualTo(1L);
-        assertThat(response.expiredAt()).isNotNull();
-        assertThat(response.expiredAt()).isAfter(response.createdAt());
+        assertThat(result.concert().id()).isEqualTo(1L);
+        assertThat(result.expiredAt()).isNotNull();
+        assertThat(result.expiredAt()).isAfter(result.createdAt());
     }
 
 }

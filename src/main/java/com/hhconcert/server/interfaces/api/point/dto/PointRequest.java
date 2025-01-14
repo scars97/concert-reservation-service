@@ -1,6 +1,6 @@
 package com.hhconcert.server.interfaces.api.point.dto;
 
-import com.hhconcert.server.business.domain.user.dto.PointInfo;
+import com.hhconcert.server.business.domain.user.dto.PointCommand;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
@@ -11,7 +11,7 @@ public record PointRequest (
         @Positive(message = "가격은 0보다 큰 값이어야 합니다.")
         int amount
 ){
-    public PointInfo toInfo() {
-        return new PointInfo(userId, amount);
+    public PointCommand toCommand() {
+        return new PointCommand(userId, amount);
     }
 }

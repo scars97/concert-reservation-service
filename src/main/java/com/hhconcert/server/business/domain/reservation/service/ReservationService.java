@@ -2,8 +2,8 @@ package com.hhconcert.server.business.domain.reservation.service;
 
 import com.hhconcert.server.business.domain.concert.entity.Concert;
 import com.hhconcert.server.business.domain.concert.persistance.ConcertRepository;
+import com.hhconcert.server.business.domain.reservation.dto.ReservationCommand;
 import com.hhconcert.server.business.domain.reservation.dto.ReservationInfo;
-import com.hhconcert.server.business.domain.reservation.dto.ReservationResult;
 import com.hhconcert.server.business.domain.reservation.entity.Reservation;
 import com.hhconcert.server.business.domain.reservation.entity.ReservationStatus;
 import com.hhconcert.server.business.domain.reservation.persistance.ReservationRepository;
@@ -32,7 +32,7 @@ public class ReservationService {
     private final UserRepository userRepository;
 
     @Transactional
-    public ReservationResult creatTempReserve(ReservationInfo info) {
+    public ReservationInfo creatTempReserve(ReservationCommand info) {
         User user = userRepository.findUser(info.userId());
         Concert concert = concertRepository.findConcert(info.concertId());
         Schedule schedule = scheduleRepository.findSchedule(info.scheduleId());
@@ -40,7 +40,7 @@ public class ReservationService {
 
         Reservation reservation = Reservation.createTemp(user, concert, schedule, seat);
 
-        return ReservationResult.from(reservationRepository.createTempReserve(reservation));
+        return ReservationInfo.from(reservationRepository.createTempReserve(reservation));
     }
 
     public boolean isSeatReserved(Long seatId) {
@@ -57,8 +57,8 @@ public class ReservationService {
                 );
     }
 
-    public ReservationResult findReserve(Long reserveId) {
-        return ReservationResult.from(reservationRepository.findReserve(reserveId));
+    public ReservationInfo findReserve(Long reserveId) {
+        return ReservationInfo.from(reservationRepository.findReserve(reserveId));
     }
 
 }

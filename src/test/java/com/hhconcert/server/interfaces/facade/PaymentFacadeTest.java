@@ -1,5 +1,7 @@
 package com.hhconcert.server.interfaces.facade;
 
+import com.hhconcert.server.application.dto.PaymentResult;
+import com.hhconcert.server.application.facade.PaymentFacade;
 import com.hhconcert.server.business.domain.concert.entity.Concert;
 import com.hhconcert.server.business.domain.payment.entity.PaymentStatus;
 import com.hhconcert.server.business.domain.reservation.entity.Reservation;
@@ -13,7 +15,6 @@ import com.hhconcert.server.infrastructure.schedule.ScheduleJpaRepository;
 import com.hhconcert.server.infrastructure.seat.SeatJpaRepository;
 import com.hhconcert.server.infrastructure.user.UserJpaRepository;
 import com.hhconcert.server.interfaces.api.payment.dto.PaymentRequest;
-import com.hhconcert.server.interfaces.api.payment.dto.PaymentResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -74,11 +75,11 @@ class PaymentFacadeTest {
     @DisplayName("예약건에 대한 결제가 완료된다.")
     @Test
     void payment() {
-        PaymentResponse response = paymentFacade.payment(new PaymentRequest("test1234", 1L, 75000));
+        PaymentResult result = paymentFacade.payment(new PaymentRequest("test1234", 1L, 75000));
 
-        assertThat(response)
-                .extracting("paymentId", "reserveId", "userId", "price", "status")
-                .containsExactly(1L, 1L, "test1234", 75000, PaymentStatus.SUCCESS);
+        assertThat(result)
+                .extracting("paymentId", "price", "status")
+                .containsExactly(1L, 75000, PaymentStatus.SUCCESS);
     }
 
 }

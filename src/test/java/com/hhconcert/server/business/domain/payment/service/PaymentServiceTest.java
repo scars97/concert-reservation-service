@@ -1,8 +1,8 @@
 package com.hhconcert.server.business.domain.payment.service;
 
 import com.hhconcert.server.business.domain.concert.entity.Concert;
+import com.hhconcert.server.business.domain.payment.dto.PaymentCommand;
 import com.hhconcert.server.business.domain.payment.dto.PaymentInfo;
-import com.hhconcert.server.business.domain.payment.dto.PaymentResult;
 import com.hhconcert.server.business.domain.payment.entity.Payment;
 import com.hhconcert.server.business.domain.payment.entity.PaymentStatus;
 import com.hhconcert.server.business.domain.payment.persistance.PaymentRepository;
@@ -72,7 +72,7 @@ class PaymentServiceTest {
         when(userRepository.findUser("test1234")).thenReturn(user);
         when(paymentRepository.payment(any(Payment.class))).thenReturn(payment);
 
-        PaymentResult result = paymentService.payment(new PaymentInfo("test1234", 1L, 75000));
+        PaymentInfo result = paymentService.payment(new PaymentCommand("test1234", 1L, 75000));
 
         assertThat(result.paymentId()).isEqualTo(1L);
         assertThat(result.reserve().reserveId()).isEqualTo(1L);
@@ -88,7 +88,7 @@ class PaymentServiceTest {
     void whenInvalidAmount_thenThrowException() {
         when(reservationRepository.findReserve(1L)).thenReturn(reservation);
 
-        assertThatThrownBy(() -> paymentService.payment(new PaymentInfo("test1234", 1L, 70000)))
+        assertThatThrownBy(() -> paymentService.payment(new PaymentCommand("test1234", 1L, 70000)))
                 .isInstanceOf(PaymentException.class)
                 .hasFieldOrPropertyWithValue("errorCode", PaymentErrorCode.NOT_MATCH_PAYMENT_AMOUNT)
                 .extracting("errorCode")

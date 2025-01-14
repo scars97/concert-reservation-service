@@ -1,7 +1,7 @@
 package com.hhconcert.server.business.domain.user.service;
 
+import com.hhconcert.server.business.domain.user.dto.PointCommand;
 import com.hhconcert.server.business.domain.user.dto.PointInfo;
-import com.hhconcert.server.business.domain.user.dto.PointResult;
 import com.hhconcert.server.business.domain.user.entity.User;
 import com.hhconcert.server.business.domain.user.persistance.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -36,7 +36,7 @@ class UserServiceTest {
     void chargePoint() {
         when(userRepository.findUser("test1234")).thenReturn(user);
 
-        PointResult result = userService.chargePoint(new PointInfo("test1234", 20000));
+        PointInfo result = userService.chargePoint(new PointCommand("test1234", 20000));
 
         assertThat(result.userId()).isEqualTo("test1234");
         assertThat(result.point()).isEqualTo(30000);

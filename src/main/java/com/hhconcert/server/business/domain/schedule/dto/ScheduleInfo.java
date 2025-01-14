@@ -1,20 +1,20 @@
 package com.hhconcert.server.business.domain.schedule.dto;
 
-import com.hhconcert.server.business.domain.concert.dto.ConcertResult;
+import com.hhconcert.server.business.domain.concert.dto.ConcertInfo;
 import com.hhconcert.server.business.domain.schedule.entity.Schedule;
 
 import java.time.LocalDate;
 
-public record ScheduleResult(
+public record ScheduleInfo(
         Long id,
-        ConcertResult concert,
+        ConcertInfo concert,
         LocalDate date
 ) {
 
-    public static ScheduleResult from(Schedule schedule) {
-        return new ScheduleResult(
+    public static ScheduleInfo from(Schedule schedule) {
+        return new ScheduleInfo(
                 schedule.getId(),
-                ConcertResult.from(schedule.getConcert()),
+                ConcertInfo.from(schedule.getConcert()),
                 schedule.getDate()
         );
     }

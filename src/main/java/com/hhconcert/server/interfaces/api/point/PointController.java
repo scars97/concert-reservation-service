@@ -3,7 +3,7 @@ package com.hhconcert.server.interfaces.api.point;
 import com.hhconcert.server.interfaces.api.point.dto.PointRequest;
 import com.hhconcert.server.interfaces.api.point.dto.PointResponse;
 import com.hhconcert.server.interfaces.api.point.dto.UserRequest;
-import com.hhconcert.server.interfaces.facade.UserPointFacade;
+import com.hhconcert.server.application.facade.UserPointFacade;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -22,13 +22,13 @@ public class PointController {
     @Operation(summary = "포인트 충전")
     @PatchMapping("")
     public ResponseEntity<PointResponse> chargePoint(@Valid @RequestBody PointRequest request) {
-        return ResponseEntity.ok(userPointFacade.chargePoint(request));
+        return ResponseEntity.ok(PointResponse.from(userPointFacade.chargePoint(request)));
     }
 
     @Operation(summary = "포인트 조회")
     @GetMapping("/{userId}")
     public ResponseEntity<PointResponse> getPoint(@Valid UserRequest request) {
-        return ResponseEntity.ok(userPointFacade.getPoint(request));
+        return ResponseEntity.ok(PointResponse.from(userPointFacade.getPoint(request)));
     }
 
 }
