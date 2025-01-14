@@ -14,9 +14,7 @@ import com.hhconcert.server.infrastructure.reservation.ReservationJpaRepository;
 import com.hhconcert.server.infrastructure.schedule.ScheduleJpaRepository;
 import com.hhconcert.server.infrastructure.seat.SeatJpaRepository;
 import com.hhconcert.server.infrastructure.user.UserJpaRepository;
-import com.hhconcert.server.interfaces.api.concert.dto.ConcertResponse;
-import com.hhconcert.server.interfaces.api.concert.dto.ConcertScheduleResponse;
-import com.hhconcert.server.interfaces.api.concert.dto.ScheduleSeatResponse;
+import com.hhconcert.server.interfaces.api.concert.dto.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -99,7 +97,7 @@ class ConcertFacadeTest {
     @DisplayName("단일 콘서트를 조회한다.")
     @Test
     void findConcert() {
-        ConcertResponse response = concertFacade.findConcert(1L);
+        ConcertResponse response = concertFacade.findConcert(new ConcertRequest(1L));
 
         assertThat(response).extracting("id", "title", "startDate", "endDate")
                 .containsExactly(1L, "콘서트1", nowDate, nowDate.plusDays(1));
@@ -108,7 +106,7 @@ class ConcertFacadeTest {
     @DisplayName("특정 콘서트의 예약 날짜를 조회한다.")
     @Test
     void getSchedules() {
-        ConcertScheduleResponse response = concertFacade.getSchedules(1L);
+        ConcertScheduleResponse response = concertFacade.getSchedules(new ConcertRequest(1L));
 
         assertThat(response.schedules()).extracting("scheduleId", "date")
                 .containsExactly(
@@ -120,7 +118,7 @@ class ConcertFacadeTest {
     @DisplayName("예약 가능 좌석을 조회한다.")
     @Test
     void getAvailableSeats() {
-        ScheduleSeatResponse response = concertFacade.getAvailableSeats(1L);
+        ScheduleSeatResponse response = concertFacade.getAvailableSeats(new ScheduleRequest(1L));
 
         assertThat(response.seats()).extracting("seatId", "seatNumber" , "price")
                 .containsExactly(
