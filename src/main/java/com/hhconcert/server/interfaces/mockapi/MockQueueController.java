@@ -1,7 +1,7 @@
 package com.hhconcert.server.interfaces.mockapi;
 
 import com.hhconcert.server.business.domain.queues.entity.TokenStatus;
-import com.hhconcert.server.global.common.exception.definitions.TokenException;
+import com.hhconcert.server.business.domain.queues.exception.TokenException;
 import com.hhconcert.server.global.common.exception.definitions.UnAuthorizationException;
 import com.hhconcert.server.interfaces.api.queues.dto.TokenRequest;
 import com.hhconcert.server.interfaces.api.queues.dto.TokenResponse;

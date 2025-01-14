@@ -1,7 +1,7 @@
 package com.hhconcert.server.interfaces.mockapi;
 
 import com.hhconcert.server.business.domain.reservation.entity.ReservationStatus;
-import com.hhconcert.server.global.common.exception.definitions.TokenException;
+import com.hhconcert.server.business.domain.queues.exception.TokenException;
 import com.hhconcert.server.global.common.exception.definitions.UnAuthorizationException;
 import com.hhconcert.server.interfaces.api.concert.dto.ConcertResponse;
 import com.hhconcert.server.interfaces.api.reservation.dto.ReservationRequest;

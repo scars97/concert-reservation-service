@@ -1,7 +1,7 @@
 package com.hhconcert.server.business.domain.user.entity;
 
-import com.hhconcert.server.global.common.error.PointErrorCode;
-import com.hhconcert.server.global.common.exception.definitions.PointException;
+import com.hhconcert.server.business.domain.user.exception.PointErrorCode;
+import com.hhconcert.server.business.domain.user.exception.PointException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

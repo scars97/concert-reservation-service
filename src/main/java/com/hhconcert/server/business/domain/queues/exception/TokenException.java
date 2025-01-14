@@ -1,6 +1,5 @@
-package com.hhconcert.server.global.common.exception.definitions;
+package com.hhconcert.server.business.domain.queues.exception;
 
-import com.hhconcert.server.global.common.error.TokenErrorCode;
 import lombok.Getter;
 
 @Getter

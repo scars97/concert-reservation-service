@@ -1,8 +1,8 @@
-package com.hhconcert.server.global.common.exception.advice;
+package com.hhconcert.server.global.common.exception;
 
-import com.hhconcert.server.global.common.exception.definitions.PaymentException;
-import com.hhconcert.server.global.common.exception.definitions.PointException;
-import com.hhconcert.server.global.common.exception.definitions.TokenException;
+import com.hhconcert.server.business.domain.payment.exception.PaymentException;
+import com.hhconcert.server.business.domain.user.exception.PointException;
+import com.hhconcert.server.business.domain.queues.exception.TokenException;
 import com.hhconcert.server.global.common.model.BindErrorResponse;
 import com.hhconcert.server.global.common.model.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;

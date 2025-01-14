@@ -1,6 +1,5 @@
-package com.hhconcert.server.global.common.exception.definitions;
+package com.hhconcert.server.business.domain.reservation.exception;
 
-import com.hhconcert.server.global.common.error.ReservationErrorCode;
 import lombok.Getter;
 
 @Getter

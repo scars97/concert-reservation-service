@@ -1,5 +1,6 @@
-package com.hhconcert.server.global.common.error;
+package com.hhconcert.server.business.domain.payment.exception;
 
+import com.hhconcert.server.global.common.error.ErrorDescriptor;
 import org.springframework.http.HttpStatus;
 
 public enum PaymentErrorCode implements ErrorDescriptor {

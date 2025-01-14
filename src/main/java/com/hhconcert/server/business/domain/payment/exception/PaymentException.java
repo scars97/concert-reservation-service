@@ -1,6 +1,5 @@
-package com.hhconcert.server.global.common.exception.definitions;
+package com.hhconcert.server.business.domain.payment.exception;
 
-import com.hhconcert.server.global.common.error.PaymentErrorCode;
 import lombok.Getter;
 
 @Getter

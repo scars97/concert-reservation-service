@@ -1,5 +1,6 @@
-package com.hhconcert.server.global.common.error;
+package com.hhconcert.server.business.domain.reservation.exception;
 
+import com.hhconcert.server.global.common.error.ErrorDescriptor;
 import org.springframework.http.HttpStatus;
 
 public enum ReservationErrorCode implements ErrorDescriptor {

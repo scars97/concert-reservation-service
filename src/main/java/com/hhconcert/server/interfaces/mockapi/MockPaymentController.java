@@ -1,8 +1,8 @@
 package com.hhconcert.server.interfaces.mockapi;
 
 import com.hhconcert.server.business.domain.payment.entity.PaymentStatus;
-import com.hhconcert.server.global.common.exception.definitions.PaymentException;
-import com.hhconcert.server.global.common.exception.definitions.TokenException;
+import com.hhconcert.server.business.domain.payment.exception.PaymentException;
+import com.hhconcert.server.business.domain.queues.exception.TokenException;
 import com.hhconcert.server.global.common.exception.definitions.UnAuthorizationException;
 import com.hhconcert.server.interfaces.api.payment.dto.PaymentRequest;
 import com.hhconcert.server.interfaces.api.payment.dto.PaymentResponse;
