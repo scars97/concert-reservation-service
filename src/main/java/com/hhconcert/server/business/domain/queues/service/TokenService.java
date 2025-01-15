@@ -44,7 +44,7 @@ public class TokenService {
         if (token.getStatus() == TokenStatus.WAIT) {
             List<Token> waitTokens = tokenRepository.getTokensBy(TokenStatus.WAIT);
             currentPriority = (int) waitTokens.stream()
-                    .filter(t -> t.getCreatedAt().isBefore(token.getCreatedAt()))
+                    .filter(t -> t.getTokenIssuedAt().isBefore(token.getTokenIssuedAt()))
                     .count() + 1;
         }
 

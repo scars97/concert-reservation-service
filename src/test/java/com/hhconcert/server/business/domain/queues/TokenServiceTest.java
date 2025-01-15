@@ -103,12 +103,9 @@ class TokenServiceTest {
     @DisplayName("대기열 상태 요청 시, WAIT 상태인 경우 대기 순서가 연산되어 반환된다.")
     @Test
     void checkQueueStatus() {
-        Token targetToken = Token.createForWait("test1234");
-        targetToken.setCreatedAt(now);
-        Token token1 = Token.createForWait("test1");
-        token1.setCreatedAt(now.minusMinutes(4));
-        Token token2 = Token.createForWait("test2");
-        token2.setCreatedAt(now.minusMinutes(2));
+        Token targetToken = new Token(TokenGenerator.generateToken("test1234"), "test1234", TokenStatus.WAIT, null, null, now);
+        Token token1 = new Token(TokenGenerator.generateToken("test1"), "test1", TokenStatus.WAIT, null, null, now.minusMinutes(1));
+        Token token2 = new Token(TokenGenerator.generateToken("test2"), "test2", TokenStatus.WAIT, null, null, now.minusMinutes(2));
 
         when(tokenRepository.findTokenByUserId("test1234")).thenReturn(targetToken);
         when(tokenRepository.getTokensBy(TokenStatus.WAIT)).thenReturn(List.of(token1, token2));

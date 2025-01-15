@@ -24,7 +24,6 @@ public class ConcertFacade {
     private final ConcertService concertService;
     private final ScheduleService scheduleService;
     private final SeatService seatService;
-    private final ReservationService reservationService;
 
     // 콘서트 목록 조회
     public List<ConcertResult> getConcerts() {
@@ -53,6 +52,6 @@ public class ConcertFacade {
         return availableSeats.stream()
                 .map(SeatResult::from)
                 .toList();
-    };
+    }
 
 }
