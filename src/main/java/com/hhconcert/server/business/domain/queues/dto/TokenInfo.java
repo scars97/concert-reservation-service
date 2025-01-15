@@ -10,7 +10,7 @@ public record TokenInfo(
         String userId,
         Integer priority,
         TokenStatus status,
-        LocalDateTime createAt,
+        LocalDateTime tokenIssuedAt,
         LocalDateTime activeAt,
         LocalDateTime expireAt
 ){
@@ -20,7 +20,7 @@ public record TokenInfo(
                 token.getUserId(),
                 0,
                 token.getStatus(),
-                token.getCreatedAt(),
+                token.getTokenIssuedAt(),
                 token.getActiveAt(),
                 token.getExpiredAt()
         );
@@ -31,7 +31,7 @@ public record TokenInfo(
                 token.getUserId(),
                 priority,
                 token.getStatus(),
-                token.getCreatedAt(),
+                token.getTokenIssuedAt(),
                 token.getActiveAt(),
                 token.getExpiredAt()
         );

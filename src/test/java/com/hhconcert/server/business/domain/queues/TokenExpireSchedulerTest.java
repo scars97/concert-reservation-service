@@ -32,9 +32,9 @@ class TokenExpireSchedulerTest {
     void dropTokens() {
         LocalDateTime now = LocalDateTime.now().withNano(0);
         Token token1 = tokenRepository.createToken(new Token(TokenGenerator.generateToken("test1"), "test1",
-                TokenStatus.ACTIVE, now.minusMinutes(7), now.minusMinutes(2)));
+                TokenStatus.ACTIVE, now.minusMinutes(7), now.minusMinutes(2), now.minusMinutes(10)));
         Token token2 = tokenRepository.createToken(new Token(TokenGenerator.generateToken("test2"), "test2",
-                TokenStatus.ACTIVE, now.minusMinutes(2), now.plusMinutes(3)));
+                TokenStatus.ACTIVE, now.minusMinutes(2), now.plusMinutes(3), now.minusMinutes(10)));
 
         tokenExpireScheduler.dropTokens();
 

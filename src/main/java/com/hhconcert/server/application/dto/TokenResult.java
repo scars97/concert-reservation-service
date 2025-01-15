@@ -10,7 +10,7 @@ public record TokenResult(
         String userId,
         Integer priority,
         TokenStatus status,
-        LocalDateTime createAt,
+        LocalDateTime tokenIssuedAt,
         LocalDateTime activeAt,
         LocalDateTime expireAt
 ) {
@@ -20,7 +20,7 @@ public record TokenResult(
                 info.userId(),
                 info.priority(),
                 info.status(),
-                info.createAt(),
+                info.tokenIssuedAt(),
                 info.activeAt(),
                 info.expireAt()
         );
