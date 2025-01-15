@@ -26,6 +26,9 @@ class SeatServiceTest {
     private SeatService seatService;
 
     @Mock
+    private SeatAvailability seatAvailability;
+
+    @Mock
     private SeatRepository seatRepository;
 
     Schedule mockSchedule;
@@ -46,6 +49,9 @@ class SeatServiceTest {
         );
 
         when(seatRepository.getSeats(scheduleId)).thenReturn(seats);
+        for (Seat seat : seats) {
+            when(seatAvailability.isAvailable(seat.getId())).thenReturn(true);
+        }
 
         List<SeatInfo> results = seatService.getAvailableSeats(scheduleId);
 

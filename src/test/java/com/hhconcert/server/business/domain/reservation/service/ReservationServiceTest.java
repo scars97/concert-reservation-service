@@ -13,7 +13,9 @@ import com.hhconcert.server.business.domain.seat.entity.Seat;
 import com.hhconcert.server.business.domain.seat.persistance.SeatRepository;
 import com.hhconcert.server.business.domain.user.entity.User;
 import com.hhconcert.server.business.domain.user.persistance.UserRepository;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -21,8 +23,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -77,77 +77,6 @@ class ReservationServiceTest {
         assertThat(result.seat().seatId()).isEqualTo(1L);
         assertThat(result.price()).isEqualTo(75000);
         assertThat(result.status()).isEqualTo(ReservationStatus.TEMP);
-    }
-
-    @DisplayName("해당 좌석에 대한 예약 내역이 없다면 false를 반환한다.")
-    @Test
-    void isSeatReserved_thenFalse() {
-        when(reservationRepository.findReserveBySeatId(1L)).thenReturn(List.of());
-
-        boolean result = reservationService.isSeatReserved(1L);
-
-        assertThat(result).isFalse();
-    }
-
-    @DisplayName("해당 좌석에 대한 예약 내역이 존재한다면 여러 조건을 통해 좌석 상태를 검증한다.")
-    @TestFactory
-    Collection<DynamicTest> isSeatReservedTests() {
-        return List.of(
-            DynamicTest.dynamicTest("1. 예약 상태가 COMPLETE 인 경우 true를 반환한다.", () -> {
-                when(reservationRepository.findReserveBySeatId(1L)).thenReturn(List.of(
-                    new Reservation(3L, user, concert, schedule, seat,
-                            seat.getPrice(), ReservationStatus.COMPLETE, null),
-                    new Reservation(2L, user, concert, schedule, seat,
-                            seat.getPrice(), ReservationStatus.CANCEL, null),
-                    new Reservation(1L, user, concert, schedule, seat,
-                            seat.getPrice(), ReservationStatus.CANCEL, null)
-                ));
-
-                boolean result = reservationService.isSeatReserved(1L);
-
-                assertThat(result).isTrue();
-            }),
-            DynamicTest.dynamicTest("2. 예약 상태가 TEMP 이면서 만료 시간이 지나지 않은 경우 true를 반환한다.", () -> {
-                when(reservationRepository.findReserveBySeatId(1L)).thenReturn(List.of(
-                    new Reservation(3L, user, concert, schedule, seat,
-                            seat.getPrice(), ReservationStatus.TEMP, LocalDateTime.now().plusMinutes(3)),
-                    new Reservation(2L, user, concert, schedule, seat,
-                            seat.getPrice(), ReservationStatus.CANCEL, null),
-                    new Reservation(1L, user, concert, schedule, seat,
-                            seat.getPrice(), ReservationStatus.CANCEL, null)
-                ));
-
-                boolean result = reservationService.isSeatReserved(1L);
-
-                assertThat(result).isTrue();
-            }),
-            DynamicTest.dynamicTest("3. 예약 상태가 TEMP 이면서 만료 시간이 지난 경우 false를 반환한다.", () -> {
-                when(reservationRepository.findReserveBySeatId(1L)).thenReturn(List.of(
-                    new Reservation(3L, user, concert, schedule, seat,
-                            seat.getPrice(), ReservationStatus.TEMP, LocalDateTime.now().minusSeconds(3)),
-                    new Reservation(2L, user, concert, schedule, seat,
-                            seat.getPrice(), ReservationStatus.CANCEL, null),
-                    new Reservation(1L, user, concert, schedule, seat,
-                            seat.getPrice(), ReservationStatus.CANCEL, null)
-                ));
-
-                boolean result = reservationService.isSeatReserved(1L);
-
-                assertThat(result).isFalse();
-            }),
-            DynamicTest.dynamicTest("4. 예약 상태가 CANCEL인 경우 false를 반환한다.", () -> {
-                when(reservationRepository.findReserveBySeatId(1L)).thenReturn(List.of(
-                        new Reservation(2L, user, concert, schedule, seat,
-                                seat.getPrice(), ReservationStatus.CANCEL, null),
-                        new Reservation(1L, user, concert, schedule, seat,
-                                seat.getPrice(), ReservationStatus.CANCEL, null)
-                ));
-
-                boolean result = reservationService.isSeatReserved(1L);
-
-                assertThat(result).isFalse();
-            })
-        );
     }
 
 }
