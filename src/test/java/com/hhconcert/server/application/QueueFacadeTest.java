@@ -1,21 +1,16 @@
-package com.hhconcert.server.interfaces.facade;
+package com.hhconcert.server.application;
 
 import com.hhconcert.server.application.dto.TokenResult;
 import com.hhconcert.server.application.facade.QueueFacade;
-import com.hhconcert.server.business.domain.queues.entity.Token;
 import com.hhconcert.server.business.domain.queues.entity.TokenStatus;
-import com.hhconcert.server.business.domain.user.entity.User;
-import com.hhconcert.server.infrastructure.queues.TokenJpaRepository;
-import com.hhconcert.server.infrastructure.user.UserJpaRepository;
+import com.hhconcert.server.config.IntegrationTestSupport;
 import com.hhconcert.server.interfaces.api.queues.dto.TokenRequest;
+import com.hhconcert.server.fixture.FacadeTestFixture;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.TestFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.jdbc.Sql;
 
 import java.util.Collection;
 import java.util.List;
@@ -23,33 +18,17 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ActiveProfiles("test")
-@SpringBootTest
-@Sql("classpath:test-data.sql")
-class QueueFacadeTest {
+class QueueFacadeTest extends IntegrationTestSupport {
 
     @Autowired
     private QueueFacade queueFacade;
 
     @Autowired
-    private UserJpaRepository userJpaRepository;
-
-    @Autowired
-    private TokenJpaRepository tokenJpaRepository;
+    private FacadeTestFixture fixture;
 
     @BeforeEach
     void setUp() {
-        // 사용자 11명 추가
-        for (int i = 0; i < 11; i++) {
-            String userId = "test" + (i + 1);
-            userJpaRepository.save(new User(userId, 10000));
-        }
-
-        // 활성화 인원 9명
-        for (int i = 0; i < 9; i++) {
-            String userId = "test" + (i + 1);
-            tokenJpaRepository.save(Token.createForActive(userId));
-        }
+        fixture.queueFixture();
     }
 
     @DisplayName("활성화 인원에 따라 상태 값이 다른 토큰이 생성된다.")

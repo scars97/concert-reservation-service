@@ -1,14 +1,12 @@
-package com.hhconcert.server.business.domain.concert.persistance;
+package com.hhconcert.server.business.persistance;
 
 import com.hhconcert.server.business.domain.concert.entity.Concert;
+import com.hhconcert.server.business.domain.concert.persistance.ConcertRepository;
+import com.hhconcert.server.config.IntegrationTestSupport;
 import com.hhconcert.server.infrastructure.concert.ConcertJpaRepository;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -16,9 +14,7 @@ import java.util.NoSuchElementException;
 
 import static org.assertj.core.api.Assertions.*;
 
-@ActiveProfiles("test")
-@SpringBootTest
-class ConcertRepositoryTest {
+class ConcertRepositoryTest extends IntegrationTestSupport {
 
     @Autowired
     private ConcertRepository concertRepository;
@@ -26,32 +22,22 @@ class ConcertRepositoryTest {
     @Autowired
     private ConcertJpaRepository concertJpaRepository;
 
-    @BeforeEach
-    void setUp() {
+    @DisplayName("콘서트 목록이 조회된다.")
+    @Test
+    void getConcerts() {
         LocalDate now = LocalDate.now();
         concertJpaRepository.saveAll(List.of(
                 new Concert("콘서트1", now, now.plusDays(1)),
                 new Concert("콘서트2", now.plusDays(1), now.plusDays(2))
         ));
-    }
-
-    @AfterEach
-    void tearDown() {
-        concertJpaRepository.deleteAllInBatch();
-    }
-
-    @DisplayName("콘서트 목록이 조회된다.")
-    @Test
-    void getConcerts() {
-        LocalDate now = LocalDate.now();
 
         List<Concert> concerts = concertRepository.getConcerts();
 
         assertThat(concerts).hasSize(2)
-                .extracting("title", "startDate", "endDate")
+                .extracting("id", "title", "startDate", "endDate")
                 .containsExactly(
-                        tuple("콘서트1", now, now.plusDays(1)),
-                        tuple("콘서트2", now.plusDays(1), now.plusDays(2))
+                        tuple(1L, "콘서트1", now, now.plusDays(1)),
+                        tuple(2L, "콘서트2", now.plusDays(1), now.plusDays(2))
                 );
     }
 
@@ -59,12 +45,13 @@ class ConcertRepositoryTest {
     @Test
     void findConcert() {
         LocalDate now = LocalDate.now();
-        Long id = 5L;
+        concertJpaRepository.save(new Concert("콘서트1", now, now.plusDays(1)));
+        Long id = 1L;
 
         Concert concert = concertRepository.findConcert(id);
 
-        assertThat(concert).extracting("title", "startDate", "endDate")
-                .containsExactly("콘서트1", now, now.plusDays(1));
+        assertThat(concert).extracting("id", "title", "startDate", "endDate")
+                .containsExactly(1L, "콘서트1", now, now.plusDays(1));
     }
 
     @DisplayName("등록되지 않은 콘서트 조회 시, 예외가 발생한다.")
