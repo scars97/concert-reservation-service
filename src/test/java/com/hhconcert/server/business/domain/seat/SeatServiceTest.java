@@ -1,9 +1,11 @@
-package com.hhconcert.server.business.domain.seat.service;
+package com.hhconcert.server.business.domain.seat;
 
 import com.hhconcert.server.business.domain.schedule.entity.Schedule;
 import com.hhconcert.server.business.domain.seat.dto.SeatInfo;
 import com.hhconcert.server.business.domain.seat.entity.Seat;
 import com.hhconcert.server.business.domain.seat.persistance.SeatRepository;
+import com.hhconcert.server.business.domain.seat.service.SeatAvailability;
+import com.hhconcert.server.business.domain.seat.service.SeatService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

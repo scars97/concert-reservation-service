@@ -1,4 +1,4 @@
-package com.hhconcert.server.interfaces.api.config;
+package com.hhconcert.server.fixture;
 
 import com.hhconcert.server.application.dto.*;
 import com.hhconcert.server.business.domain.payment.entity.PaymentStatus;
@@ -9,7 +9,7 @@ import com.hhconcert.server.business.domain.reservation.entity.ReservationStatus
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-public class ControllerTestUtil {
+public class ControllerTestFixture {
 
     public ConcertResult createConcert() {
         return new ConcertResult(1L, "콘서트 1", LocalDate.now(), LocalDate.now().plusDays(1));

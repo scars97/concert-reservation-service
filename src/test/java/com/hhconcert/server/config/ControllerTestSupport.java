@@ -1,7 +1,8 @@
-package com.hhconcert.server.interfaces.api.config;
+package com.hhconcert.server.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hhconcert.server.application.facade.*;
+import com.hhconcert.server.fixture.ControllerTestFixture;
 import com.hhconcert.server.global.interceptor.TokenValidationInterceptor;
 import com.hhconcert.server.interfaces.api.concert.ConcertController;
 import com.hhconcert.server.interfaces.api.payment.PaymentController;
@@ -9,9 +10,7 @@ import com.hhconcert.server.interfaces.api.point.PointController;
 import com.hhconcert.server.interfaces.api.queues.QueueController;
 import com.hhconcert.server.interfaces.api.reservation.ReservationController;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -26,12 +25,11 @@ import org.springframework.test.web.servlet.MockMvc;
         PointController.class,
         PaymentController.class
 })
-@ExtendWith(MockitoExtension.class)
-public abstract class ControllerTestSupport {
+public class ControllerTestSupport {
 
-    protected static final String TEST_TOKEN ="Bearer TEST_TOKEN";
+    protected static final String TEST_TOKEN = "Bearer TEST_TOKEN";
 
-    protected ControllerTestUtil testUtil = new ControllerTestUtil();
+    protected ControllerTestFixture fixture = new ControllerTestFixture();
 
     @Autowired
     protected MockMvc mockMvc;

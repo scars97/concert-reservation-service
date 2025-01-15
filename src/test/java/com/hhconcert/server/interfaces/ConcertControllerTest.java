@@ -1,6 +1,6 @@
-package com.hhconcert.server.interfaces.api;
+package com.hhconcert.server.interfaces;
 
-import com.hhconcert.server.interfaces.api.config.ControllerTestSupport;
+import com.hhconcert.server.config.ControllerTestSupport;
 import com.hhconcert.server.interfaces.api.concert.dto.ConcertRequest;
 import com.hhconcert.server.interfaces.api.concert.dto.ScheduleRequest;
 import org.junit.jupiter.api.DisplayName;
@@ -22,7 +22,7 @@ class ConcertControllerTest extends ControllerTestSupport {
     @Test
     void getConcerts() throws Exception {
 
-        when(concertFacade.getConcerts()).thenReturn(List.of(testUtil.createConcert()));
+        when(concertFacade.getConcerts()).thenReturn(List.of(fixture.createConcert()));
 
         mockMvc.perform(get("/concerts"))
                 .andExpectAll(
@@ -40,7 +40,7 @@ class ConcertControllerTest extends ControllerTestSupport {
     void findConcert() throws Exception {
         ConcertRequest request = new ConcertRequest(1L);
 
-        when(concertFacade.findConcert(request)).thenReturn(testUtil.createConcert());
+        when(concertFacade.findConcert(request)).thenReturn(fixture.createConcert());
 
         mockMvc.perform(get("/concerts/{concertId}", 1L))
                 .andExpectAll(
@@ -55,7 +55,7 @@ class ConcertControllerTest extends ControllerTestSupport {
     @DisplayName("특정 콘서트에 대한 예약 가능한 날짜를 조회한다.")
     @Test
     void findConcertSchedule() throws Exception {
-        when(concertFacade.getSchedules(new ConcertRequest(1L))).thenReturn(List.of(testUtil.createSchedule()));
+        when(concertFacade.getSchedules(new ConcertRequest(1L))).thenReturn(List.of(fixture.createSchedule()));
 
         mockMvc.perform(get("/concerts/{concertId}/schedules", 1L)
                         .header("Authorization", TEST_TOKEN)
@@ -73,7 +73,7 @@ class ConcertControllerTest extends ControllerTestSupport {
     @Test
     void getAvailableSeats() throws Exception {
         when(concertFacade.getAvailableSeats(new ScheduleRequest(1L)))
-                .thenReturn(List.of(testUtil.createSeat()));
+                .thenReturn(List.of(fixture.createSeat()));
 
         mockMvc.perform(get("/concerts/schedules/{scheduleId}/seats", 1L, 1L)
                         .header("Authorization", TEST_TOKEN)

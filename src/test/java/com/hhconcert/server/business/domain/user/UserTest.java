@@ -1,5 +1,6 @@
-package com.hhconcert.server.business.domain.user.entity;
+package com.hhconcert.server.business.domain.user;
 
+import com.hhconcert.server.business.domain.user.entity.User;
 import com.hhconcert.server.business.domain.user.exception.PointErrorCode;
 import com.hhconcert.server.business.domain.user.exception.PointException;
 import org.junit.jupiter.api.BeforeEach;

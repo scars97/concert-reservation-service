@@ -1,4 +1,4 @@
-package com.hhconcert.server.business.domain.queues.service;
+package com.hhconcert.server.business.domain.queues;
 
 import com.hhconcert.server.business.domain.queues.dto.TokenInfo;
 import com.hhconcert.server.business.domain.queues.entity.Token;
@@ -7,6 +7,7 @@ import com.hhconcert.server.business.domain.queues.entity.TokenStatus;
 import com.hhconcert.server.business.domain.queues.persistance.TokenRepository;
 import com.hhconcert.server.business.domain.queues.exception.TokenErrorCode;
 import com.hhconcert.server.business.domain.queues.exception.TokenException;
+import com.hhconcert.server.business.domain.queues.service.TokenService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

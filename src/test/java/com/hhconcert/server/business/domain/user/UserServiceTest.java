@@ -1,9 +1,10 @@
-package com.hhconcert.server.business.domain.user.service;
+package com.hhconcert.server.business.domain.user;
 
 import com.hhconcert.server.business.domain.user.dto.PointCommand;
 import com.hhconcert.server.business.domain.user.dto.PointInfo;
 import com.hhconcert.server.business.domain.user.entity.User;
 import com.hhconcert.server.business.domain.user.persistance.UserRepository;
+import com.hhconcert.server.business.domain.user.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

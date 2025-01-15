@@ -1,6 +1,6 @@
-package com.hhconcert.server.interfaces.api;
+package com.hhconcert.server.interfaces;
 
-import com.hhconcert.server.interfaces.api.config.ControllerTestSupport;
+import com.hhconcert.server.config.ControllerTestSupport;
 import com.hhconcert.server.interfaces.api.point.dto.PointRequest;
 import com.hhconcert.server.interfaces.api.point.dto.UserRequest;
 import org.junit.jupiter.api.DisplayName;
@@ -21,7 +21,7 @@ class PointControllerTest extends ControllerTestSupport {
     void chargePoint() throws Exception {
         PointRequest request = new PointRequest("test1234", 10000);
 
-        when(userPointFacade.chargePoint(request)).thenReturn(testUtil.createUserPoint(request.amount()));
+        when(userPointFacade.chargePoint(request)).thenReturn(fixture.createUserPoint(request.amount()));
 
         mockMvc.perform(patch("/points")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -39,7 +39,7 @@ class PointControllerTest extends ControllerTestSupport {
     void getPoint() throws Exception {
 
         when(userPointFacade.getPoint(new UserRequest("test1234")))
-                .thenReturn(testUtil.createUserPoint(10000));
+                .thenReturn(fixture.createUserPoint(10000));
 
         mockMvc.perform(get("/points/{userId}", "test1234"))
                 .andExpectAll(

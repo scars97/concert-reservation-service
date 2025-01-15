@@ -1,7 +1,7 @@
-package com.hhconcert.server.interfaces.api;
+package com.hhconcert.server.interfaces;
 
 import com.hhconcert.server.interfaces.api.concert.dto.ConcertResponse;
-import com.hhconcert.server.interfaces.api.config.ControllerTestSupport;
+import com.hhconcert.server.config.ControllerTestSupport;
 import com.hhconcert.server.interfaces.api.reservation.dto.ReservationRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,7 +25,7 @@ class ReservationControllerTest extends ControllerTestSupport {
         ReservationRequest request = new ReservationRequest("test1234", 1L, 1L, 1L);
 
         LocalDateTime now = LocalDateTime.now().withNano(0);
-        when(reservationFacade.tempReserve(request)).thenReturn(testUtil.createTempReserve(now));
+        when(reservationFacade.tempReserve(request)).thenReturn(fixture.createTempReserve(now));
 
         mockMvc.perform(post("/reservations")
                 .contentType(MediaType.APPLICATION_JSON)

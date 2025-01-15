@@ -1,4 +1,4 @@
-package com.hhconcert.server.business.domain.seat.service;
+package com.hhconcert.server.business.domain.seat;
 
 import com.hhconcert.server.business.domain.concert.entity.Concert;
 import com.hhconcert.server.business.domain.reservation.entity.Reservation;
@@ -6,6 +6,7 @@ import com.hhconcert.server.business.domain.reservation.entity.ReservationStatus
 import com.hhconcert.server.business.domain.reservation.persistance.ReservationRepository;
 import com.hhconcert.server.business.domain.schedule.entity.Schedule;
 import com.hhconcert.server.business.domain.seat.entity.Seat;
+import com.hhconcert.server.business.domain.seat.service.SeatAvailability;
 import com.hhconcert.server.business.domain.user.entity.User;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;

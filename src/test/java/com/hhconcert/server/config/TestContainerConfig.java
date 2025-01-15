@@ -1,4 +1,4 @@
-package com.hhconcert.server;
+package com.hhconcert.server.config;
 
 import jakarta.annotation.PreDestroy;
 import org.springframework.context.annotation.Configuration;

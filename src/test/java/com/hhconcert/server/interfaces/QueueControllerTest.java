@@ -1,6 +1,6 @@
-package com.hhconcert.server.interfaces.api;
+package com.hhconcert.server.interfaces;
 
-import com.hhconcert.server.interfaces.api.config.ControllerTestSupport;
+import com.hhconcert.server.config.ControllerTestSupport;
 import com.hhconcert.server.interfaces.api.queues.dto.TokenRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,7 +21,7 @@ class QueueControllerTest extends ControllerTestSupport {
     void createQueueToken() throws Exception {
         TokenRequest request = new TokenRequest("test1234");
 
-        when(queueFacade.createToken(request)).thenReturn(testUtil.createWaitToken());
+        when(queueFacade.createToken(request)).thenReturn(fixture.createWaitToken());
 
         mockMvc.perform(post("/queues")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -40,7 +40,7 @@ class QueueControllerTest extends ControllerTestSupport {
     @Test
     void getQueueStatus() throws Exception {
         String userId = "test1234";
-        when(queueFacade.checkQueueStatus(new TokenRequest(userId))).thenReturn(testUtil.createWaitToken());
+        when(queueFacade.checkQueueStatus(new TokenRequest(userId))).thenReturn(fixture.createWaitToken());
 
         mockMvc.perform(get("/queues/{userId}", userId)
                         .header("Authorization", TEST_TOKEN)

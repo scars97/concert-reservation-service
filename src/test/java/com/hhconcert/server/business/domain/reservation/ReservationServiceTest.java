@@ -1,4 +1,4 @@
-package com.hhconcert.server.business.domain.reservation.service;
+package com.hhconcert.server.business.domain.reservation;
 
 import com.hhconcert.server.business.domain.concert.entity.Concert;
 import com.hhconcert.server.business.domain.concert.persistance.ConcertRepository;
@@ -7,6 +7,7 @@ import com.hhconcert.server.business.domain.reservation.dto.ReservationInfo;
 import com.hhconcert.server.business.domain.reservation.entity.Reservation;
 import com.hhconcert.server.business.domain.reservation.entity.ReservationStatus;
 import com.hhconcert.server.business.domain.reservation.persistance.ReservationRepository;
+import com.hhconcert.server.business.domain.reservation.service.ReservationService;
 import com.hhconcert.server.business.domain.schedule.entity.Schedule;
 import com.hhconcert.server.business.domain.schedule.persistance.ScheduleRepository;
 import com.hhconcert.server.business.domain.seat.entity.Seat;

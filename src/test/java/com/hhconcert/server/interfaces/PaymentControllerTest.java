@@ -1,6 +1,6 @@
-package com.hhconcert.server.interfaces.api;
+package com.hhconcert.server.interfaces;
 
-import com.hhconcert.server.interfaces.api.config.ControllerTestSupport;
+import com.hhconcert.server.config.ControllerTestSupport;
 import com.hhconcert.server.interfaces.api.payment.dto.PaymentRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,7 +19,7 @@ class PaymentControllerTest extends ControllerTestSupport {
     void payment() throws Exception {
         PaymentRequest request = new PaymentRequest("test1234", 1L, 75000);
 
-        when(paymentFacade.payment(request)).thenReturn(testUtil.createPayment());
+        when(paymentFacade.payment(request)).thenReturn(fixture.createPayment());
 
         mockMvc.perform(post("/payments")
                 .contentType(MediaType.APPLICATION_JSON)
