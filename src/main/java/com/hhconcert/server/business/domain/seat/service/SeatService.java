@@ -13,10 +13,13 @@ import java.util.List;
 public class SeatService {
 
     private final SeatRepository seatRepository;
+    private final SeatAvailability seatAvailability;
 
     public List<SeatInfo> getAvailableSeats(Long scheduleId) {
-        List<Seat> availableSeats = seatRepository.getSeats(scheduleId);
-        return availableSeats.stream()
+        List<Seat> seats = seatRepository.getSeats(scheduleId);
+
+        return seats.stream()
+                .filter(s -> seatAvailability.isAvailable(s.getId()))
                 .map(SeatInfo::from)
                 .toList();
     }

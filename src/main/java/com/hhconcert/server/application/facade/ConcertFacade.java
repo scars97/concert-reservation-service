@@ -6,6 +6,7 @@ import com.hhconcert.server.application.dto.SeatResult;
 import com.hhconcert.server.business.domain.concert.dto.ConcertInfo;
 import com.hhconcert.server.business.domain.concert.service.ConcertService;
 import com.hhconcert.server.business.domain.reservation.service.ReservationService;
+import com.hhconcert.server.business.domain.schedule.dto.ScheduleInfo;
 import com.hhconcert.server.business.domain.schedule.service.ScheduleService;
 import com.hhconcert.server.business.domain.seat.dto.SeatInfo;
 import com.hhconcert.server.business.domain.seat.service.SeatService;
@@ -40,18 +41,15 @@ public class ConcertFacade {
 
     // 콘서트 예약 가능 날짜 조회
     public List<ScheduleResult> getSchedules(ConcertRequest request) {
-        return scheduleService.getSchedulesByConcert(request.concertId())
-                .stream()
+        List<ScheduleInfo> schedules = scheduleService.getSchedulesByConcert(request.concertId());
+        return schedules.stream()
                 .map(ScheduleResult::from)
                 .toList();
     }
 
     // 콘서트 예약 가능 좌석 조회
     public List<SeatResult> getAvailableSeats(ScheduleRequest request) {
-        List<SeatInfo> availableSeats = seatService.getAvailableSeats(request.scheduleId()).stream()
-                .filter(seat -> !reservationService.isSeatReserved(seat.seatId()))
-                .toList();
-
+        List<SeatInfo> availableSeats = seatService.getAvailableSeats(request.scheduleId());
         return availableSeats.stream()
                 .map(SeatResult::from)
                 .toList();
