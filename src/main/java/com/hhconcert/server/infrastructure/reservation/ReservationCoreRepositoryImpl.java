@@ -26,6 +26,6 @@ public class ReservationCoreRepositoryImpl implements ReservationRepository {
 
     @Override
     public Reservation findReserve(Long reserveId) {
-        return repository.findByIdWithLock(reserveId).orElseThrow(() -> new NoSuchElementException("등록되지 않은 예약입니다."));
+        return repository.findById(reserveId).orElseThrow(() -> new NoSuchElementException("등록되지 않은 예약입니다."));
     }
 }
