@@ -18,6 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
@@ -26,6 +27,8 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class TokenServiceTest {
+
+    private static final int MAX_ACTIVE_TOKEN_COUNT = 10;
 
     @InjectMocks
     private TokenService tokenService;
@@ -62,8 +65,13 @@ class TokenServiceTest {
     @DisplayName("WAIT 상태의 토큰이 생성된다.")
     @Test
     void createTokenForWAIT() {
+        List<Token> tokens = new ArrayList<>();
+        for (int i = 0; i < MAX_ACTIVE_TOKEN_COUNT; i++) {
+            tokens.add(Token.createForActive("test" + i));
+        }
+
         when(tokenRepository.isDuplicate("test1234")).thenReturn(false);
-        when(tokenRepository.getTokenCountFor(TokenStatus.ACTIVE)).thenReturn(15);
+        when(tokenRepository.getTokensBy(TokenStatus.ACTIVE)).thenReturn(tokens);
         when(tokenRepository.createToken(any(Token.class))).thenReturn(waitToken);
 
         TokenInfo result = tokenService.createToken("test1234");
@@ -77,7 +85,7 @@ class TokenServiceTest {
     @Test
     void createTokenForActive() {
         when(tokenRepository.isDuplicate("test1234")).thenReturn(false);
-        when(tokenRepository.getTokenCountFor(TokenStatus.ACTIVE)).thenReturn(5);
+        when(tokenRepository.getTokensBy(TokenStatus.ACTIVE)).thenReturn(List.of(Token.createForActive("test")));
         when(tokenRepository.createToken(any(Token.class))).thenReturn(activeToken);
 
         TokenInfo result = tokenService.createToken("test1234");
