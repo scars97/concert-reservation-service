@@ -15,13 +15,13 @@ public class SeatCoreRepositoryImpl implements SeatRepository {
     private final SeatJpaRepository repository;
 
     @Override
-    public List<Seat> getAvailableSeats(Long scheduleId) {
+    public List<Seat> getSeats(Long scheduleId) {
         return repository.findByScheduleId(scheduleId);
     }
 
     @Override
     public Seat findSeat(Long seatId) {
-        return repository.findById(seatId).orElseThrow(() -> new NoSuchElementException("등록되지 않은 좌석입니다."));
+        return repository.findByIdWithLock(seatId).orElseThrow(() -> new NoSuchElementException("등록되지 않은 좌석입니다."));
     }
 
 }

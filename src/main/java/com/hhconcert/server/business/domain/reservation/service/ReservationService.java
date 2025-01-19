@@ -2,27 +2,26 @@ package com.hhconcert.server.business.domain.reservation.service;
 
 import com.hhconcert.server.business.domain.concert.entity.Concert;
 import com.hhconcert.server.business.domain.concert.persistance.ConcertRepository;
+import com.hhconcert.server.business.domain.reservation.dto.ReservationCommand;
 import com.hhconcert.server.business.domain.reservation.dto.ReservationInfo;
-import com.hhconcert.server.business.domain.reservation.dto.ReservationResult;
 import com.hhconcert.server.business.domain.reservation.entity.Reservation;
-import com.hhconcert.server.business.domain.reservation.entity.ReservationStatus;
+import com.hhconcert.server.business.domain.reservation.exception.ReservationErrorCode;
+import com.hhconcert.server.business.domain.reservation.exception.ReservationException;
 import com.hhconcert.server.business.domain.reservation.persistance.ReservationRepository;
 import com.hhconcert.server.business.domain.schedule.entity.Schedule;
 import com.hhconcert.server.business.domain.schedule.persistance.ScheduleRepository;
 import com.hhconcert.server.business.domain.seat.entity.Seat;
 import com.hhconcert.server.business.domain.seat.persistance.SeatRepository;
+import com.hhconcert.server.business.domain.seat.service.SeatAvailability;
 import com.hhconcert.server.business.domain.user.entity.User;
 import com.hhconcert.server.business.domain.user.persistance.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class ReservationService {
 
     private final ReservationRepository reservationRepository;
@@ -30,35 +29,22 @@ public class ReservationService {
     private final ScheduleRepository scheduleRepository;
     private final SeatRepository seatRepository;
     private final UserRepository userRepository;
+    private final SeatAvailability seatAvailability;
 
-    @Transactional
-    public ReservationResult creatTempReserve(ReservationInfo info) {
+    @Transactional(isolation = Isolation.READ_COMMITTED)
+    public ReservationInfo creatTempReserve(ReservationCommand info) {
         User user = userRepository.findUser(info.userId());
         Concert concert = concertRepository.findConcert(info.concertId());
         Schedule schedule = scheduleRepository.findSchedule(info.scheduleId());
         Seat seat = seatRepository.findSeat(info.seatId());
 
-        Reservation reservation = Reservation.createTemp(user, concert, schedule, seat);
-
-        return ReservationResult.from(reservationRepository.createTempReserve(reservation));
-    }
-
-    public boolean isSeatReserved(Long seatId) {
-        List<Reservation> reservations = reservationRepository.findReserveBySeatId(seatId);
-
-        if (reservations.isEmpty()) {
-            return false;
+        if (!seatAvailability.isAvailable(seat.getId())) {
+            throw new ReservationException(ReservationErrorCode.ALREADY_RESERVED);
         }
 
-        return reservations.stream()
-                .anyMatch(r ->
-                    r.getStatus() == ReservationStatus.COMPLETE ||
-                    (r.getStatus() == ReservationStatus.TEMP && r.getExpiredAt().isAfter(LocalDateTime.now()))
-                );
-    }
+        Reservation reservation = Reservation.createTemp(user, concert, schedule, seat);
 
-    public ReservationResult findReserve(Long reserveId) {
-        return ReservationResult.from(reservationRepository.findReserve(reserveId));
+        return ReservationInfo.from(reservationRepository.createTempReserve(reservation));
     }
 
 }

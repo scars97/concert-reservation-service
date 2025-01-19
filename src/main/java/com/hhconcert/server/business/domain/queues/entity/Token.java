@@ -11,21 +11,27 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Table(
+    uniqueConstraints = @UniqueConstraint(columnNames = {"user_id"}),
+    indexes = @Index(name = "idx_status", columnList = "status")
+)
 public class Token extends BaseEntity {
 
     @Id
     private String tokenId;
 
-    @Column(nullable = false)
+    @Column(name = "user_id", nullable = false)
     private String userId;
 
-    @Column(nullable = false)
+    @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
     private TokenStatus status;
 
     private LocalDateTime activeAt;
 
     private LocalDateTime expiredAt;
+
+    private LocalDateTime tokenIssuedAt;
 
     public Token(String tokenId, String userId, TokenStatus status) {
         this.tokenId = tokenId;
@@ -38,6 +44,7 @@ public class Token extends BaseEntity {
                 .tokenId(TokenGenerator.generateToken(userId))
                 .userId(userId)
                 .status(TokenStatus.WAIT)
+                .tokenIssuedAt(LocalDateTime.now())
                 .build();
     }
 
@@ -48,6 +55,7 @@ public class Token extends BaseEntity {
                 .status(TokenStatus.ACTIVE)
                 .activeAt(LocalDateTime.now())
                 .expiredAt(LocalDateTime.now().plusMinutes(5))
+                .tokenIssuedAt(LocalDateTime.now())
                 .build();
     }
 

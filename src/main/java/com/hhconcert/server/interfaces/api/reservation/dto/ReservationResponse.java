@@ -1,6 +1,6 @@
 package com.hhconcert.server.interfaces.api.reservation.dto;
 
-import com.hhconcert.server.business.domain.reservation.dto.ReservationResult;
+import com.hhconcert.server.application.dto.ReservationResult;
 import com.hhconcert.server.business.domain.reservation.entity.ReservationStatus;
 import com.hhconcert.server.interfaces.api.concert.dto.ConcertResponse;
 
@@ -20,12 +20,12 @@ public record ReservationResponse (
     public static ReservationResponse from(ReservationResult result) {
         return new ReservationResponse(
                 result.reserveId(),
-                result.schedule().date(),
-                result.seat().seatNumber(),
+                result.schedule(),
+                result.seatNumber(),
                 ConcertResponse.from(result.concert()),
                 result.price(),
                 result.status(),
-                result.createAt(),
+                result.createdAt(),
                 result.expiredAt()
         );
     }

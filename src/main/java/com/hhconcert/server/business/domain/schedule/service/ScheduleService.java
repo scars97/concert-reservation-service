@@ -1,6 +1,6 @@
 package com.hhconcert.server.business.domain.schedule.service;
 
-import com.hhconcert.server.business.domain.schedule.dto.ScheduleResult;
+import com.hhconcert.server.business.domain.schedule.dto.ScheduleInfo;
 import com.hhconcert.server.business.domain.schedule.entity.Schedule;
 import com.hhconcert.server.business.domain.schedule.persistance.ScheduleRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,14 +16,14 @@ public class ScheduleService {
 
     private final ScheduleRepository scheduleRepository;
 
-    public List<ScheduleResult> getSchedulesByConcert(Long concertId) {
+    public List<ScheduleInfo> getSchedulesByConcert(Long concertId) {
         List<Schedule> schedules = scheduleRepository.getSchedules(concertId);
         return schedules.stream()
-                .map(ScheduleResult::from)
+                .map(ScheduleInfo::from)
                 .toList();
     }
 
-    public ScheduleResult findSchedule(Long scheduleId) {
-        return ScheduleResult.from(scheduleRepository.findSchedule(scheduleId));
+    public ScheduleInfo findSchedule(Long scheduleId) {
+        return ScheduleInfo.from(scheduleRepository.findSchedule(scheduleId));
     }
 }

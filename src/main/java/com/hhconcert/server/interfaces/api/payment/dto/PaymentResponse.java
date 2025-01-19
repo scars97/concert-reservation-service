@@ -1,6 +1,6 @@
 package com.hhconcert.server.interfaces.api.payment.dto;
 
-import com.hhconcert.server.business.domain.payment.dto.PaymentResult;
+import com.hhconcert.server.application.dto.PaymentResult;
 import com.hhconcert.server.business.domain.payment.entity.PaymentStatus;
 
 import java.time.LocalDateTime;
