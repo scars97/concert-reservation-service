@@ -1,6 +1,6 @@
 package com.hhconcert.server.interfaces.api.queues.dto;
 
-import com.hhconcert.server.business.domain.queues.dto.TokenResult;
+import com.hhconcert.server.application.dto.TokenResult;
 import com.hhconcert.server.business.domain.queues.entity.TokenStatus;
 
 import java.time.LocalDateTime;
@@ -10,7 +10,7 @@ public record TokenResponse(
         String userId,
         Integer priority,
         TokenStatus status,
-        LocalDateTime createdAt,
+        LocalDateTime tokenIssuedAt,
         LocalDateTime activeAt,
         LocalDateTime expireAt
 ) {
@@ -21,7 +21,7 @@ public record TokenResponse(
                 result.userId(),
                 result.priority(),
                 result.status(),
-                result.createAt(),
+                result.tokenIssuedAt(),
                 result.activeAt(),
                 result.expireAt()
         );

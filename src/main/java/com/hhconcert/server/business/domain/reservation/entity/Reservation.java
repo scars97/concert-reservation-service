@@ -5,7 +5,8 @@ import com.hhconcert.server.business.domain.concert.entity.Concert;
 import com.hhconcert.server.business.domain.schedule.entity.Schedule;
 import com.hhconcert.server.business.domain.seat.entity.Seat;
 import com.hhconcert.server.business.domain.user.entity.User;
-import com.hhconcert.server.global.common.exception.ReservationException;
+import com.hhconcert.server.business.domain.reservation.exception.ReservationErrorCode;
+import com.hhconcert.server.business.domain.reservation.exception.ReservationException;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -79,12 +80,18 @@ public class Reservation extends BaseEntity {
 
     public void updateForComplete() {
         if (this.status != ReservationStatus.TEMP) {
-            throw new ReservationException("결제할 수 없는 예약 내역입니다.");
+            throw new ReservationException(ReservationErrorCode.INVALID_RESERVATION_STATUS);
         }
         if (this.expiredAt.isBefore(LocalDateTime.now())) {
-            throw new ReservationException("임시 예약 시간이 만료되었습니다.");
+            throw new ReservationException(ReservationErrorCode.EXPIRED_RESERVATION);
         }
         this.status = ReservationStatus.COMPLETE;
         this.expiredAt = null;
+    }
+
+    public boolean isSeatReserved() {
+        return this.status == ReservationStatus.COMPLETE ||
+                (this.status == ReservationStatus.TEMP &&
+                this.expiredAt.isAfter(LocalDateTime.now()));
     }
 }

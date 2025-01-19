@@ -1,10 +1,11 @@
 package com.hhconcert.server.business.domain.queues.service;
 
-import com.hhconcert.server.business.domain.queues.dto.TokenResult;
+import com.hhconcert.server.business.domain.queues.dto.TokenInfo;
 import com.hhconcert.server.business.domain.queues.entity.Token;
 import com.hhconcert.server.business.domain.queues.entity.TokenStatus;
 import com.hhconcert.server.business.domain.queues.persistance.TokenRepository;
-import com.hhconcert.server.global.common.exception.TokenException;
+import com.hhconcert.server.business.domain.queues.exception.TokenErrorCode;
+import com.hhconcert.server.business.domain.queues.exception.TokenException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,22 +20,22 @@ public class TokenService {
     private final TokenRepository tokenRepository;
 
     @Transactional
-    public TokenResult createToken(String userId) {
+    public TokenInfo createToken(String userId) {
         if (tokenRepository.isDuplicate(userId)) {
-            throw new TokenException("이미 토큰이 존재합니다.");
+            throw new TokenException(TokenErrorCode.DUPLICATED_TOKEN);
         }
 
         int activeCount = tokenRepository.getTokenCountFor(TokenStatus.ACTIVE);
         if (activeCount < MAX_ACTIVE_TOKEN_COUNT) {
-            return TokenResult.from(tokenRepository.createToken(Token.createForActive(userId)));
+            return TokenInfo.from(tokenRepository.createToken(Token.createForActive(userId)));
         }
 
         int waitingCount = tokenRepository.getTokenCountFor(TokenStatus.WAIT);
-        return TokenResult.from(tokenRepository.createToken(Token.createForWait(userId)), waitingCount + 1);
+        return TokenInfo.from(tokenRepository.createToken(Token.createForWait(userId)), waitingCount + 1);
     }
 
     @Transactional(readOnly = true)
-    public TokenResult checkQueueStatus(String userId) {
+    public TokenInfo checkQueueStatus(String userId) {
         Token token = tokenRepository.findTokenByUserId(userId);
 
         int currentPriority = 0;
@@ -43,11 +44,11 @@ public class TokenService {
         if (token.getStatus() == TokenStatus.WAIT) {
             List<Token> waitTokens = tokenRepository.getTokensBy(TokenStatus.WAIT);
             currentPriority = (int) waitTokens.stream()
-                    .filter(t -> t.getCreatedAt().isBefore(token.getCreatedAt()))
+                    .filter(t -> t.getTokenIssuedAt().isBefore(token.getTokenIssuedAt()))
                     .count() + 1;
         }
 
-        return TokenResult.from(token, currentPriority);
+        return TokenInfo.from(token, currentPriority);
     }
 
 }

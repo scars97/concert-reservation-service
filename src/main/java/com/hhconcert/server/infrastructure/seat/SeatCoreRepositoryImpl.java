@@ -15,7 +15,7 @@ public class SeatCoreRepositoryImpl implements SeatRepository {
     private final SeatJpaRepository repository;
 
     @Override
-    public List<Seat> getAvailableSeats(Long scheduleId) {
+    public List<Seat> getSeats(Long scheduleId) {
         return repository.findByScheduleId(scheduleId);
     }
 

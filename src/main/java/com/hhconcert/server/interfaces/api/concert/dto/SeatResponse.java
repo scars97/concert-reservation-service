@@ -1,6 +1,6 @@
 package com.hhconcert.server.interfaces.api.concert.dto;
 
-import com.hhconcert.server.business.domain.seat.dto.SeatResult;
+import com.hhconcert.server.application.dto.SeatResult;
 
 public record SeatResponse (
         Long seatId,

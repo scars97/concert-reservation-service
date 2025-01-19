@@ -1,7 +1,8 @@
 package com.hhconcert.server.business.domain.user.entity;
 
 import com.hhconcert.server.business.domain.BaseEntity;
-import com.hhconcert.server.global.common.exception.PointException;
+import com.hhconcert.server.business.domain.user.exception.PointErrorCode;
+import com.hhconcert.server.business.domain.user.exception.PointException;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -34,7 +35,7 @@ public class User extends BaseEntity {
 
     public void usePoint(Integer amount) {
         if (this.point < amount) {
-            throw new PointException("잔액이 부족합니다.");
+            throw new PointException(PointErrorCode.INSUFFICIENT_POINTS);
         }
         this.point -= amount;
     }
