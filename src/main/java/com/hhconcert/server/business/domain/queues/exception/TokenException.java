@@ -5,11 +5,7 @@ import lombok.Getter;
 @Getter
 public class TokenException extends RuntimeException {
 
-    private TokenErrorCode errorCode;
-
-    public TokenException(String message) {
-        super(message);
-    }
+    private final TokenErrorCode errorCode;
 
     public TokenException(TokenErrorCode errorCode) {
         this.errorCode = errorCode;
