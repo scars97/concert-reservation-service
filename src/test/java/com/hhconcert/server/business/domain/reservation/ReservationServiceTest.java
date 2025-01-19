@@ -12,6 +12,7 @@ import com.hhconcert.server.business.domain.schedule.entity.Schedule;
 import com.hhconcert.server.business.domain.schedule.persistance.ScheduleRepository;
 import com.hhconcert.server.business.domain.seat.entity.Seat;
 import com.hhconcert.server.business.domain.seat.persistance.SeatRepository;
+import com.hhconcert.server.business.domain.seat.service.SeatAvailability;
 import com.hhconcert.server.business.domain.user.entity.User;
 import com.hhconcert.server.business.domain.user.persistance.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -44,6 +45,8 @@ class ReservationServiceTest {
     private ScheduleRepository scheduleRepository;
     @Mock
     private SeatRepository seatRepository;
+    @Mock
+    private SeatAvailability seatAvailability;
 
     User user;
     Concert concert;
@@ -68,6 +71,8 @@ class ReservationServiceTest {
         when(concertRepository.findConcert(1L)).thenReturn(concert);
         when(scheduleRepository.findSchedule(1L)).thenReturn(schedule);
         when(seatRepository.findSeat(1L)).thenReturn(seat);
+        when(seatAvailability.isAvailable(1L)).thenReturn(true);
+
         when(reservationRepository.createTempReserve(any(Reservation.class))).thenReturn(reservation);
 
         ReservationInfo result = reservationService.creatTempReserve(new ReservationCommand("test1234", 1L, 1L, 1L));

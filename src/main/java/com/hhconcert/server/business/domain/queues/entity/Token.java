@@ -11,15 +11,19 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Table(
+    uniqueConstraints = @UniqueConstraint(columnNames = {"user_id"}),
+    indexes = @Index(name = "idx_status", columnList = "status")
+)
 public class Token extends BaseEntity {
 
     @Id
     private String tokenId;
 
-    @Column(nullable = false)
+    @Column(name = "user_id", nullable = false)
     private String userId;
 
-    @Column(nullable = false)
+    @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
     private TokenStatus status;
 
