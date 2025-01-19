@@ -20,11 +20,12 @@
 - 결제 API
 
 **1/11 ~ 1/17**
-- 기능 고도화
-- 코드 리팩토링
+- 각 도메인 예외 처리
+- 시나리오 별 동시성 테스트
+
 
 ## 프로젝트 요구 사항
-- 유저 토큰 발급
+- 대기열 토큰 발급
 - 예약 가능 날짜 / 좌석 조회
 - 좌석 예약
 - 잔액 충전 / 조회
@@ -63,9 +64,9 @@
 </details>
 
 ## ERD
-![img.png](docs/img/erd/ERD_5.png)
+![img.png](docs/img/erd/ERD_6.png)
 
-## [API Specs](docs/api-spec.md)
+## API Specs
 
 http://localhost:8080/swagger-ui/index.html
 
@@ -154,7 +155,7 @@ Content-Type: application/json
   "userId": "test1234",
   "priority": 3,
   "status": "WAIT",
-  "createdAt": "2024-01-01T00:05:33Z",
+  "tokenIssuedAt": "2024-01-01T00:05:33Z",
   "activeAt": null,
   "expireAt": null
 }
@@ -165,10 +166,18 @@ Content-Type: application/json
   "tokenId": "15e859ae-9bf2-4f08-ae68-465e9dcd54bf",
   "userId": "test1234",
   "priority": 0,
-  "status": "WAIT",
-  "createdAt": "2024-01-01T00:05:33Z",
+  "status": "ACTIVE",
+  "tokenIssuedAt": "2024-01-01T00:05:33Z",
   "activeAt": "2024-01-01T00:08:33Z",
   "expireAt": "2024-01-01T00:13:33Z"
+}
+```
+### **409 Conflict**
+토큰을 중복 발급하는 경우
+```json
+{
+  "status": "CONFLICT",
+  "message": "이미 토큰이 존재합니다."
 }
 ```
 </details>
@@ -191,7 +200,7 @@ Authorization: Bearer {tokenId}
   "userId": "test1234",
   "priority": 1,
   "status": "WAIT",
-  "createdAt": "2024-01-01T00:05:33Z",
+  "tokenIssuedAt": "2024-01-01T00:05:33Z",
   "activeAt": null,
   "expireAt": null
 }
@@ -203,7 +212,7 @@ Authorization: Bearer {tokenId}
   "userId": "test1234",
   "priority": 0,
   "status": "ACTIVE",
-  "createdAt": "2024-01-01T00:05:33Z",
+  "tokenIssuedAt": "2024-01-01T00:05:33Z",
   "activeAt": "2024-01-01T00:08:33Z",
   "expireAt": "2024-01-01T00:13:33Z"
 }
@@ -308,9 +317,9 @@ Authorization: Bearer {tokenId}
   "seatId": 1
 }
 ```
-**201 Created**
+### **201 Created**
 
-좌석 예약 성공 시 대기열 토큰 삭제 -> 좌석 임시 배정 시간을 5분으로 설정
+예약 성공 시 좌석 임시 배정 시간을 5분으로 설정
 ```json
 {
   "reserveId": 1,
@@ -319,13 +328,21 @@ Authorization: Bearer {tokenId}
   "concert": {
     "concertId": 1,
     "title": "콘서트명1",
-    "startAt": "2024-12-31",
-    "endAt": "2025-01-01"
+    "startDate": "2024-12-31",
+    "endDate": "2025-01-01"
   },
   "price": 75000,
   "status": "TEMP",
   "createdAt": "2025-01-01T00:15:33Z",
   "expiredAt": "2024-01-01T00:20:33Z"
+}
+```
+### **409 Conflict**
+예약이 완료된 좌석을 예약하는 경우
+```json
+{
+  "status": "CONFLICT",
+  "message": "이미 예약된 좌석입니다."
 }
 ```
 </details>
@@ -350,7 +367,7 @@ Content-Type: application/json
 }
 ```
 
-### 200 OK
+### **200 OK**
 ```json
 {
   "userId": "test1234",
@@ -365,7 +382,7 @@ Content-Type: application/json
 GET /points/test1234
 ```
 
-### 200 OK
+### **200 OK**
 ```json
 {
   "userId": "test1234",
@@ -407,11 +424,36 @@ Authorization: Bearer {tokenId}
   "createdAt": "2025-01-01T00:22:33Z"
 }
 ```
+### **400 Bad Request**
+잘못된 금액으로 요청한 경우
+```json
+{
+  "status": "BAD_REQUEST",
+  "message": "결제 금액이 일치하지 않습니다."
+}
+```
 ### **402 Payment Required**
+사용자 보유 포인트가 부족한 경우
 ```json
 {
   "status": "PAYMENT_REQUIRED",
-  "message": "포인트가 부족합니다."
+  "message": "잔액이 부족합니다."
+}
+```
+### **409 Conflict**
+COMPLETE, CANCEL 상태의 예약건을 결제하는 경우
+```json
+{
+  "status": "CONFLICT",
+  "message": "결제할 수 없는 예약 내역입니다."
+}
+```
+### **410 Gone**
+좌석 임시 배정 시간이 만료된 예약건을 결제하는 경우
+```json
+{
+  "status": "GONE",
+  "message": "임시 예약 시간이 만료되었습니다."
 }
 ```
 </details>
