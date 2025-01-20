@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -28,4 +29,10 @@ public class ReservationCoreRepositoryImpl implements ReservationRepository {
     public Reservation findReserve(Long reserveId) {
         return repository.findById(reserveId).orElseThrow(() -> new NoSuchElementException("등록되지 않은 예약입니다."));
     }
+
+    @Override
+    public Optional<Reservation> getSeatReserve(Long seatId) {
+        return repository.getSeatReserve(seatId);
+    }
+
 }

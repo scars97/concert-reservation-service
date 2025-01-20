@@ -3,6 +3,7 @@ package com.hhconcert.server.business.domain.reservation.persistance;
 import com.hhconcert.server.business.domain.reservation.entity.Reservation;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ReservationRepository {
 
@@ -26,4 +27,11 @@ public interface ReservationRepository {
      * @return
      */
     Reservation findReserve(Long reserveId);
+
+    /**
+     * 해당 좌석 예약 목록 조회
+     * @param seatId
+     * @return
+     */
+    Optional<Reservation> getSeatReserve(Long seatId);
 }

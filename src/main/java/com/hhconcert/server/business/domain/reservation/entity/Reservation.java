@@ -89,9 +89,4 @@ public class Reservation extends BaseEntity {
         this.expiredAt = null;
     }
 
-    public boolean isSeatReserved() {
-        return this.status == ReservationStatus.COMPLETE ||
-                (this.status == ReservationStatus.TEMP &&
-                this.expiredAt.isAfter(LocalDateTime.now()));
-    }
 }
