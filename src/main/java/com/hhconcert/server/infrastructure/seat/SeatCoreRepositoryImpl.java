@@ -21,7 +21,7 @@ public class SeatCoreRepositoryImpl implements SeatRepository {
 
     @Override
     public Seat findSeat(Long seatId) {
-        return repository.findByIdWithLock(seatId).orElseThrow(() -> new NoSuchElementException("등록되지 않은 좌석입니다."));
+        return repository.findById(seatId).orElseThrow(() -> new NoSuchElementException("등록되지 않은 좌석입니다."));
     }
 
 }

@@ -83,14 +83,4 @@ class ReservationTest {
         );
     }
 
-    @DisplayName("좌석이 이미 예약된 경우 True 를 반환한다.")
-    @Test
-    void isSeatReserved() {
-        Reservation reservation = new Reservation(user, concert, schedule, seat, 75000, ReservationStatus.TEMP, LocalDateTime.now().plusMinutes(5));
-
-        boolean result = reservation.isSeatReserved();
-
-        assertThat(result).isTrue();
-    }
-
 }

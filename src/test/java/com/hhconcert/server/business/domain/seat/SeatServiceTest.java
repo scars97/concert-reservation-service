@@ -1,10 +1,10 @@
 package com.hhconcert.server.business.domain.seat;
 
+import com.hhconcert.server.business.domain.reservation.persistance.ReservationRepository;
 import com.hhconcert.server.business.domain.schedule.entity.Schedule;
 import com.hhconcert.server.business.domain.seat.dto.SeatInfo;
 import com.hhconcert.server.business.domain.seat.entity.Seat;
 import com.hhconcert.server.business.domain.seat.persistance.SeatRepository;
-import com.hhconcert.server.business.domain.seat.service.SeatAvailability;
 import com.hhconcert.server.business.domain.seat.service.SeatService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -15,6 +15,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
@@ -28,10 +29,10 @@ class SeatServiceTest {
     private SeatService seatService;
 
     @Mock
-    private SeatAvailability seatAvailability;
+    private SeatRepository seatRepository;
 
     @Mock
-    private SeatRepository seatRepository;
+    private ReservationRepository reservationRepository;
 
     Schedule mockSchedule;
 
@@ -52,7 +53,7 @@ class SeatServiceTest {
 
         when(seatRepository.getSeats(scheduleId)).thenReturn(seats);
         for (Seat seat : seats) {
-            when(seatAvailability.isAvailable(seat.getId())).thenReturn(true);
+            when(reservationRepository.getSeatReserve(seat.getId())).thenReturn(Optional.empty());
         }
 
         List<SeatInfo> results = seatService.getAvailableSeats(scheduleId);
