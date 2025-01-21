@@ -8,7 +8,6 @@ import com.hhconcert.server.business.domain.queues.exception.TokenException;
 import com.hhconcert.server.business.domain.queues.persistance.TokenRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -17,24 +16,18 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TokenService {
 
-    private final static int MAX_ACTIVE_TOKEN_COUNT = 10;
     private final TokenRepository tokenRepository;
 
-    @Transactional(isolation = Isolation.READ_COMMITTED)
+    @Transactional
     public TokenInfo createToken(String userId) {
         if (tokenRepository.isDuplicate(userId)) {
             throw new TokenException(TokenErrorCode.DUPLICATED_TOKEN);
         }
 
-        List<Token> activeTokens = tokenRepository.getTokensBy(TokenStatus.ACTIVE);
-        if (activeTokens.size() < MAX_ACTIVE_TOKEN_COUNT) {
-            Token token = tokenRepository.createToken(Token.createForActive(userId));
-            return TokenInfo.from(token);
-        }
-
-        List<Token> waitTokens = tokenRepository.getTokensBy(TokenStatus.WAIT);
         Token waitToken = tokenRepository.createToken(Token.createForWait(userId));
-        return TokenInfo.from(waitToken, waitTokens.size() + 1);
+
+        int waitCount = tokenRepository.getTokenCountFor(TokenStatus.WAIT);
+        return TokenInfo.from(waitToken, waitCount);
     }
 
     @Transactional

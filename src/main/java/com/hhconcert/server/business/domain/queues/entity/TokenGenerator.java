@@ -8,10 +8,7 @@ import java.util.UUID;
 public class TokenGenerator {
 
     public static String generateToken(String userId) {
-        String token = UUID.nameUUIDFromBytes(userId.getBytes()).toString();
-
-        log.info("generateToken : {}", token);
-
-        return token;
+        return UUID.nameUUIDFromBytes(userId.getBytes()).toString();
     }
+
 }

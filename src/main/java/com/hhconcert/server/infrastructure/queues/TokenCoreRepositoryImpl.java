@@ -52,11 +52,6 @@ public class TokenCoreRepositoryImpl implements TokenRepository {
     }
 
     @Override
-    public List<Token> findAll() {
-        return repository.findAllTokens();
-    }
-
-    @Override
     public List<Token> getExpiredTokens(LocalDateTime now) {
         return repository.findByStatusAndExpiredAtLessThanEqual(TokenStatus.ACTIVE, now);
     }

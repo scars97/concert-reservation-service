@@ -51,8 +51,6 @@ public interface TokenRepository {
      */
     List<Token> getTokensBy(TokenStatus status);
 
-    List<Token> findAll();
-
     /**
      * 만료된 ACTIVE 토큰 조회
      * @param now

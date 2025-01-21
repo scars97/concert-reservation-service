@@ -10,11 +10,12 @@ import com.hhconcert.server.config.IntegrationTestSupport;
 import com.hhconcert.server.infrastructure.queues.TokenJpaRepository;
 import com.hhconcert.server.infrastructure.user.UserJpaRepository;
 import com.hhconcert.server.interfaces.api.queues.dto.TokenRequest;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -46,27 +47,14 @@ class QueueFacadeTest extends IntegrationTestSupport {
         }
     }
 
-    @DisplayName("활성화 인원에 따라 상태 값이 다른 토큰이 생성된다.")
-    @TestFactory
-    Collection<DynamicTest> createToken() {
-        return List.of(
-            DynamicTest.dynamicTest("활성화 인원이 10명 미만인 경우, ACTIVE 상태의 토큰이 생성된다.", () -> {
-                TokenResult result = queueFacade.createToken(new TokenRequest("test10"));
+    @DisplayName("토큰 발급 요청 시, WAIT 상태의 토큰이 발급된다.")
+    @Test
+    void createToken() {
+        TokenResult result = queueFacade.createToken(new TokenRequest("test11"));
 
-                assertThat(result.tokenId()).isEqualTo(UUID.nameUUIDFromBytes("test10".getBytes()).toString());
-                assertThat(result.priority()).isZero();
-                assertThat(result.status()).isEqualTo(TokenStatus.ACTIVE);
-                assertThat(result.activeAt()).isBefore(result.expireAt());
-                assertThat(result.expireAt()).isAfter(result.activeAt());
-            }),
-            DynamicTest.dynamicTest("활성화 인원이 10명 이상인 경우, WAIT 상태의 토큰이 생성된다.", () -> {
-                TokenResult result = queueFacade.createToken(new TokenRequest("test11"));
-
-                assertThat(result.tokenId()).isEqualTo(UUID.nameUUIDFromBytes("test11".getBytes()).toString());
-                assertThat(result.priority()).isOne();
-                assertThat(result.status()).isEqualTo(TokenStatus.WAIT);
-            })
-        );
+        assertThat(result.tokenId()).isEqualTo(UUID.nameUUIDFromBytes("test11".getBytes()).toString());
+        assertThat(result.priority()).isOne();
+        assertThat(result.status()).isEqualTo(TokenStatus.WAIT);
     }
 
     @DisplayName("대기열 상태 요청 시, WAIT 상태인 경우 대기 순서가 연산되어 반환된다.")
