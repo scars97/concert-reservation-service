@@ -23,10 +23,12 @@ public interface TokenRepository {
     Token createToken(Token token);
 
     /**
-     * 우선순위가 가장 높은 WAIT 토큰 조회
+     * 우선 순위가 높은 WAIT 토큰 목록 조회
+     * @param status
+     * @param limit
      * @return
      */
-    Token findNextTokenToActivate(TokenStatus status);
+    List<Token> findNextTokensToActivate(TokenStatus status, int limit);
 
     /**
      * 토큰 조회
@@ -35,6 +37,11 @@ public interface TokenRepository {
      */
     Token findToken(String tokenId);
 
+    /**
+     * 사용자 토큰 조회
+     * @param userId
+     * @return
+     */
     Token findTokenByUserId(String userId);
 
     /**
@@ -51,20 +58,11 @@ public interface TokenRepository {
      */
     List<Token> getTokensBy(TokenStatus status);
 
-    List<Token> findAll();
-
-    /**
-     * 만료된 ACTIVE 토큰 조회
-     * @param now
-     * @return
-     */
-    List<Token> getExpiredTokens(LocalDateTime now);
-
     /**
      * 만료된 토큰 삭제
-     * @param token
+     * @param now
      */
-    void dropToken(Token token);
+    void dropExpiredTokens(LocalDateTime now);
 
     /**
      * 결제 후 토큰 만료 처리

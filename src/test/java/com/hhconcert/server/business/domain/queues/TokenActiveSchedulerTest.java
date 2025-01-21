@@ -4,17 +4,16 @@ import com.hhconcert.server.business.domain.queues.entity.Token;
 import com.hhconcert.server.business.domain.queues.entity.TokenStatus;
 import com.hhconcert.server.business.domain.queues.persistance.TokenRepository;
 import com.hhconcert.server.business.domain.queues.service.TokenActiveScheduler;
+import com.hhconcert.server.config.IntegrationTestSupport;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ActiveProfiles("test")
-@SpringBootTest
-class TokenActiveSchedulerTest {
+class TokenActiveSchedulerTest extends IntegrationTestSupport {
 
     @Autowired
     private TokenActiveScheduler tokenActiveScheduler;
@@ -22,19 +21,18 @@ class TokenActiveSchedulerTest {
     @Autowired
     private TokenRepository tokenRepository;
 
-    @DisplayName("대기열 통과 시, WAIT 상태 토큰 1개를 ACTIVE 상태로 변경한다.")
+    @DisplayName("WAIT 상태 토큰들을 활성화할 수 있는 만큼 ACTIVE 상태로 변경한다.")
     @Test
     void whenPassedQueue_thenUpdateStatusIsActivate() {
-        Token token1 = tokenRepository.createToken(Token.createForWait("test1"));
-        Token token2 = tokenRepository.createToken(Token.createForWait("test2"));
+        tokenRepository.createToken(Token.createForWait("test1"));
+        tokenRepository.createToken(Token.createForWait("test2"));
 
         tokenActiveScheduler.activateTokens();
 
-        Token findToken1 = tokenRepository.findToken(token1.getTokenId());
-        assertThat(findToken1.getStatus()).isEqualTo(TokenStatus.ACTIVE);
-
-        Token findToken2 = tokenRepository.findToken(token2.getTokenId());
-        assertThat(findToken2.getStatus()).isEqualTo(TokenStatus.WAIT);
+        List<Token> tokens = tokenRepository.getTokensBy(TokenStatus.ACTIVE);
+        assertThat(tokens).hasSize(2)
+                .extracting("status")
+                .contains(TokenStatus.ACTIVE);
     }
 
 }
