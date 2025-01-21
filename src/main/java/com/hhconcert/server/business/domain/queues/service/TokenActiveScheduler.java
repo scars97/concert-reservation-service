@@ -10,6 +10,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Slf4j
 @EnableScheduling
 @Component
@@ -27,11 +29,12 @@ public class TokenActiveScheduler {
             return;
         }
 
-        Token nextToken = tokenRepository.findNextTokenToActivate(TokenStatus.WAIT);
-        if (nextToken != null) {
+        List<Token> nextTokens = tokenRepository.findNextTokensToActivate(TokenStatus.WAIT, MAX_ACTIVE_TOKEN_COUNT - activeCount);
+        nextTokens.forEach(nextToken -> {
             nextToken.activeForMinutes(5);
-            log.info("update active token : {}", nextToken.getUserId());
-        }
+        });
+
+        log.info("Activation Tokens : {}", activeCount + nextTokens.size());
     }
 
 }

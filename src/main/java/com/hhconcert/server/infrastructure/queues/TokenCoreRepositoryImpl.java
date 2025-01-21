@@ -4,6 +4,7 @@ import com.hhconcert.server.business.domain.queues.entity.Token;
 import com.hhconcert.server.business.domain.queues.entity.TokenStatus;
 import com.hhconcert.server.business.domain.queues.persistance.TokenRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
@@ -27,8 +28,9 @@ public class TokenCoreRepositoryImpl implements TokenRepository {
     }
 
     @Override
-    public Token findNextTokenToActivate(TokenStatus status) {
-        return repository.findFirstByStatusOrderByCreatedAtAsc(status);
+    public List<Token> findNextTokensToActivate(TokenStatus status, int limit) {
+        PageRequest pageable = PageRequest.of(0, limit);
+        return repository.findByStatusOrderByCreatedAtAsc(status, pageable);
     }
 
     @Override
@@ -52,13 +54,8 @@ public class TokenCoreRepositoryImpl implements TokenRepository {
     }
 
     @Override
-    public List<Token> getExpiredTokens(LocalDateTime now) {
-        return repository.findByStatusAndExpiredAtLessThanEqual(TokenStatus.ACTIVE, now);
-    }
-
-    @Override
-    public void dropToken(Token token) {
-        repository.delete(token);
+    public void dropExpiredTokens(LocalDateTime now) {
+        repository.deleteByExpiredAtBefore(now);
     }
 
     @Override
