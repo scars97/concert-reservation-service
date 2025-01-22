@@ -19,10 +19,19 @@ public class User extends BaseEntity {
     @Column(name = "user_seq")
     private Long id;
 
-    @Column(name = "user_id")
+    @Column(name = "user_id", unique = true, nullable = false)
     private String userId;
 
     private Integer point;
+
+    @Version
+    private Long version;
+
+    public User(Long id, String userId, Integer point) {
+        this.id = id;
+        this.userId = userId;
+        this.point = point;
+    }
 
     public User(String userId, Integer point) {
         this.userId = userId;

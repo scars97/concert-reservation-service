@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@Transactional
 public class UserService {
 
     private final UserRepository userRepository;
@@ -20,7 +20,6 @@ public class UserService {
         return UserInfo.from(userRepository.findUser(userId));
     }
 
-    @Transactional
     public PointInfo chargePoint(PointCommand command) {
         User user = userRepository.findUser(command.userId());
 
