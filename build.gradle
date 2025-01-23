@@ -35,6 +35,10 @@ dependencies {
 	// db
 	runtimeOnly 'com.mysql:mysql-connector-j'
 
+	// redis
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis:3.4.1'
+	implementation 'org.redisson:redisson-spring-boot-starter:3.43.0'
+
 	// lombok
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
@@ -43,6 +47,7 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.boot:spring-boot-testcontainers'
 	testImplementation 'org.testcontainers:mysql'
+	testImplementation "com.redis:testcontainers-redis"
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 

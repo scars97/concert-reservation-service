@@ -14,10 +14,10 @@ import com.hhconcert.server.business.domain.seat.entity.Seat;
 import com.hhconcert.server.business.domain.seat.persistance.SeatRepository;
 import com.hhconcert.server.business.domain.user.entity.User;
 import com.hhconcert.server.business.domain.user.persistance.UserRepository;
+import com.hhconcert.server.global.common.lock.DistributedLock;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
@@ -30,7 +30,7 @@ public class ReservationService {
     private final SeatRepository seatRepository;
     private final UserRepository userRepository;
 
-    @Transactional
+    @DistributedLock(key = "#info.seatId()")
     public ReservationInfo creatTempReserve(ReservationCommand info) {
         User user = userRepository.findUser(info.userId());
         Concert concert = concertRepository.findConcert(info.concertId());

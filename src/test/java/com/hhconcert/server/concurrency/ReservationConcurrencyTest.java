@@ -17,8 +17,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -29,8 +27,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ActiveProfiles("test")
-@SpringBootTest
 public class ReservationConcurrencyTest extends IntegrationTestSupport {
 
     @Autowired
@@ -63,10 +59,10 @@ public class ReservationConcurrencyTest extends IntegrationTestSupport {
         seat = seatJpaRepository.save(new Seat(schedule, "A1", 75000));
     }
 
-    @DisplayName("같은 좌석에 대해 동시에 10명이 예약 요청하는 경우, 1명만 성공하고 나머지는 실패한다.")
+    @DisplayName("같은 좌석에 대해 동시에 100명이 예약 요청하는 경우, 1명만 성공하고 나머지는 실패한다.")
     @Test
     void when10UsersReserveSeat_then1IsSuccessAndOtherIsFail() throws InterruptedException {
-        int totalUsers = 10;
+        int totalUsers = 100;
         for (int i = 0; i < totalUsers; i++) {
             String userId = "test" + (i + 1);
             userJpaRepository.save(new User(userId, 80000));
@@ -98,7 +94,7 @@ public class ReservationConcurrencyTest extends IntegrationTestSupport {
         executor.shutdown();
 
         assertThat(successCount.get()).isOne();
-        assertThat(failureCount.get()).isEqualTo(9);
+        assertThat(failureCount.get()).isEqualTo(99);
 
         List<Reservation> reserve = reservationRepository.findReserveBySeatId(seat.getId());
         assertThat(reserve).hasSize(1);
