@@ -3,14 +3,14 @@ package com.hhconcert.server.business.domain.payment.service;
 import com.hhconcert.server.business.domain.payment.dto.PaymentCommand;
 import com.hhconcert.server.business.domain.payment.dto.PaymentInfo;
 import com.hhconcert.server.business.domain.payment.entity.Payment;
+import com.hhconcert.server.business.domain.payment.exception.PaymentErrorCode;
+import com.hhconcert.server.business.domain.payment.exception.PaymentException;
 import com.hhconcert.server.business.domain.payment.persistance.PaymentRepository;
 import com.hhconcert.server.business.domain.queues.persistance.TokenRepository;
 import com.hhconcert.server.business.domain.reservation.entity.Reservation;
 import com.hhconcert.server.business.domain.reservation.persistance.ReservationRepository;
 import com.hhconcert.server.business.domain.user.entity.User;
 import com.hhconcert.server.business.domain.user.persistance.UserRepository;
-import com.hhconcert.server.business.domain.payment.exception.PaymentErrorCode;
-import com.hhconcert.server.business.domain.payment.exception.PaymentException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,10 +31,10 @@ public class PaymentService {
             throw new PaymentException(PaymentErrorCode.NOT_MATCH_PAYMENT_AMOUNT);
         }
 
+        reservation.updateForComplete();
+
         User user = userRepository.findUser(command.userId());
         user.usePoint(command.amount());
-
-        reservation.updateForComplete();
 
         tokenRepository.dropTokenByUserId(command.userId());
 
