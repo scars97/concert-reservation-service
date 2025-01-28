@@ -8,11 +8,14 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
 
 @Aspect
+@Order(Ordered.HIGHEST_PRECEDENCE)
 @Component
 @RequiredArgsConstructor
 @Slf4j
@@ -21,7 +24,6 @@ public class DistributedLockAop {
     private static final String REDISSON_LOCK_PREFIX = "LOCK:";
 
     private final RedissonClient redissonClient;
-    private final AopForTransaction aopForTransaction;
 
     @Around("@annotation(com.hhconcert.server.global.common.lock.DistributedLock)")
     public Object lock(final ProceedingJoinPoint joinPoint) throws Throwable {
@@ -39,7 +41,7 @@ public class DistributedLockAop {
                 return false;
             }
 
-            return aopForTransaction.proceed(joinPoint);  // DistributedLock 어노테이션이 선언된 메서드를 별도의 트랜잭션으로 실행.
+            return joinPoint.proceed();
         } catch (InterruptedException e) {
             throw new InterruptedException();
         } finally {
