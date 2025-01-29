@@ -6,8 +6,6 @@ import com.hhconcert.server.business.domain.reservation.dto.ReservationCommand;
 import com.hhconcert.server.business.domain.reservation.dto.ReservationInfo;
 import com.hhconcert.server.business.domain.reservation.entity.Reservation;
 import com.hhconcert.server.business.domain.reservation.entity.ReservationStatus;
-import com.hhconcert.server.business.domain.reservation.exception.ReservationErrorCode;
-import com.hhconcert.server.business.domain.reservation.exception.ReservationException;
 import com.hhconcert.server.business.domain.reservation.persistance.ReservationRepository;
 import com.hhconcert.server.business.domain.reservation.service.ReservationService;
 import com.hhconcert.server.business.domain.schedule.entity.Schedule;
@@ -16,6 +14,8 @@ import com.hhconcert.server.business.domain.seat.entity.Seat;
 import com.hhconcert.server.business.domain.seat.persistance.SeatRepository;
 import com.hhconcert.server.business.domain.user.entity.User;
 import com.hhconcert.server.business.domain.user.persistance.UserRepository;
+import com.hhconcert.server.global.common.error.ErrorCode;
+import com.hhconcert.server.global.common.exception.BusinessException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -102,8 +102,8 @@ class ReservationServiceTest {
         ReservationCommand command = new ReservationCommand("test1234", 1L, 1L, 1L);
 
         assertThatThrownBy(() -> reservationService.creatTempReserve(command))
-                .isInstanceOf(ReservationException.class)
-                .hasFieldOrPropertyWithValue("errorCode", ReservationErrorCode.ALREADY_RESERVED)
+                .isInstanceOf(BusinessException.class)
+                .hasFieldOrPropertyWithValue("errorCode", ErrorCode.ALREADY_RESERVED)
                 .extracting("errorCode")
                 .extracting("status", "message")
                 .containsExactly(HttpStatus.CONFLICT, "이미 예약된 좌석입니다.");

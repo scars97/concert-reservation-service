@@ -1,9 +1,5 @@
 package com.hhconcert.server.global.common.exception;
 
-import com.hhconcert.server.business.domain.payment.exception.PaymentException;
-import com.hhconcert.server.business.domain.reservation.exception.ReservationException;
-import com.hhconcert.server.business.domain.user.exception.PointException;
-import com.hhconcert.server.business.domain.queues.exception.TokenException;
 import com.hhconcert.server.global.common.model.BindErrorResponse;
 import com.hhconcert.server.global.common.model.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -22,9 +18,9 @@ import java.util.NoSuchElementException;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(BindException.class)
-    public ResponseEntity<BindErrorResponse> validationExceptionHandler(BindException exception) {
+    public ResponseEntity<BindErrorResponse> validationExceptionHandler(BindException e) {
         Map<String, String> errors = new HashMap<>();
-        exception.getFieldErrors().forEach(error -> {
+        e.getFieldErrors().forEach(error -> {
             String fieldName = error.getField();
             String errorMessage = error.getDefaultMessage();
             errors.put(fieldName, errorMessage);
@@ -33,38 +29,22 @@ public class GlobalExceptionHandler {
         return BindErrorResponse.of(HttpStatus.BAD_REQUEST, errors);
     }
 
-    @ExceptionHandler(TokenException.class)
-    public ResponseEntity<ErrorResponse> handleTokenException(TokenException ex) {
-        log.error("Token Exception occurred : {}", ex.getErrorCode());
-        return ErrorResponse.of(ex.getErrorCode());
-    }
-
-    @ExceptionHandler(ReservationException.class)
-    public ResponseEntity<ErrorResponse> handleReservationException(ReservationException ex) {
-        log.error("Reservation Exception occurred : {}", ex.getErrorCode());
-        return ErrorResponse.of(ex.getErrorCode());
-    }
-
-    @ExceptionHandler(PaymentException.class)
-    public ResponseEntity<ErrorResponse> handlePaymentException(PaymentException ex) {
-        log.error("Payment Exception occurred : {}", ex.getErrorCode());
-        return ErrorResponse.of(ex.getErrorCode());
-    }
-
-    @ExceptionHandler(PointException.class)
-    public ResponseEntity<ErrorResponse> handlePointException(PointException ex) {
-        log.error("Point Exception occurred : {}", ex.getErrorCode());
-        return ErrorResponse.of(ex.getErrorCode());
+    @ExceptionHandler(BusinessException.class)
+    public ResponseEntity<ErrorResponse> handleBusinessException(BusinessException e) {
+        log.error("Business Exception occurred : {} - {}", e.getErrorCode(), e.getMessage());
+        return ErrorResponse.of(e.getErrorCode());
     }
 
     @ExceptionHandler(NoSuchElementException.class)
     public ResponseEntity<ErrorResponse> handleNoSuchElementException(NoSuchElementException e) {
+        log.error("Not Found Exception occurred : {} - {}", HttpStatus.NOT_FOUND, e.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(new ErrorResponse(HttpStatus.NOT_FOUND, e.getMessage()));
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handleNoSuchElementException(Exception e) {
+    public ResponseEntity<ErrorResponse> handleException(Exception e) {
+        log.error("Exception occurred : {}", e.getMessage());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, "서버 오류가 발생했습니다. 잠시 후 다시 요청해주세요."));
     }

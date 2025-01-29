@@ -4,10 +4,10 @@ import com.hhconcert.server.business.domain.queues.dto.TokenInfo;
 import com.hhconcert.server.business.domain.queues.entity.Token;
 import com.hhconcert.server.business.domain.queues.entity.TokenGenerator;
 import com.hhconcert.server.business.domain.queues.entity.TokenStatus;
-import com.hhconcert.server.business.domain.queues.exception.TokenErrorCode;
-import com.hhconcert.server.business.domain.queues.exception.TokenException;
 import com.hhconcert.server.business.domain.queues.persistance.TokenRepository;
 import com.hhconcert.server.business.domain.queues.service.TokenService;
+import com.hhconcert.server.global.common.error.ErrorCode;
+import com.hhconcert.server.global.common.exception.BusinessException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -65,8 +65,8 @@ class TokenServiceTest {
         when(tokenRepository.isDuplicate("test1234")).thenReturn(true);
 
         assertThatThrownBy(() -> tokenService.createToken("test1234"))
-                .isInstanceOf(TokenException.class)
-                .hasFieldOrPropertyWithValue("errorCode", TokenErrorCode.DUPLICATED_TOKEN)
+                .isInstanceOf(BusinessException.class)
+                .hasFieldOrPropertyWithValue("errorCode", ErrorCode.DUPLICATED_TOKEN)
                 .extracting("errorCode")
                 .extracting("status", "message")
                 .containsExactly(HttpStatus.CONFLICT, "이미 토큰이 존재합니다.");

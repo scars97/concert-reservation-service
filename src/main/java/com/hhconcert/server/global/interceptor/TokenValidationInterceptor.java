@@ -24,6 +24,8 @@ public class TokenValidationInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String token = request.getHeader("Authorization");
 
+        log.info("Received request: URI={}, Method={}", request.getRequestURI(), request.getMethod());
+
         if (token == null) {
             return errorResponse(response, HttpServletResponse.SC_UNAUTHORIZED, "토큰 정보가 누락되었습니다.");
         }

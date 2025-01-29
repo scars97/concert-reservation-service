@@ -5,8 +5,8 @@ import com.hhconcert.server.business.domain.concert.entity.Concert;
 import com.hhconcert.server.business.domain.schedule.entity.Schedule;
 import com.hhconcert.server.business.domain.seat.entity.Seat;
 import com.hhconcert.server.business.domain.user.entity.User;
-import com.hhconcert.server.business.domain.reservation.exception.ReservationErrorCode;
-import com.hhconcert.server.business.domain.reservation.exception.ReservationException;
+import com.hhconcert.server.global.common.error.ErrorCode;
+import com.hhconcert.server.global.common.exception.BusinessException;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -80,10 +80,10 @@ public class Reservation extends BaseEntity {
 
     public void updateForComplete() {
         if (this.status != ReservationStatus.TEMP) {
-            throw new ReservationException(ReservationErrorCode.INVALID_RESERVATION_STATUS);
+            throw new BusinessException(ErrorCode.INVALID_RESERVATION_STATUS);
         }
         if (this.expiredAt.isBefore(LocalDateTime.now())) {
-            throw new ReservationException(ReservationErrorCode.EXPIRED_RESERVATION);
+            throw new BusinessException(ErrorCode.EXPIRED_RESERVATION);
         }
         this.status = ReservationStatus.COMPLETE;
         this.expiredAt = null;

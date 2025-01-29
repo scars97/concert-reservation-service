@@ -1,14 +1,15 @@
 package com.hhconcert.server.business.domain.user;
 
 import com.hhconcert.server.business.domain.user.entity.User;
-import com.hhconcert.server.business.domain.user.exception.PointErrorCode;
-import com.hhconcert.server.business.domain.user.exception.PointException;
+import com.hhconcert.server.global.common.error.ErrorCode;
+import com.hhconcert.server.global.common.exception.BusinessException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class UserTest {
 
@@ -45,8 +46,8 @@ class UserTest {
         int amount = 75000;
 
         assertThatThrownBy(() -> user.usePoint(amount))
-                .isInstanceOf(PointException.class)
-                .hasFieldOrPropertyWithValue("errorCode", PointErrorCode.INSUFFICIENT_POINTS)
+                .isInstanceOf(BusinessException.class)
+                .hasFieldOrPropertyWithValue("errorCode", ErrorCode.INSUFFICIENT_POINTS)
                 .extracting("errorCode")
                 .extracting("status", "message")
                 .containsExactly(HttpStatus.PAYMENT_REQUIRED, "잔액이 부족합니다.");
