@@ -3,9 +3,9 @@ package com.hhconcert.server.business.domain.queues.service;
 import com.hhconcert.server.business.domain.queues.dto.TokenInfo;
 import com.hhconcert.server.business.domain.queues.entity.Token;
 import com.hhconcert.server.business.domain.queues.entity.TokenStatus;
-import com.hhconcert.server.business.domain.queues.exception.TokenErrorCode;
-import com.hhconcert.server.business.domain.queues.exception.TokenException;
 import com.hhconcert.server.business.domain.queues.persistance.TokenRepository;
+import com.hhconcert.server.global.common.error.ErrorCode;
+import com.hhconcert.server.global.common.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +21,7 @@ public class TokenService {
     @Transactional
     public TokenInfo createToken(String userId) {
         if (tokenRepository.isDuplicate(userId)) {
-            throw new TokenException(TokenErrorCode.DUPLICATED_TOKEN);
+            throw new BusinessException(ErrorCode.DUPLICATED_TOKEN);
         }
 
         Token waitToken = tokenRepository.createToken(Token.createForWait(userId));

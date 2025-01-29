@@ -5,8 +5,6 @@ import com.hhconcert.server.business.domain.concert.persistance.ConcertRepositor
 import com.hhconcert.server.business.domain.reservation.dto.ReservationCommand;
 import com.hhconcert.server.business.domain.reservation.dto.ReservationInfo;
 import com.hhconcert.server.business.domain.reservation.entity.Reservation;
-import com.hhconcert.server.business.domain.reservation.exception.ReservationErrorCode;
-import com.hhconcert.server.business.domain.reservation.exception.ReservationException;
 import com.hhconcert.server.business.domain.reservation.persistance.ReservationRepository;
 import com.hhconcert.server.business.domain.schedule.entity.Schedule;
 import com.hhconcert.server.business.domain.schedule.persistance.ScheduleRepository;
@@ -14,6 +12,8 @@ import com.hhconcert.server.business.domain.seat.entity.Seat;
 import com.hhconcert.server.business.domain.seat.persistance.SeatRepository;
 import com.hhconcert.server.business.domain.user.entity.User;
 import com.hhconcert.server.business.domain.user.persistance.UserRepository;
+import com.hhconcert.server.global.common.error.ErrorCode;
+import com.hhconcert.server.global.common.exception.BusinessException;
 import com.hhconcert.server.global.common.lock.DistributedLock;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -41,7 +41,7 @@ public class ReservationService {
 
         reservationRepository.getSeatReserve(seat.getId())
                 .ifPresent(reservation -> {
-                    throw new ReservationException(ReservationErrorCode.ALREADY_RESERVED);
+                    throw new BusinessException(ErrorCode.ALREADY_RESERVED);
                 });
 
         Reservation reservation = Reservation.createTemp(user, concert, schedule, seat);

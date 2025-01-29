@@ -15,8 +15,8 @@ import com.hhconcert.server.business.domain.schedule.entity.Schedule;
 import com.hhconcert.server.business.domain.seat.entity.Seat;
 import com.hhconcert.server.business.domain.user.entity.User;
 import com.hhconcert.server.business.domain.user.persistance.UserRepository;
-import com.hhconcert.server.business.domain.payment.exception.PaymentErrorCode;
-import com.hhconcert.server.business.domain.payment.exception.PaymentException;
+import com.hhconcert.server.global.common.error.ErrorCode;
+import com.hhconcert.server.global.common.exception.BusinessException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -90,8 +90,8 @@ class PaymentServiceTest {
         when(reservationRepository.findReserve(1L)).thenReturn(reservation);
 
         assertThatThrownBy(() -> paymentService.payment(new PaymentCommand("test1234", 1L, 70000)))
-                .isInstanceOf(PaymentException.class)
-                .hasFieldOrPropertyWithValue("errorCode", PaymentErrorCode.NOT_MATCH_PAYMENT_AMOUNT)
+                .isInstanceOf(BusinessException.class)
+                .hasFieldOrPropertyWithValue("errorCode", ErrorCode.NOT_MATCH_PAYMENT_AMOUNT)
                 .extracting("errorCode")
                 .extracting("status", "message")
                 .containsExactly(HttpStatus.BAD_REQUEST, "결제 금액이 일치하지 않습니다.");

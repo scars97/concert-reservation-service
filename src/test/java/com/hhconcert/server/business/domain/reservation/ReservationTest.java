@@ -6,8 +6,8 @@ import com.hhconcert.server.business.domain.reservation.entity.ReservationStatus
 import com.hhconcert.server.business.domain.schedule.entity.Schedule;
 import com.hhconcert.server.business.domain.seat.entity.Seat;
 import com.hhconcert.server.business.domain.user.entity.User;
-import com.hhconcert.server.business.domain.reservation.exception.ReservationErrorCode;
-import com.hhconcert.server.business.domain.reservation.exception.ReservationException;
+import com.hhconcert.server.global.common.error.ErrorCode;
+import com.hhconcert.server.global.common.exception.BusinessException;
 import org.junit.jupiter.api.*;
 import org.springframework.http.HttpStatus;
 
@@ -64,8 +64,8 @@ class ReservationTest {
                 Reservation reservation = new Reservation(user, concert, schedule, seat, 75000, ReservationStatus.CANCEL, null);
 
                 assertThatThrownBy(reservation::updateForComplete)
-                        .isInstanceOf(ReservationException.class)
-                        .hasFieldOrPropertyWithValue("errorCode", ReservationErrorCode.INVALID_RESERVATION_STATUS)
+                        .isInstanceOf(BusinessException.class)
+                        .hasFieldOrPropertyWithValue("errorCode", ErrorCode.INVALID_RESERVATION_STATUS)
                         .extracting("errorCode")
                         .extracting("status", "message")
                         .containsExactly(HttpStatus.CONFLICT, "결제할 수 없는 예약 내역입니다.");
@@ -74,8 +74,8 @@ class ReservationTest {
                 Reservation reservation = new Reservation(user, concert, schedule, seat, 75000, ReservationStatus.TEMP, LocalDateTime.now().minusMinutes(1));
 
                 assertThatThrownBy(reservation::updateForComplete)
-                        .isInstanceOf(ReservationException.class)
-                        .hasFieldOrPropertyWithValue("errorCode", ReservationErrorCode.EXPIRED_RESERVATION)
+                        .isInstanceOf(BusinessException.class)
+                        .hasFieldOrPropertyWithValue("errorCode", ErrorCode.EXPIRED_RESERVATION)
                         .extracting("errorCode")
                         .extracting("status", "message")
                         .containsExactly(HttpStatus.GONE, "임시 예약 시간이 만료되었습니다.");
