@@ -91,15 +91,9 @@ HOST: localhost:8080
 [
   {
     "id": 1,
-    "title": "콘서트명1",
-    "startDate": "2024-12-31",
-    "endDate": "2025-01-01"
-  },
-  {
-    "id": 2,
-    "title": "콘서트명2",
-    "startDate": "2025-01-01",
-    "endDate": "2025-01-02"
+    "title": "A 콘서트",
+    "startDate": "2024-12-14",
+    "endDate": "2025-03-01"
   }
 ]
 ```
@@ -116,10 +110,9 @@ HOST: localhost:8080
 ```json
 {
   "id": 1,
-  "title": "콘서트명1",
-  "startDate": "2024-12-31",
-  "endDate": "2025-01-01"
-  
+  "title": "A 콘서트",
+  "startDate": "2024-12-14",
+  "endDate": "2025-03-01"
 }
 ```
 ### **404 Not Found**
@@ -147,7 +140,7 @@ Content-Type: application/json
 ### **Request**
 ```json
 {
-  "userId": "test1234"
+  "userId": "user1234"
 }
 ```
 
@@ -156,24 +149,12 @@ Content-Type: application/json
 ```json
 {
   "tokenId": "15e859ae-9bf2-4f08-ae68-465e9dcd54bf",
-  "userId": "test1234",
-  "priority": 3,
+  "userId": "user1234",
+  "priority": 10,
   "status": "WAIT",
-  "tokenIssuedAt": "2024-01-01T00:05:33Z",
+  "tokenIssuedAt": "2025-01-30T11:50:000Z",
   "activeAt": null,
   "expireAt": null
-}
-```
-**활성화 상태**
-```json
-{
-  "tokenId": "15e859ae-9bf2-4f08-ae68-465e9dcd54bf",
-  "userId": "test1234",
-  "priority": 0,
-  "status": "ACTIVE",
-  "tokenIssuedAt": "2024-01-01T00:05:33Z",
-  "activeAt": "2024-01-01T00:08:33Z",
-  "expireAt": "2024-01-01T00:13:33Z"
 }
 ```
 ### **409 Conflict**
@@ -201,38 +182,24 @@ Authorization: Bearer {tokenId}
 ```json
 {
   "tokenId": "15e859ae-9bf2-4f08-ae68-465e9dcd54bf",
-  "userId": "test1234",
-  "priority": 1,
+  "userId": "user1234",
+  "priority": 10,
   "status": "WAIT",
-  "tokenIssuedAt": "2024-01-01T00:05:33Z",
+  "tokenIssuedAt": "2025-01-30T11:50:000Z",
   "activeAt": null,
   "expireAt": null
 }
 ```
-사용자 순서 도달 시 토큰 상태 활성화 및 만료 시간을 5분으로 설정
+활성화 상태 - 사용자 순서 도달 시 토큰 상태 활성화 및 만료 시간을 5분으로 설정
 ```json
 {
   "tokenId": "15e859ae-9bf2-4f08-ae68-465e9dcd54bf",
-  "userId": "test1234",
+  "userId": "user1234",
   "priority": 0,
   "status": "ACTIVE",
-  "tokenIssuedAt": "2024-01-01T00:05:33Z",
-  "activeAt": "2024-01-01T00:08:33Z",
-  "expireAt": "2024-01-01T00:13:33Z"
-}
-```
-### **401 Unauthorized**
-Authorization 정보가 없는 경우
-```json
-{
-  "message": "토큰 정보가 누락되었습니다."
-}
-```
-### **403 Forbidden**
-잘못된 토큰인 경우
-```json
-{
-  "message": "잘못된 토큰입니다."
+  "tokenIssuedAt": "2025-01-30T11:50:000Z",
+  "activeAt": "2025-01-30T11:58:000Z",
+  "expireAt": "2025-01-30T12:03:000Z"
 }
 ```
 </details>
@@ -257,11 +224,7 @@ Authorization: Bearer {tokenId}
   "schedules": [
     {
       "scheduleId": 1,
-      "date": "2024-12-31"
-    },
-    {
-      "scheduleId": 2,
-      "date": "2025-01-01"
+      "date": "2025-03-01"
     }
   ]
 }
@@ -275,7 +238,7 @@ Authorization: Bearer {tokenId}
 
 ### **Endpoint**
 ```http request
-GET /concerts/schedules/1/seats HTTP/1.1
+GET /concerts/schedules/1/seats
 HOST: localhost:8080
 Authorization: Bearer {tokenId}
 ```
@@ -315,7 +278,7 @@ Authorization: Bearer {tokenId}
 ### **Request**
 ```json
 {
-  "userId": "test1234",
+  "userId": "user1234",
   "concertId": 1,
   "scheduleId": 1,
   "seatId": 1
@@ -327,18 +290,18 @@ Authorization: Bearer {tokenId}
 ```json
 {
   "reserveId": 1,
-  "schedule": "2025-01-01",
+  "schedule": "2025-03-01",
   "seatNumber": "A1",
   "concert": {
     "concertId": 1,
-    "title": "콘서트명1",
-    "startDate": "2024-12-31",
-    "endDate": "2025-01-01"
+    "title": "A 콘서트",
+    "startDate": "2024-12-14",
+    "endDate": "2025-03-01"
   },
   "price": 75000,
   "status": "TEMP",
-  "createdAt": "2025-01-01T00:15:33Z",
-  "expiredAt": "2024-01-01T00:20:33Z"
+  "createdAt": "2025-01-30T12:00:00.000Z",
+  "expiredAt": "2025-01-30T12:05:00.000Z"
 }
 ```
 ### **409 Conflict**
@@ -366,16 +329,16 @@ Content-Type: application/json
 ### **Request**
 ```json
 {
-  "userId": "test1234",
-  "amount": 100000
+  "userId": "user1234",
+  "amount": 50000
 }
 ```
 
 ### **200 OK**
 ```json
 {
-  "userId": "test1234",
-  "point": 100000
+  "userId": "user1234",
+  "point": 50000
 }
 ```
 
@@ -389,8 +352,8 @@ GET /points/test1234
 ### **200 OK**
 ```json
 {
-  "userId": "test1234",
-  "point": 170000
+  "userId": "user1234",
+  "point": 50000
 }
 ```
 </details>
@@ -411,7 +374,7 @@ Authorization: Bearer {tokenId}
 ### **Request**
 ```json
 {
-  "userId": "test1234",
+  "userId": "user1234",
   "reserveId": 1,
   "amount": 75000
 }
@@ -422,10 +385,10 @@ Authorization: Bearer {tokenId}
 {
   "paymentId": 1,
   "reserveId": 1,
-  "userId": "test1234",
+  "userId": "user1234",
   "price": 75000,
   "status": "SUCCESS",
-  "createdAt": "2025-01-01T00:22:33Z"
+  "createdAt": "2025-01-30T12:08:00.000Z"
 }
 ```
 ### **400 Bad Request**

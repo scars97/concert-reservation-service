@@ -62,7 +62,7 @@ public class QueueController {
                 @ExampleObject(name = "WAIT 토큰", value = """
                     {
                         "tokenId": "15e859ae-9bf2-4f08-ae68-465e9dcd54bf",
-                        "userId": "test5678",
+                        "userId": "user1234",
                         "priority": 10,
                         "status": "WAIT",
                         "tokenIssuedAt": "2025-01-30T11:50:000Z",
@@ -73,7 +73,7 @@ public class QueueController {
                 @ExampleObject(name = "ACTIVE 토큰", value = """
                     {
                         "tokenId": "15e859ae-9bf2-4f08-ae68-465e9dcd54bf",
-                        "userId": "test1234",
+                        "userId": "user1234",
                         "priority": 0,
                         "status": "ACTIVE",
                         "tokenIssuedAt": "2025-01-30T11:50:000Z",
