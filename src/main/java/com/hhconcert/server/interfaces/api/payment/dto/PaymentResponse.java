@@ -17,7 +17,7 @@ public record PaymentResponse (
         Integer price,
         @Schema(description = "결제 상태",  example = "SUCCESS")
         PaymentStatus status,
-        @Schema(description = "결제 일시")
+        @Schema(description = "결제 일시", example = "2025-01-30T12:08:00.000Z")
         LocalDateTime createdAt
 ){
     public static PaymentResponse from(PaymentResult result) {

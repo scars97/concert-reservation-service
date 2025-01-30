@@ -10,9 +10,9 @@ public record ConcertResponse (
         Long id,
         @Schema(description = "콘서트 제목",  example = "A 콘서트")
         String title,
-        @Schema(description = "시작일")
+        @Schema(description = "시작일", example = "2024-12-14")
         LocalDate startDate,
-        @Schema(description = "종료일")
+        @Schema(description = "종료일", example = "2025-03-01")
         LocalDate endDate
 ) {
     public static ConcertResponse from(ConcertResult result) {
