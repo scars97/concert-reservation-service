@@ -24,27 +24,28 @@ public class TokenService {
             throw new BusinessException(ErrorCode.DUPLICATED_TOKEN);
         }
 
-        Token waitToken = tokenRepository.createToken(Token.createForWait(userId));
+        Token waitToken = Token.createForWait(userId);
 
-        int waitCount = tokenRepository.getTokenCountFor(TokenStatus.WAIT);
-        return TokenInfo.from(waitToken, waitCount);
+        return TokenInfo.from(tokenRepository.createToken(waitToken));
     }
 
     @Transactional
-    public TokenInfo checkQueueStatus(String userId) {
-        Token token = tokenRepository.findTokenByUserId(userId);
-
+    public TokenInfo checkQueueStatus(TokenInfo info) {
         int currentPriority = 0;
 
         // WAIT 상태인 경우, 대기 순서 연산
-        if (token.getStatus() == TokenStatus.WAIT) {
+        if (info.status() == TokenStatus.WAIT) {
             List<Token> waitTokens = tokenRepository.getTokensBy(TokenStatus.WAIT);
             currentPriority = (int) waitTokens.stream()
-                    .filter(t -> t.getTokenIssuedAt().isBefore(token.getTokenIssuedAt()))
+                    .filter(t -> t.getTokenIssuedAt().isBefore(info.tokenIssuedAt()))
                     .count() + 1;
         }
 
-        return TokenInfo.from(token, currentPriority);
+        return TokenInfo.from(info, currentPriority);
+    }
+
+    public TokenInfo findTokenBy(String userId) {
+        return TokenInfo.from(tokenRepository.findTokenByUserId(userId));
     }
 
 }

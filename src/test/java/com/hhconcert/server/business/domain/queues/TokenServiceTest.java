@@ -50,13 +50,12 @@ class TokenServiceTest {
     void createTokenForWAIT() {
         when(tokenRepository.isDuplicate(userId)).thenReturn(false);
         when(tokenRepository.createToken(any(Token.class))).thenReturn(Token.createForWait(userId));
-        when(tokenRepository.getTokenCountFor(TokenStatus.WAIT)).thenReturn(1);
 
         TokenInfo result = tokenService.createToken("test1234");
 
         assertThat(result)
                 .extracting("tokenId", "userId", "priority", "status")
-                .containsExactly(tokenId, userId, 1, TokenStatus.WAIT);
+                .containsExactly(tokenId, userId, 0, TokenStatus.WAIT);
     }
 
     @DisplayName("해당 userId에 등록된 토큰이 존재하는 경우 예외가 발생한다.")
@@ -75,16 +74,28 @@ class TokenServiceTest {
     @DisplayName("대기열 상태 요청 시, WAIT 상태인 경우 대기 순서가 연산되어 반환된다.")
     @Test
     void checkQueueStatus() {
-        Token targetToken = new Token(TokenGenerator.generateToken("test1234"), "test1234", TokenStatus.WAIT, null, null, now);
+        Token target = new Token(TokenGenerator.generateToken("target"), "target", TokenStatus.WAIT, null, null, now);
         Token token1 = new Token(TokenGenerator.generateToken("test1"), "test1", TokenStatus.WAIT, null, null, now.minusMinutes(1));
         Token token2 = new Token(TokenGenerator.generateToken("test2"), "test2", TokenStatus.WAIT, null, null, now.minusMinutes(2));
 
-        when(tokenRepository.findTokenByUserId("test1234")).thenReturn(targetToken);
         when(tokenRepository.getTokensBy(TokenStatus.WAIT)).thenReturn(List.of(token1, token2));
 
-        TokenInfo result = tokenService.checkQueueStatus("test1234");
+        TokenInfo result = tokenService.checkQueueStatus(TokenInfo.from(target));
 
         assertThat(result.priority()).isEqualTo(3);
+    }
+
+    @DisplayName("사용자 ID로 등록된 토큰을 조회한다.")
+    @Test
+    void findTokenByUserId() {
+        Token token = new Token(tokenId, "test1234", TokenStatus.WAIT, null, null, now.minusMinutes(1));
+
+        when(tokenRepository.findTokenByUserId("test1234")).thenReturn(token);
+
+        TokenInfo result = tokenService.findTokenBy("test1234");
+
+        assertThat(result).extracting("tokenId", "userId", "status")
+                .containsExactly(tokenId, "test1234", TokenStatus.WAIT);
     }
 
 }
