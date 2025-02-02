@@ -2,6 +2,7 @@ version: '3'
 services:
   mysql:
     image: mysql:8.0
+    container_name: local-mysql
     ports:
       - "3306:3306"
     environment:
@@ -20,7 +21,6 @@ services:
     volumes:
       - ./redis/data:/data
       - ./redis/conf/redis.conf:/usr/local/conf/redis.conf
-
 
 networks:
   default:

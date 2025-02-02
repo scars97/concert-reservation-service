@@ -25,15 +25,16 @@ public record TokenInfo(
                 token.getExpiredAt()
         );
     }
-    public static TokenInfo from(Token token, int priority) {
+
+    public static TokenInfo from(TokenInfo info, int priority) {
         return new TokenInfo(
-                token.getTokenId(),
-                token.getUserId(),
+                info.tokenId(),
+                info.userId(),
                 priority,
-                token.getStatus(),
-                token.getTokenIssuedAt(),
-                token.getActiveAt(),
-                token.getExpiredAt()
+                info.status(),
+                info.tokenIssuedAt(),
+                info.activeAt(),
+                info.expireAt()
         );
     }
 }

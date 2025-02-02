@@ -52,7 +52,8 @@ class QueueFacadeTest extends IntegrationTestSupport {
     void createToken() {
         TokenResult result = queueFacade.createToken(new TokenRequest("test11"));
 
-        assertThat(result.tokenId()).isEqualTo(UUID.nameUUIDFromBytes("test11".getBytes()).toString());
+        String validToken = UUID.nameUUIDFromBytes("test11".getBytes()).toString();
+        assertThat(result.tokenId()).isEqualTo(validToken);
         assertThat(result.priority()).isOne();
         assertThat(result.status()).isEqualTo(TokenStatus.WAIT);
     }
