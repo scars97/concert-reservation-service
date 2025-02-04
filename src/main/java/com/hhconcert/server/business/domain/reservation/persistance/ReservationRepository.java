@@ -4,6 +4,7 @@ import com.hhconcert.server.business.domain.reservation.entity.Reservation;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface ReservationRepository {
 
@@ -34,4 +35,37 @@ public interface ReservationRepository {
      * @return
      */
     Optional<Reservation> getSeatReserve(Long seatId);
+
+    /**
+     * 예약 취소
+     * @param seatId
+     */
+    void cancel(Long seatId);
+
+    /**
+     * 예약된 좌석 번호 등록 
+     * @param seatId
+     * @param currentTime
+     */
+    void addReservedSeat(Long seatId, Long currentTime);
+
+    /**
+     * 예약된 좌석 번호 목록 조회
+     * @return
+     */
+    Set<Long> getReservedSeats();
+
+    /**
+     * 예약이 만료된 좌석 번호 목록 조회
+     * @param currentTime
+     * @return
+     */
+    Set<Long> getExpireReservedSeats(Long currentTime);
+
+    /**
+     * 예약이 만료된 좌석 번호 삭제
+     * @param currentTime
+     * @return
+     */
+    Long dropExpireReservedSeat(Long currentTime);
 }

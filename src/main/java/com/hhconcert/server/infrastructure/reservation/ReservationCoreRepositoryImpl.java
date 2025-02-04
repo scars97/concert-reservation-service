@@ -8,31 +8,57 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.Set;
 
 @Repository
 @RequiredArgsConstructor
 public class ReservationCoreRepositoryImpl implements ReservationRepository {
 
-    private final ReservationJpaRepository repository;
+    private final ReservationJpaRepository jpaRepository;
+    private final ReservationRedisRepository redisRepository;
 
     @Override
     public Reservation createTempReserve(Reservation reservation) {
-        return repository.save(reservation);
+        return jpaRepository.save(reservation);
     }
 
     @Override
     public List<Reservation> findReserveBySeatId(Long seatId) {
-        return repository.findReserveBySeatId(seatId);
+        return jpaRepository.findReserveBySeatId(seatId);
     }
 
     @Override
     public Reservation findReserve(Long reserveId) {
-        return repository.findByIdWithLock(reserveId).orElseThrow(() -> new NoSuchElementException("등록되지 않은 예약입니다."));
+        return jpaRepository.findByIdWithLock(reserveId).orElseThrow(() -> new NoSuchElementException("등록되지 않은 예약입니다."));
     }
 
     @Override
     public Optional<Reservation> getSeatReserve(Long seatId) {
-        return repository.getSeatReserve(seatId);
+        return jpaRepository.getSeatReserve(seatId);
     }
 
+    @Override
+    public void cancel(Long seatId) {
+        jpaRepository.updateStatusBySeatId(seatId);
+    }
+
+    @Override
+    public void addReservedSeat(Long seatId, Long currentTime) {
+        redisRepository.zSetAdd(seatId, currentTime);
+    }
+
+    @Override
+    public Set<Long> getReservedSeats() {
+        return redisRepository.zSetGet();
+    }
+
+    @Override
+    public Set<Long> getExpireReservedSeats(Long currentTime) {
+        return redisRepository.zSetGetByScore(currentTime);
+    }
+
+    @Override
+    public Long dropExpireReservedSeat(Long currentTime) {
+        return redisRepository.zSetRemoveByScore(currentTime);
+    }
 }
