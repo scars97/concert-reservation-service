@@ -47,25 +47,25 @@ public interface ReservationRepository {
      * @param seatId
      * @param currentTime
      */
-    void addReservedSeat(Long seatId, Long currentTime);
+    void addReservedSeatId(Long seatId, Long currentTime);
 
     /**
      * 예약된 좌석 번호 목록 조회
      * @return
      */
-    Set<Long> getReservedSeats();
+    Set<Long> getReservedSeatIds();
 
     /**
      * 예약이 만료된 좌석 번호 목록 조회
      * @param currentTime
      * @return
      */
-    Set<Long> getExpireReservedSeats(Long currentTime);
+    Set<Long> getExpireReservedSeatIds(Long currentTime);
 
     /**
      * 예약이 만료된 좌석 번호 삭제
      * @param currentTime
      * @return
      */
-    Long dropExpireReservedSeat(Long currentTime);
+    Long dropExpireReservedSeatIds(Long currentTime);
 }

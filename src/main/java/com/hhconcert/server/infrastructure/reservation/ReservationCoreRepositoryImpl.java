@@ -43,22 +43,22 @@ public class ReservationCoreRepositoryImpl implements ReservationRepository {
     }
 
     @Override
-    public void addReservedSeat(Long seatId, Long currentTime) {
+    public void addReservedSeatId(Long seatId, Long currentTime) {
         redisRepository.zSetAdd(seatId, currentTime);
     }
 
     @Override
-    public Set<Long> getReservedSeats() {
+    public Set<Long> getReservedSeatIds() {
         return redisRepository.zSetGet();
     }
 
     @Override
-    public Set<Long> getExpireReservedSeats(Long currentTime) {
+    public Set<Long> getExpireReservedSeatIds(Long currentTime) {
         return redisRepository.zSetGetByScore(currentTime);
     }
 
     @Override
-    public Long dropExpireReservedSeat(Long currentTime) {
+    public Long dropExpireReservedSeatIds(Long currentTime) {
         return redisRepository.zSetRemoveByScore(currentTime);
     }
 }

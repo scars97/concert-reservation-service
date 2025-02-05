@@ -78,13 +78,13 @@ class ReservationExpireSchedulerTest extends IntegrationTestSupport {
     @Test
     void whenExpireReserveTime_thenStatusModifiedToCancel() {
         long currentTime = System.currentTimeMillis();
-        reservationRepository.addReservedSeat(1L, currentTime - 100);
-        reservationRepository.addReservedSeat(2L, currentTime - 200);
-        reservationRepository.addReservedSeat(3L, currentTime + 300);
+        reservationRepository.addReservedSeatId(1L, currentTime - 100);
+        reservationRepository.addReservedSeatId(2L, currentTime - 200);
+        reservationRepository.addReservedSeatId(3L, currentTime + 300);
 
         reservationExpireScheduler.expireReservedSeats();
 
-        Set<Long> reservedSeats = reservationRepository.getReservedSeats();
+        Set<Long> reservedSeats = reservationRepository.getReservedSeatIds();
         assertThat(reservedSeats).hasSize(1).contains(3L);
 
         List<Reservation> reservations = reservationJpaRepository.findAll();

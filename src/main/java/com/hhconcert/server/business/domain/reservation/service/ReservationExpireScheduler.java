@@ -21,9 +21,9 @@ public class ReservationExpireScheduler {
     public void expireReservedSeats() {
         Long currentTime = System.currentTimeMillis();
 
-        Set<Long> expireReservedSeats = reservationRepository.getExpireReservedSeats(currentTime);
+        Set<Long> expireReservedSeats = reservationRepository.getExpireReservedSeatIds(currentTime);
 
-        reservationRepository.dropExpireReservedSeat(currentTime);
+        reservationRepository.dropExpireReservedSeatIds(currentTime);
 
         for (Long seatId : expireReservedSeats) {
             reservationRepository.cancel(seatId);
