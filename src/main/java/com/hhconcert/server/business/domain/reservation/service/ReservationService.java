@@ -46,6 +46,8 @@ public class ReservationService {
 
         Reservation reservation = Reservation.createTemp(user, concert, schedule, seat);
 
+        reservationRepository.addReservedSeatId(seat.getId(), System.currentTimeMillis());
+
         return ReservationInfo.from(reservationRepository.createTempReserve(reservation));
     }
 
