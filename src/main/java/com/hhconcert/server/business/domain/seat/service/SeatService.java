@@ -9,10 +9,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
+@Transactional(readOnly = true)
 public class SeatService {
 
     private final SeatRepository seatRepository;
@@ -21,8 +22,10 @@ public class SeatService {
     public List<SeatInfo> getAvailableSeats(Long scheduleId) {
         List<Seat> seats = seatRepository.getSeats(scheduleId);
 
+        Set<Long> reservedSeatIds = reservationRepository.getReservedSeatIds();
+
         return seats.stream()
-                .filter(s -> reservationRepository.getSeatReserve(s.getId()).isEmpty())
+                .filter(seat -> !reservedSeatIds.contains(seat.getId()))
                 .map(SeatInfo::from)
                 .toList();
     }

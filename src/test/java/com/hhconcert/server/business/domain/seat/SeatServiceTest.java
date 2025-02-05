@@ -15,7 +15,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
@@ -43,7 +43,7 @@ class SeatServiceTest {
 
     @DisplayName("예약 가능한 좌석 목록이 조회된다.")
     @Test
-    void getAvailableSeats() {
+    void getAvailableSeats2() {
         Long scheduleId = 1L;
         List<Seat> seats = List.of(
                 new Seat(1L, mockSchedule, "A1", 75000),
@@ -52,17 +52,13 @@ class SeatServiceTest {
         );
 
         when(seatRepository.getSeats(scheduleId)).thenReturn(seats);
-        for (Seat seat : seats) {
-            when(reservationRepository.getSeatReserve(seat.getId())).thenReturn(Optional.empty());
-        }
+        when(reservationRepository.getReservedSeatIds()).thenReturn(Set.of(1L, 2L));
 
         List<SeatInfo> results = seatService.getAvailableSeats(scheduleId);
 
-        assertThat(results).hasSize(3)
+        assertThat(results).hasSize(1)
                 .extracting("seatId", "seatNumber", "price")
                 .containsExactly(
-                        tuple(1L, "A1", 75000),
-                        tuple(2L, "B1", 60000),
                         tuple(3L, "C1", 50000)
                 );
     }

@@ -13,6 +13,7 @@ import com.hhconcert.server.infrastructure.concert.ConcertJpaRepository;
 import com.hhconcert.server.infrastructure.payment.PaymentJpaRepository;
 import com.hhconcert.server.infrastructure.queues.TokenJpaRepository;
 import com.hhconcert.server.infrastructure.reservation.ReservationJpaRepository;
+import com.hhconcert.server.infrastructure.reservation.ReservationRedisRepository;
 import com.hhconcert.server.infrastructure.schedule.ScheduleJpaRepository;
 import com.hhconcert.server.infrastructure.seat.SeatJpaRepository;
 import com.hhconcert.server.infrastructure.user.UserJpaRepository;
@@ -36,11 +37,13 @@ public class FacadeTestFixture {
     @Autowired
     private ReservationJpaRepository reservationJpaRepository;
     @Autowired
+    private ReservationRedisRepository reservationRedisRepository;
+    @Autowired
     private PaymentJpaRepository paymentJpaRepository;
     @Autowired
     private TokenJpaRepository tokenJpaRepository;
 
-    public void concertFixture(LocalDate nowDate, LocalDateTime nowTime) {
+    public void concertFixture(LocalDate nowDate, LocalDateTime nowTime, long currentTime) {
         Concert saveConcert1 = concertJpaRepository.save(new Concert("콘서트1", nowDate, nowDate.plusDays(1)));
         Concert saveConcert2 = concertJpaRepository.save(new Concert("콘서트2", nowDate.plusDays(1), nowDate.plusDays(2)));
 
@@ -59,6 +62,11 @@ public class FacadeTestFixture {
         Reservation saveReserve2 = reservationJpaRepository.save(new Reservation(user1, saveConcert1, saveSchedule1, seat1, seat1.getPrice(), ReservationStatus.CANCEL, nowTime.minusMinutes(6)));
         Reservation saveReserve3 = reservationJpaRepository.save(new Reservation(user2, saveConcert1, saveSchedule1, seat2, seat2.getPrice(), ReservationStatus.TEMP, nowTime.minusMinutes(3)));
         Reservation saveReserve4 = reservationJpaRepository.save(new Reservation(user3, saveConcert1, saveSchedule1, seat3, seat3.getPrice(), ReservationStatus.COMPLETE, nowTime.minusMinutes(2)));
+
+        // 예약 만료 스케줄러로 인해 2번 좌석 삭제.
+        reservationRedisRepository.zSetAdd(1L, currentTime + 5000);
+        //reservationRedisRepository.zSetAdd(2L, currentTime - 3000);
+        reservationRedisRepository.zSetAdd(3L, 0L);
 
         paymentJpaRepository.save(new Payment(user1, saveReserve2, seat1.getPrice(), PaymentStatus.CANCEL));
         paymentJpaRepository.save(new Payment(user3, saveReserve4, seat3.getPrice(), PaymentStatus.SUCCESS));
