@@ -27,7 +27,7 @@ public class ControllerTestFixture {
         return new TokenResult(
                 TokenGenerator.generateToken("test1234"),
                 "test1234",
-                1,
+                1L,
                 TokenStatus.WAIT,
                 LocalDateTime.now(),
                 null,

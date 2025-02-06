@@ -3,7 +3,6 @@ package com.hhconcert.server.fixture;
 import com.hhconcert.server.business.domain.concert.entity.Concert;
 import com.hhconcert.server.business.domain.payment.entity.Payment;
 import com.hhconcert.server.business.domain.payment.entity.PaymentStatus;
-import com.hhconcert.server.business.domain.queues.entity.Token;
 import com.hhconcert.server.business.domain.reservation.entity.Reservation;
 import com.hhconcert.server.business.domain.reservation.entity.ReservationStatus;
 import com.hhconcert.server.business.domain.schedule.entity.Schedule;
@@ -11,7 +10,6 @@ import com.hhconcert.server.business.domain.seat.entity.Seat;
 import com.hhconcert.server.business.domain.user.entity.User;
 import com.hhconcert.server.infrastructure.concert.ConcertJpaRepository;
 import com.hhconcert.server.infrastructure.payment.PaymentJpaRepository;
-import com.hhconcert.server.infrastructure.queues.TokenJpaRepository;
 import com.hhconcert.server.infrastructure.reservation.ReservationJpaRepository;
 import com.hhconcert.server.infrastructure.reservation.ReservationRedisRepository;
 import com.hhconcert.server.infrastructure.schedule.ScheduleJpaRepository;
@@ -40,8 +38,6 @@ public class FacadeTestFixture {
     private ReservationRedisRepository reservationRedisRepository;
     @Autowired
     private PaymentJpaRepository paymentJpaRepository;
-    @Autowired
-    private TokenJpaRepository tokenJpaRepository;
 
     public void concertFixture(LocalDate nowDate, LocalDateTime nowTime, long currentTime) {
         Concert saveConcert1 = concertJpaRepository.save(new Concert("콘서트1", nowDate, nowDate.plusDays(1)));
@@ -90,29 +86,11 @@ public class FacadeTestFixture {
         Reservation saveReserve1 = reservationJpaRepository.save(new Reservation(user1, saveConcert1, saveSchedule1, seat1, seat1.getPrice(), ReservationStatus.TEMP, nowTime.plusMinutes(5)));
     }
 
-    public void reservationFixture(LocalDate nowDate, LocalDateTime nowTime) {
+    public void reservationFixture(LocalDate nowDate) {
         Concert saveConcert1 = concertJpaRepository.save(new Concert("콘서트1", nowDate, nowDate.plusDays(1)));
         Schedule saveSchedule1 = scheduleJpaRepository.save(new Schedule(saveConcert1, nowDate));
         Seat seat1 = seatJpaRepository.save(new Seat(saveSchedule1, "A1", 75000));
         User user1 = userJpaRepository.save(new User("test1234", 80000));
     }
 
-    public void userPointFixture() {
-        userJpaRepository.save(new User("test1234", 80000));
-        userJpaRepository.save(new User("asdf1234", 10000));
-    }
-
-    public void queueFixture() {
-        // 사용자 11명 추가
-        for (int i = 0; i < 11; i++) {
-            String userId = "test" + (i + 1);
-            userJpaRepository.save(new User(userId, 10000));
-        }
-
-        // 활성화 인원 9명
-        for (int i = 0; i < 9; i++) {
-            String userId = "test" + (i + 1);
-            tokenJpaRepository.save(Token.createForActive(userId));
-        }
-    }
 }

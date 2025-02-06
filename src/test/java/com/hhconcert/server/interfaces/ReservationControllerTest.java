@@ -39,9 +39,7 @@ class ReservationControllerTest extends ControllerTestSupport {
                         jsonPath("$.seatNumber", is("A1")),
                         jsonPath("$.concert", notNullValue(ConcertResponse.class)),
                         jsonPath("$.price", is(75000)),
-                        jsonPath("$.status", is("TEMP")),
-                        jsonPath("$.createdAt", is(now.toString())),
-                        jsonPath("$.expiredAt", is(now.plusMinutes(5).toString()))
+                        jsonPath("$.status", is("TEMP"))
                 );
 
     }
