@@ -1,68 +1,61 @@
 package com.hhconcert.server.business.domain.queues.persistance;
 
-import com.hhconcert.server.business.domain.queues.entity.Token;
-import com.hhconcert.server.business.domain.queues.entity.TokenStatus;
+import com.hhconcert.server.business.domain.queues.entity.TokenVO;
 
-import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Set;
 
 public interface TokenRepository {
 
     /**
-     * 토큰 중복 검증
-     * @param userId
-     * @return
-     */
-    boolean isDuplicate(String userId);
-
-    /**
-     * 토큰 생성
+     * 대기 토큰 생성
      * @param token
-     * @return
      */
-    Token createToken(Token token);
+    void addWaitToken(TokenVO token);
 
     /**
-     * 우선 순위가 높은 WAIT 토큰 목록 조회
-     * @param status
-     * @param limit
-     * @return
+     * 활성화 토큰 생성
+     * @param userId
      */
-    List<Token> findNextTokensToActivate(TokenStatus status, int limit);
+    void addActiveToken(String userId);
 
     /**
-     * 토큰 조회
-     * @param tokenId
-     * @return
-     */
-    Token findToken(String tokenId);
-
-    /**
-     * 사용자 토큰 조회
+     * 등록된 토큰 조회
      * @param userId
      * @return
      */
-    Token findTokenByUserId(String userId);
+    TokenVO findTokenBy(String userId);
 
     /**
-     * 특정 상태의 토큰 개수 조회
-     * @param status
+     * 토큰 대기 순서 조회
+     * @param userId
      * @return
      */
-    int getTokenCountFor(TokenStatus status);
+    Long getRank(String userId);
 
     /**
-     * 특정 상태의 토큰 목록 조회
-     * @param status
+     * 활성화된 토큰 개수 조회
      * @return
      */
-    List<Token> getTokensBy(TokenStatus status);
+    Long getCountForActiveTokens();
 
     /**
-     * 만료된 토큰 삭제
-     * @param now
+     * 대기 상태 토큰 조회
+     * @return
      */
-    void dropExpiredTokens(LocalDateTime now);
+    Long getCountForWaitTokens();
+
+    /**
+     * 활성화할 대기 토큰 조회
+     * @param activationCount
+     * @return
+     */
+    Set<String> getWaitTokensToActivate(long activationCount);
+
+    /**
+     * 활성화 토큰 삭제
+     * @param currentTime
+     */
+    void dropExpiredTokens(long currentTime);
 
     /**
      * 결제 후 토큰 만료 처리

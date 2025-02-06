@@ -1,16 +1,14 @@
 package com.hhconcert.server.business.domain.queues.service;
 
 import com.hhconcert.server.business.domain.queues.dto.TokenInfo;
-import com.hhconcert.server.business.domain.queues.entity.Token;
 import com.hhconcert.server.business.domain.queues.entity.TokenStatus;
+import com.hhconcert.server.business.domain.queues.entity.TokenVO;
 import com.hhconcert.server.business.domain.queues.persistance.TokenRepository;
 import com.hhconcert.server.global.common.error.ErrorCode;
 import com.hhconcert.server.global.common.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -20,32 +18,26 @@ public class TokenService {
 
     @Transactional
     public TokenInfo createToken(String userId) {
-        if (tokenRepository.isDuplicate(userId)) {
+        if (tokenRepository.getRank(userId) != null) {
             throw new BusinessException(ErrorCode.DUPLICATED_TOKEN);
         }
 
-        Token waitToken = Token.createForWait(userId);
+        TokenVO waitToken = TokenVO.createForWait(userId);
 
-        return TokenInfo.from(tokenRepository.createToken(waitToken));
+        tokenRepository.addWaitToken(waitToken);
+
+        return TokenInfo.from(waitToken);
     }
 
-    @Transactional
     public TokenInfo checkQueueStatus(TokenInfo info) {
-        int currentPriority = 0;
-
-        // WAIT 상태인 경우, 대기 순서 연산
-        if (info.status() == TokenStatus.WAIT) {
-            List<Token> waitTokens = tokenRepository.getTokensBy(TokenStatus.WAIT);
-            currentPriority = (int) waitTokens.stream()
-                    .filter(t -> t.getTokenIssuedAt().isBefore(info.tokenIssuedAt()))
-                    .count() + 1;
-        }
+        long currentPriority = info.status() == TokenStatus.WAIT ?
+            tokenRepository.getRank(info.userId()) + 1 : 0;
 
         return TokenInfo.from(info, currentPriority);
     }
 
     public TokenInfo findTokenBy(String userId) {
-        return TokenInfo.from(tokenRepository.findTokenByUserId(userId));
+        return TokenInfo.from(tokenRepository.findTokenBy(userId));
     }
 
 }

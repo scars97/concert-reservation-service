@@ -1,32 +1,32 @@
 package com.hhconcert.server.business.domain.queues.dto;
 
-import com.hhconcert.server.business.domain.queues.entity.Token;
 import com.hhconcert.server.business.domain.queues.entity.TokenStatus;
+import com.hhconcert.server.business.domain.queues.entity.TokenVO;
 
 import java.time.LocalDateTime;
 
 public record TokenInfo(
         String tokenId,
         String userId,
-        Integer priority,
+        Long priority,
         TokenStatus status,
         LocalDateTime tokenIssuedAt,
         LocalDateTime activeAt,
         LocalDateTime expireAt
 ){
-    public static TokenInfo from(Token token) {
+    public static TokenInfo from(TokenVO token) {
         return new TokenInfo(
-                token.getTokenId(),
-                token.getUserId(),
-                0,
-                token.getStatus(),
-                token.getTokenIssuedAt(),
-                token.getActiveAt(),
-                token.getExpiredAt()
+                token.tokenId(),
+                token.userId(),
+                0L,
+                token.status(),
+                token.tokenIssuedAt(),
+                token.activeAt(),
+                token.expiredAt()
         );
     }
 
-    public static TokenInfo from(TokenInfo info, int priority) {
+    public static TokenInfo from(TokenInfo info, long priority) {
         return new TokenInfo(
                 info.tokenId(),
                 info.userId(),

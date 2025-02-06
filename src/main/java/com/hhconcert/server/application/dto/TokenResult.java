@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 public record TokenResult(
         String tokenId,
         String userId,
-        Integer priority,
+        Long priority,
         TokenStatus status,
         LocalDateTime tokenIssuedAt,
         LocalDateTime activeAt,

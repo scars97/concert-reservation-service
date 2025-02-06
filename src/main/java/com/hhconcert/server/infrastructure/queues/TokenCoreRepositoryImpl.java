@@ -1,65 +1,67 @@
 package com.hhconcert.server.infrastructure.queues;
 
-import com.hhconcert.server.business.domain.queues.entity.Token;
-import com.hhconcert.server.business.domain.queues.entity.TokenStatus;
+import com.hhconcert.server.business.domain.queues.entity.TokenVO;
 import com.hhconcert.server.business.domain.queues.persistance.TokenRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.Set;
 
 @Repository
 @RequiredArgsConstructor
 public class TokenCoreRepositoryImpl implements TokenRepository {
 
-    private final TokenJpaRepository repository;
+    private final TokenRedisRepository redisRepository;
 
     @Override
-    public boolean isDuplicate(String userId) {
-        return repository.existsByUserId(userId);
+    public void addWaitToken(TokenVO waitToken) {
+        redisRepository.addTokenForValue(waitToken);
+        redisRepository.addWaitTokenForZset(waitToken.userId(), System.currentTimeMillis());
     }
 
     @Override
-    public Token createToken(Token token) {
-        return repository.save(token);
+    @Transactional
+    public void addActiveToken(String userId) {
+        TokenVO activeToken = TokenVO.updateForActive(redisRepository.findTokenAtValue(userId));
+
+        redisRepository.addTokenForValue(activeToken);
+        redisRepository.addActiveTokenForZset(userId, System.currentTimeMillis());
     }
 
     @Override
-    public List<Token> findNextTokensToActivate(TokenStatus status, int limit) {
-        PageRequest pageable = PageRequest.of(0, limit);
-        return repository.findByStatusOrderByCreatedAtAsc(status, pageable);
+    public TokenVO findTokenBy(String userId) {
+        return redisRepository.findTokenAtValue(userId);
     }
 
     @Override
-    public Token findToken(String tokenId) {
-        return repository.findById(tokenId).orElseThrow(() -> new NoSuchElementException("등록되지 않은 토큰입니다."));
+    public Long getRank(String userId) {
+        return redisRepository.getRank(userId);
     }
 
     @Override
-    public Token findTokenByUserId(String userId) {
-        return repository.findByUserId(userId).orElseThrow(() -> new NoSuchElementException("등록되지 않은 토큰입니다."));
+    public Long getCountForActiveTokens() {
+        return redisRepository.getCountForActiveTokens();
     }
 
     @Override
-    public int getTokenCountFor(TokenStatus status) {
-        return repository.countByStatus(status);
+    public Long getCountForWaitTokens() {
+        return redisRepository.getCountForWaitTokens();
     }
 
     @Override
-    public List<Token> getTokensBy(TokenStatus status) {
-        return repository.findByStatus(status);
+    public Set<String> getWaitTokensToActivate(long activationCount) {
+        return redisRepository.getWaitTokensAfterPop(activationCount);
     }
 
     @Override
-    public void dropExpiredTokens(LocalDateTime now) {
-        repository.deleteByExpiredAtBefore(now);
+    public void dropExpiredTokens(long currentTime) {
+        redisRepository.dropExpiredTokens(currentTime);
     }
 
     @Override
     public void dropTokenByUserId(String userId) {
-        repository.deleteByUserId(userId);
+        redisRepository.dropActiveTokenForValue(userId);
+        redisRepository.dropActiveTokenForZset(userId);
     }
 }
