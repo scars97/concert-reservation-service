@@ -74,6 +74,7 @@ public class TokenRedisRepository {
     }
 
     public Set<String> getWaitTokensAfterPop(long activationCount) {
+        // TODO @Transactional 설정 시, NPE 발생
         return redisTemplate.opsForZSet().popMin(WAIT_TOKEN_KEY, activationCount)
                 .stream()
                 .map(ZSetOperations.TypedTuple::getValue)
