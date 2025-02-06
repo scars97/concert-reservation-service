@@ -1,6 +1,7 @@
 package com.hhconcert.server.business.domain.reservation.service;
 
 import com.hhconcert.server.business.domain.reservation.persistance.ReservationRepository;
+import com.hhconcert.server.business.domain.seat.persistance.SeatCacheRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -15,6 +16,7 @@ import java.util.Set;
 public class ReservationExpireScheduler {
 
     private final ReservationRepository reservationRepository;
+    private final SeatCacheRepository seatCacheRepository;
 
     @Scheduled(cron = "*/10 * * * * *") // 10초마다 실행
     @Transactional
@@ -28,5 +30,7 @@ public class ReservationExpireScheduler {
         for (Long seatId : expireReservedSeats) {
             reservationRepository.cancel(seatId);
         }
+
+        seatCacheRepository.evictAllCache();
     }
 }

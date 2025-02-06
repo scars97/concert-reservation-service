@@ -9,6 +9,7 @@ import com.hhconcert.server.business.domain.reservation.persistance.ReservationR
 import com.hhconcert.server.business.domain.schedule.entity.Schedule;
 import com.hhconcert.server.business.domain.schedule.persistance.ScheduleRepository;
 import com.hhconcert.server.business.domain.seat.entity.Seat;
+import com.hhconcert.server.business.domain.seat.persistance.SeatCacheRepository;
 import com.hhconcert.server.business.domain.seat.persistance.SeatRepository;
 import com.hhconcert.server.business.domain.user.entity.User;
 import com.hhconcert.server.business.domain.user.persistance.UserRepository;
@@ -28,8 +29,9 @@ public class ReservationService {
     private final ReservationRepository reservationRepository;
     private final ConcertRepository concertRepository;
     private final ScheduleRepository scheduleRepository;
-    private final SeatRepository seatRepository;
     private final UserRepository userRepository;
+    private final SeatRepository seatRepository;
+    private final SeatCacheRepository seatCacheRepository;
 
     @DistributedLock(key = "#info.seatId()")
     @Transactional
@@ -47,6 +49,8 @@ public class ReservationService {
         Reservation reservation = Reservation.createTemp(user, concert, schedule, seat);
 
         reservationRepository.addReservedSeatId(seat.getId(), System.currentTimeMillis());
+
+        seatCacheRepository.evictCacheBy(schedule.getId());
 
         return ReservationInfo.from(reservationRepository.createTempReserve(reservation));
     }

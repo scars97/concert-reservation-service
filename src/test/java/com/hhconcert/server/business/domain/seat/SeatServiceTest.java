@@ -4,6 +4,7 @@ import com.hhconcert.server.business.domain.reservation.persistance.ReservationR
 import com.hhconcert.server.business.domain.schedule.entity.Schedule;
 import com.hhconcert.server.business.domain.seat.dto.SeatInfo;
 import com.hhconcert.server.business.domain.seat.entity.Seat;
+import com.hhconcert.server.business.domain.seat.persistance.SeatCacheRepository;
 import com.hhconcert.server.business.domain.seat.persistance.SeatRepository;
 import com.hhconcert.server.business.domain.seat.service.SeatService;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,8 +20,7 @@ import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class SeatServiceTest {
@@ -30,6 +30,9 @@ class SeatServiceTest {
 
     @Mock
     private SeatRepository seatRepository;
+
+    @Mock
+    private SeatCacheRepository seatCacheRepository;
 
     @Mock
     private ReservationRepository reservationRepository;
@@ -43,7 +46,7 @@ class SeatServiceTest {
 
     @DisplayName("예약 가능한 좌석 목록이 조회된다.")
     @Test
-    void getAvailableSeats2() {
+    void getAvailableSeats() {
         Long scheduleId = 1L;
         List<Seat> seats = List.of(
                 new Seat(1L, mockSchedule, "A1", 75000),
@@ -51,6 +54,7 @@ class SeatServiceTest {
                 new Seat(3L, mockSchedule, "C1", 50000)
         );
 
+        when(seatCacheRepository.getAvailableSeats(scheduleId)).thenReturn(null);
         when(seatRepository.getSeats(scheduleId)).thenReturn(seats);
         when(reservationRepository.getReservedSeatIds()).thenReturn(Set.of(1L, 2L));
 
@@ -61,6 +65,36 @@ class SeatServiceTest {
                 .containsExactly(
                         tuple(3L, "C1", 50000)
                 );
+
+        verify(seatCacheRepository, times(1)).saveAvailableSeats(scheduleId, results);
+    }
+
+    @DisplayName("예약 가능한 좌석 목록이 캐시되어 있는 경우, 캐시된 데이터를 반환한다.")
+    @Test
+    void whenAvailableSeatsIsCached_thenReturnCachedData() {
+        Long scheduleId = 1L;
+        List<Seat> seats = List.of(
+                new Seat(1L, mockSchedule, "A1", 75000),
+                new Seat(2L, mockSchedule, "B1", 60000),
+                new Seat(3L, mockSchedule, "C1", 50000)
+        );
+        List<SeatInfo> seatInfos = List.of(
+                new SeatInfo(3L, "C1", 50000)
+        );
+
+        when(seatCacheRepository.getAvailableSeats(scheduleId)).thenReturn(seatInfos);
+
+        List<SeatInfo> results = seatService.getAvailableSeats(scheduleId);
+
+        assertThat(results).hasSize(1)
+                .extracting("seatId", "seatNumber", "price")
+                .containsExactly(
+                        tuple(3L, "C1", 50000)
+                );
+
+        verify(seatRepository, times(0)).getSeats(scheduleId);
+        verify(reservationRepository, times(0)).getReservedSeatIds();
+        verify(seatCacheRepository, times(0)).saveAvailableSeats(scheduleId, results);
     }
 
     @DisplayName("단일 좌석을 조회한다.")

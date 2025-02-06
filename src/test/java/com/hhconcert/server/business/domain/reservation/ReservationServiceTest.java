@@ -11,6 +11,7 @@ import com.hhconcert.server.business.domain.reservation.service.ReservationServi
 import com.hhconcert.server.business.domain.schedule.entity.Schedule;
 import com.hhconcert.server.business.domain.schedule.persistance.ScheduleRepository;
 import com.hhconcert.server.business.domain.seat.entity.Seat;
+import com.hhconcert.server.business.domain.seat.persistance.SeatCacheRepository;
 import com.hhconcert.server.business.domain.seat.persistance.SeatRepository;
 import com.hhconcert.server.business.domain.user.entity.User;
 import com.hhconcert.server.business.domain.user.persistance.UserRepository;
@@ -51,6 +52,8 @@ class ReservationServiceTest {
     private ScheduleRepository scheduleRepository;
     @Mock
     private SeatRepository seatRepository;
+    @Mock
+    private SeatCacheRepository seatCacheRepository;
 
     @Captor
     private ArgumentCaptor<Long> captor;
@@ -92,6 +95,7 @@ class ReservationServiceTest {
         assertThat(result.status()).isEqualTo(ReservationStatus.TEMP);
 
         verify(reservationRepository).addReservedSeatId(anyLong(), captor.capture());
+        verify(seatCacheRepository, times(1)).evictCacheBy(1L);
     }
 
     @DisplayName("해당 좌석에 대한 예약건이 존재하는 경우 예외가 발생한다.")

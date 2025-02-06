@@ -3,6 +3,7 @@ package com.hhconcert.server.business.domain.seat.service;
 import com.hhconcert.server.business.domain.reservation.persistance.ReservationRepository;
 import com.hhconcert.server.business.domain.seat.dto.SeatInfo;
 import com.hhconcert.server.business.domain.seat.entity.Seat;
+import com.hhconcert.server.business.domain.seat.persistance.SeatCacheRepository;
 import com.hhconcert.server.business.domain.seat.persistance.SeatRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,17 +18,27 @@ import java.util.Set;
 public class SeatService {
 
     private final SeatRepository seatRepository;
+    private final SeatCacheRepository seatCacheRepository;
     private final ReservationRepository reservationRepository;
 
     public List<SeatInfo> getAvailableSeats(Long scheduleId) {
+        List<SeatInfo> cachedSeats = seatCacheRepository.getAvailableSeats(scheduleId);
+        if (cachedSeats != null) {
+            return cachedSeats;
+        }
+
         List<Seat> seats = seatRepository.getSeats(scheduleId);
 
         Set<Long> reservedSeatIds = reservationRepository.getReservedSeatIds();
 
-        return seats.stream()
+        List<SeatInfo> availableSeats = seats.stream()
                 .filter(seat -> !reservedSeatIds.contains(seat.getId()))
                 .map(SeatInfo::from)
                 .toList();
+
+        seatCacheRepository.saveAvailableSeats(scheduleId, availableSeats);
+
+        return availableSeats;
     }
 
     public SeatInfo findSeat(Long seatId) {
