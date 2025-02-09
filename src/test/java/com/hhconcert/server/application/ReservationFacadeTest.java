@@ -25,14 +25,12 @@ class ReservationFacadeTest extends IntegrationTestSupport {
     private FacadeTestFixture fixture;
 
     LocalDate nowDate;
-    LocalDateTime nowTime;
 
     @BeforeEach
     void setUp() {
         nowDate = LocalDate.now();
-        nowTime = LocalDateTime.now().withNano(0);
 
-        fixture.reservationFixture(nowDate, nowTime);
+        fixture.reservationFixture(nowDate);
     }
 
     @DisplayName("좌석 임시 예약에 성공한다.")

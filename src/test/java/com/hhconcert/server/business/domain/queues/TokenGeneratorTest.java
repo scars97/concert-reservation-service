@@ -8,14 +8,24 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class TokenGeneratorTest {
 
-    @DisplayName("userId 정보가 포함된 토큰 ID가 생성된다.")
+    @DisplayName("사용자 ID 정보가 포함된 토큰 ID가 생성된다.")
     @Test
     void generateToken() {
-        String userId = "test1234";
+        String userId = "user1";
         String tokenId = TokenGenerator.generateToken(userId);
 
         assertThat(tokenId).isNotNull();
-        assertThat(tokenId).isEqualTo(TokenGenerator.generateToken("test1234"));
+    }
+
+    @DisplayName("토큰 ID 에서 사용자 ID 정보를 복원한다.")
+    @Test
+    void decodedTokenIdToUserId() {
+        String originalUserId = "user1";
+        String tokenId = TokenGenerator.generateToken(originalUserId);
+
+        String restoreUserId = TokenGenerator.tokenIdToUserId(tokenId);
+
+        assertThat(restoreUserId).isEqualTo(originalUserId);
     }
 
 }

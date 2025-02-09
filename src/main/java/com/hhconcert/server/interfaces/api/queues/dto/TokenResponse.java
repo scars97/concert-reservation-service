@@ -12,7 +12,7 @@ public record TokenResponse(
         @Schema(description = "사용자 ID",  example = "user1234")
         String userId,
         @Schema(description = "대기 순번",  example = "10")
-        Integer priority,
+        Long priority,
         @Schema(description = "토큰 상태",  example = "WAIT")
         TokenStatus status,
         @Schema(description = "토큰 생성 일시",  example = "2025-01-30T11:50:000Z")

@@ -1,9 +1,9 @@
 package com.hhconcert.server.business.domain.queues;
 
 import com.hhconcert.server.business.domain.queues.dto.TokenInfo;
-import com.hhconcert.server.business.domain.queues.entity.Token;
 import com.hhconcert.server.business.domain.queues.entity.TokenGenerator;
 import com.hhconcert.server.business.domain.queues.entity.TokenStatus;
+import com.hhconcert.server.business.domain.queues.entity.TokenVO;
 import com.hhconcert.server.business.domain.queues.persistance.TokenRepository;
 import com.hhconcert.server.business.domain.queues.service.TokenService;
 import com.hhconcert.server.global.common.error.ErrorCode;
@@ -18,12 +18,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class TokenServiceTest {
@@ -48,20 +46,21 @@ class TokenServiceTest {
     @DisplayName("WAIT 상태의 토큰이 생성된다.")
     @Test
     void createTokenForWAIT() {
-        when(tokenRepository.isDuplicate(userId)).thenReturn(false);
-        when(tokenRepository.createToken(any(Token.class))).thenReturn(Token.createForWait(userId));
+        when(tokenRepository.getRank(userId)).thenReturn(null);
 
         TokenInfo result = tokenService.createToken("test1234");
 
         assertThat(result)
                 .extracting("tokenId", "userId", "priority", "status")
-                .containsExactly(tokenId, userId, 0, TokenStatus.WAIT);
+                .containsExactly(tokenId, userId, 0L, TokenStatus.WAIT);
+
+        verify(tokenRepository).addWaitToken(any(TokenVO.class));
     }
 
     @DisplayName("해당 userId에 등록된 토큰이 존재하는 경우 예외가 발생한다.")
     @Test
     void createToken_duplicateToken() {
-        when(tokenRepository.isDuplicate("test1234")).thenReturn(true);
+        when(tokenRepository.getRank("test1234")).thenReturn(0L);
 
         assertThatThrownBy(() -> tokenService.createToken("test1234"))
                 .isInstanceOf(BusinessException.class)
@@ -74,23 +73,20 @@ class TokenServiceTest {
     @DisplayName("대기열 상태 요청 시, WAIT 상태인 경우 대기 순서가 연산되어 반환된다.")
     @Test
     void checkQueueStatus() {
-        Token target = new Token(TokenGenerator.generateToken("target"), "target", TokenStatus.WAIT, null, null, now);
-        Token token1 = new Token(TokenGenerator.generateToken("test1"), "test1", TokenStatus.WAIT, null, null, now.minusMinutes(1));
-        Token token2 = new Token(TokenGenerator.generateToken("test2"), "test2", TokenStatus.WAIT, null, null, now.minusMinutes(2));
+        TokenVO token = new TokenVO(TokenGenerator.generateToken("target"), "target", TokenStatus.WAIT, now, null, null);
 
-        when(tokenRepository.getTokensBy(TokenStatus.WAIT)).thenReturn(List.of(token1, token2));
+        when(tokenRepository.getRank("target")).thenReturn(0L);
 
-        TokenInfo result = tokenService.checkQueueStatus(TokenInfo.from(target));
-
-        assertThat(result.priority()).isEqualTo(3);
+        TokenInfo result = tokenService.checkQueueStatus(TokenInfo.from(token));
+        assertThat(result.priority()).isEqualTo(1);
     }
 
     @DisplayName("사용자 ID로 등록된 토큰을 조회한다.")
     @Test
     void findTokenByUserId() {
-        Token token = new Token(tokenId, "test1234", TokenStatus.WAIT, null, null, now.minusMinutes(1));
+        TokenVO token = new TokenVO(tokenId, "test1234", TokenStatus.WAIT, now.minusMinutes(1), null, null);
 
-        when(tokenRepository.findTokenByUserId("test1234")).thenReturn(token);
+        when(tokenRepository.findTokenBy("test1234")).thenReturn(token);
 
         TokenInfo result = tokenService.findTokenBy("test1234");
 

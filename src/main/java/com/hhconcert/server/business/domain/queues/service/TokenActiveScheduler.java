@@ -1,16 +1,13 @@
 package com.hhconcert.server.business.domain.queues.service;
 
-import com.hhconcert.server.business.domain.queues.entity.Token;
-import com.hhconcert.server.business.domain.queues.entity.TokenStatus;
 import com.hhconcert.server.business.domain.queues.persistance.TokenRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @EnableScheduling
@@ -22,19 +19,21 @@ public class TokenActiveScheduler {
     private final TokenRepository tokenRepository;
 
     @Scheduled(cron = "*/30 * * * * *") // 30초마다 실행
-    @Transactional
     public void activateTokens() {
-        int activeCount = tokenRepository.getTokenCountFor(TokenStatus.ACTIVE);
+        long activeCount = tokenRepository.getCountForActiveTokens();
         if (activeCount >= MAX_ACTIVE_TOKEN_COUNT) {
             return;
         }
 
-        List<Token> nextTokens = tokenRepository.findNextTokensToActivate(TokenStatus.WAIT, MAX_ACTIVE_TOKEN_COUNT - activeCount);
-        nextTokens.forEach(nextToken -> {
-            nextToken.activeForMinutes(5);
-        });
+        long availableCount = MAX_ACTIVE_TOKEN_COUNT - activeCount;
+        long waitCount = tokenRepository.getCountForWaitTokens();
 
-        log.info("Activation Tokens : {}", activeCount + nextTokens.size());
+        if (availableCount >= waitCount) {
+            availableCount = waitCount;
+        }
+
+        Set<String> activationTokens = tokenRepository.getWaitTokensToActivate(availableCount);
+        activationTokens.forEach(tokenRepository::addActiveToken);
     }
 
 }

@@ -3,28 +3,42 @@ package com.hhconcert.server.business.domain.seat.service;
 import com.hhconcert.server.business.domain.reservation.persistance.ReservationRepository;
 import com.hhconcert.server.business.domain.seat.dto.SeatInfo;
 import com.hhconcert.server.business.domain.seat.entity.Seat;
+import com.hhconcert.server.business.domain.seat.persistance.SeatCacheRepository;
 import com.hhconcert.server.business.domain.seat.persistance.SeatRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
+@Transactional(readOnly = true)
 public class SeatService {
 
     private final SeatRepository seatRepository;
+    private final SeatCacheRepository seatCacheRepository;
     private final ReservationRepository reservationRepository;
 
     public List<SeatInfo> getAvailableSeats(Long scheduleId) {
+        List<SeatInfo> cachedSeats = seatCacheRepository.getAvailableSeats(scheduleId);
+        if (cachedSeats != null) {
+            return cachedSeats;
+        }
+
         List<Seat> seats = seatRepository.getSeats(scheduleId);
 
-        return seats.stream()
-                .filter(s -> reservationRepository.getSeatReserve(s.getId()).isEmpty())
+        Set<Long> reservedSeatIds = reservationRepository.getReservedSeatIds();
+
+        List<SeatInfo> availableSeats = seats.stream()
+                .filter(seat -> !reservedSeatIds.contains(seat.getId()))
                 .map(SeatInfo::from)
                 .toList();
+
+        seatCacheRepository.saveAvailableSeats(scheduleId, availableSeats);
+
+        return availableSeats;
     }
 
     public SeatInfo findSeat(Long seatId) {

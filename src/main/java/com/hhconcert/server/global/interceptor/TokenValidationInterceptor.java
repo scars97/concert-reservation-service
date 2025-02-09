@@ -1,7 +1,8 @@
 package com.hhconcert.server.global.interceptor;
 
-import com.hhconcert.server.business.domain.queues.entity.Token;
+import com.hhconcert.server.business.domain.queues.entity.TokenGenerator;
 import com.hhconcert.server.business.domain.queues.entity.TokenStatus;
+import com.hhconcert.server.business.domain.queues.entity.TokenVO;
 import com.hhconcert.server.business.domain.queues.persistance.TokenRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -34,15 +35,16 @@ public class TokenValidationInterceptor implements HandlerInterceptor {
             return errorResponse(response, HttpServletResponse.SC_FORBIDDEN, "잘못된 토큰입니다.");
         }
 
-        Token findToken;
+        TokenVO findToken;
         try {
             String extractedToken = token.substring(7);
-            findToken = tokenRepository.findToken(extractedToken);
+            String restoreUserId = TokenGenerator.tokenIdToUserId(extractedToken);
+            findToken = tokenRepository.findTokenBy(restoreUserId);
         } catch (RuntimeException e) {
             return errorResponse(response, HttpServletResponse.SC_NOT_FOUND, "등록되지 않은 토큰입니다.");
         }
 
-        if (findToken != null && findToken.getStatus() != TokenStatus.ACTIVE) {
+        if (findToken != null && findToken.status() != TokenStatus.ACTIVE) {
             return errorResponse(response, HttpServletResponse.SC_FORBIDDEN, "이용 가능한 토큰이 아닙니다.");
         }
 

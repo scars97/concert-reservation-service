@@ -11,6 +11,7 @@ import com.hhconcert.server.business.domain.reservation.service.ReservationServi
 import com.hhconcert.server.business.domain.schedule.entity.Schedule;
 import com.hhconcert.server.business.domain.schedule.persistance.ScheduleRepository;
 import com.hhconcert.server.business.domain.seat.entity.Seat;
+import com.hhconcert.server.business.domain.seat.persistance.SeatCacheRepository;
 import com.hhconcert.server.business.domain.seat.persistance.SeatRepository;
 import com.hhconcert.server.business.domain.user.entity.User;
 import com.hhconcert.server.business.domain.user.persistance.UserRepository;
@@ -20,6 +21,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -32,7 +35,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class ReservationServiceTest {
@@ -49,6 +52,11 @@ class ReservationServiceTest {
     private ScheduleRepository scheduleRepository;
     @Mock
     private SeatRepository seatRepository;
+    @Mock
+    private SeatCacheRepository seatCacheRepository;
+
+    @Captor
+    private ArgumentCaptor<Long> captor;
 
     User user;
     Concert concert;
@@ -85,6 +93,9 @@ class ReservationServiceTest {
         assertThat(result.seat().seatId()).isEqualTo(1L);
         assertThat(result.price()).isEqualTo(75000);
         assertThat(result.status()).isEqualTo(ReservationStatus.TEMP);
+
+        verify(reservationRepository).addReservedSeatId(anyLong(), captor.capture());
+        verify(seatCacheRepository, times(1)).evictCacheBy(1L);
     }
 
     @DisplayName("해당 좌석에 대한 예약건이 존재하는 경우 예외가 발생한다.")

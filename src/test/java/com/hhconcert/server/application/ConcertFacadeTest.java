@@ -34,8 +34,9 @@ class ConcertFacadeTest extends IntegrationTestSupport {
     void setUp() {
         nowDate = LocalDate.now();
         nowTime = LocalDateTime.now().withNano(0);
+        long currentTimeMills = System.currentTimeMillis();
 
-        fixture.concertFixture(nowDate, nowTime);
+        fixture.concertFixture(nowDate, nowTime, currentTimeMills);
     }
 
     @DisplayName("콘서트 목록을 조회한다.")
