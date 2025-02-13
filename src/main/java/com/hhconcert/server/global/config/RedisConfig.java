@@ -1,4 +1,4 @@
-package com.hhconcert.server.global.config.redis;
+package com.hhconcert.server.global.config;
 
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
