@@ -11,6 +11,9 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(indexes = {
+    @Index(name = "idx_schedule", columnList = "schedule_id")
+})
 public class Seat extends BaseEntity {
 
     @Id
