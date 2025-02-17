@@ -40,4 +40,8 @@ public class TokenService {
         return TokenInfo.from(tokenRepository.findTokenBy(userId));
     }
 
+    public void dropTokenBy(String userId) {
+        tokenRepository.dropTokenByUserId(userId);
+    }
+
 }

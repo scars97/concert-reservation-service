@@ -15,7 +15,6 @@ import com.hhconcert.server.business.domain.user.entity.User;
 import com.hhconcert.server.business.domain.user.persistance.UserRepository;
 import com.hhconcert.server.global.common.error.ErrorCode;
 import com.hhconcert.server.global.common.exception.BusinessException;
-import com.hhconcert.server.global.common.lock.DistributedLock;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -33,7 +32,6 @@ public class ReservationService {
     private final SeatRepository seatRepository;
     private final SeatCacheRepository seatCacheRepository;
 
-    @DistributedLock(key = "#info.seatId()")
     @Transactional
     public ReservationInfo creatTempReserve(ReservationCommand info) {
         User user = userRepository.findUser(info.userId());
@@ -48,6 +46,7 @@ public class ReservationService {
 
         Reservation reservation = Reservation.createTemp(user, concert, schedule, seat);
 
+        // 좌석 조회 시 최신화된 예약 좌석 ID를 읽을 수 있도록 하기 위함.
         reservationRepository.addReservedSeatId(seat.getId(), System.currentTimeMillis());
 
         seatCacheRepository.evictCacheBy(schedule.getId());
