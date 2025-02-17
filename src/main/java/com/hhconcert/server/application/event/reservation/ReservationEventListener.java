@@ -1,5 +1,6 @@
-package com.hhconcert.server.application.event;
+package com.hhconcert.server.application.event.reservation;
 
+import com.hhconcert.server.application.event.DataPlatformService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
@@ -16,12 +17,12 @@ public class ReservationEventListener {
 
     @Async
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
-    public void handle(ReserveSuccessEvent event) {
+    public void sendToDataPlatform(ReserveSuccessEvent event) {
         try {
-            log.info("예약 데이터 전송 : {}", event.reserveId());
+            log.info("Send Reservation Data for reserveId : {}", event.reserveId());
             dataPlatformService.send(event.reserveId());
         } catch (Exception e) {
-            log.error("데이터 플랫폼 전송 실패 : {}", e.getMessage());
+            log.error("Failed Send for DataPlatform : {}", e.getMessage());
         }
     }
 

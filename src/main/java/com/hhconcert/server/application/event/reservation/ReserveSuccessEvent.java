@@ -1,4 +1,4 @@
-package com.hhconcert.server.application.event;
+package com.hhconcert.server.application.event.reservation;
 
 public record ReserveSuccessEvent(
         Long reserveId
