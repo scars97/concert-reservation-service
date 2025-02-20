@@ -4,6 +4,7 @@ import jakarta.annotation.PreDestroy;
 import org.springframework.context.annotation.Configuration;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.MySQLContainer;
+import org.testcontainers.kafka.ConfluentKafkaContainer;
 import org.testcontainers.utility.DockerImageName;
 
 @Configuration
@@ -11,6 +12,7 @@ public class TestContainerConfig {
 
     public static final MySQLContainer<?> MYSQL_CONTAINER;
     public static final GenericContainer<?> REDIS_CONTAINER;
+    public static final ConfluentKafkaContainer KAFKA_CONTAINER;
 
     static {
         // mysql
@@ -19,7 +21,6 @@ public class TestContainerConfig {
                 .withUsername("test")
                 .withPassword("test");
         MYSQL_CONTAINER.start();
-
         System.setProperty("spring.datasource.url", MYSQL_CONTAINER.getJdbcUrl() + "?characterEncoding=UTF-8&serverTimezone=UTC");
         System.setProperty("spring.datasource.username", MYSQL_CONTAINER.getUsername());
         System.setProperty("spring.datasource.password", MYSQL_CONTAINER.getPassword());
@@ -28,9 +29,14 @@ public class TestContainerConfig {
         REDIS_CONTAINER = new GenericContainer<>(DockerImageName.parse("redis:6.2"))
                 .withExposedPorts(6379);
         REDIS_CONTAINER.start();
-
         System.setProperty("spring.data.redis.host", REDIS_CONTAINER.getHost());
         System.setProperty("spring.data.redis.port", REDIS_CONTAINER.getMappedPort(6379).toString());
+
+        // kafka
+        KAFKA_CONTAINER = new ConfluentKafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:latest"))
+                .withReuse(false);
+        KAFKA_CONTAINER.start();
+        System.setProperty("spring.kafka.bootstrap-servers", KAFKA_CONTAINER.getBootstrapServers());
     }
 
     @PreDestroy
@@ -40,6 +46,9 @@ public class TestContainerConfig {
         }
         if (REDIS_CONTAINER.isRunning()) {
             REDIS_CONTAINER.stop();
+        }
+        if (KAFKA_CONTAINER.isRunning()) {
+            KAFKA_CONTAINER.stop();
         }
     }
 }
