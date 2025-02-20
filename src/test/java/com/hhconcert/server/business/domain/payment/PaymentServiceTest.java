@@ -7,7 +7,6 @@ import com.hhconcert.server.business.domain.payment.entity.Payment;
 import com.hhconcert.server.business.domain.payment.entity.PaymentStatus;
 import com.hhconcert.server.business.domain.payment.persistance.PaymentRepository;
 import com.hhconcert.server.business.domain.payment.service.PaymentService;
-import com.hhconcert.server.business.domain.queues.persistance.TokenRepository;
 import com.hhconcert.server.business.domain.reservation.entity.Reservation;
 import com.hhconcert.server.business.domain.reservation.entity.ReservationStatus;
 import com.hhconcert.server.business.domain.reservation.persistance.ReservationRepository;
@@ -32,7 +31,7 @@ import java.time.LocalDateTime;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class PaymentServiceTest {
@@ -45,8 +44,6 @@ class PaymentServiceTest {
     private ReservationRepository reservationRepository;
     @Mock
     private UserRepository userRepository;
-    @Mock
-    private TokenRepository tokenRepository;
 
     User user;
     Concert concert;
@@ -80,8 +77,6 @@ class PaymentServiceTest {
         assertThat(result.user().point()).isEqualTo(5000);
         assertThat(result.price()).isEqualTo(75000);
         assertThat(result.status()).isEqualTo(PaymentStatus.SUCCESS);
-
-        verify(tokenRepository, times(1)).dropTokenByUserId("test1234");
     }
 
     @DisplayName("결제 금액이 일치하지 않는 경우 예외가 발생한다.")

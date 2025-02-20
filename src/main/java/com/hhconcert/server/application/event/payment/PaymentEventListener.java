@@ -1,5 +1,6 @@
-package com.hhconcert.server.application.event;
+package com.hhconcert.server.application.event.payment;
 
+import com.hhconcert.server.business.domain.queues.service.TokenService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
@@ -10,19 +11,18 @@ import org.springframework.transaction.event.TransactionalEventListener;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class ReservationEventListener {
+public class PaymentEventListener {
 
-    private final DataPlatformService dataPlatformService;
+    private final TokenService tokenService;
 
     @Async
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
-    public void handle(ReserveSuccessEvent event) {
+    public void afterPaymentThenExpireToken(PaymentSuccessEvent event) {
         try {
-            log.info("예약 데이터 전송 : {}", event.reserveId());
-            dataPlatformService.send(event.reserveId());
+            tokenService.dropTokenBy(event.userId());
+            log.info("Expire Token for userId : {}", event.userId());
         } catch (Exception e) {
-            log.error("데이터 플랫폼 전송 실패 : {}", e.getMessage());
+            log.error("Failed to Expire Token for userId : {}", event.userId());
         }
     }
-
 }

@@ -1,12 +1,13 @@
 package com.hhconcert.server.application.facade;
 
 import com.hhconcert.server.application.dto.ReservationResult;
-import com.hhconcert.server.application.event.ReservationEventPublisher;
-import com.hhconcert.server.application.event.ReserveSuccessEvent;
+import com.hhconcert.server.application.event.reservation.ReserveSuccessEvent;
 import com.hhconcert.server.business.domain.reservation.dto.ReservationInfo;
 import com.hhconcert.server.business.domain.reservation.service.ReservationService;
+import com.hhconcert.server.global.common.lock.DistributedLock;
 import com.hhconcert.server.interfaces.api.reservation.dto.ReservationRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,13 +16,14 @@ import org.springframework.transaction.annotation.Transactional;
 public class ReservationFacade {
 
     private final ReservationService reservationService;
-    private final ReservationEventPublisher reservationEventPublisher;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
+    @DistributedLock(key = "'reserve:'.concat(#request.seatId())")
     @Transactional
     public ReservationResult tempReserve(ReservationRequest request) {
         ReservationInfo info = reservationService.creatTempReserve(request.toInfo());
 
-        reservationEventPublisher.publish(ReserveSuccessEvent.of(info.reserveId()));
+        applicationEventPublisher.publishEvent(ReserveSuccessEvent.of(info.reserveId()));
 
         return ReservationResult.from(info);
     }

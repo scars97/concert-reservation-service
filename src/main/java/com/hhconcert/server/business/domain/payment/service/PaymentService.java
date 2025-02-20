@@ -4,7 +4,6 @@ import com.hhconcert.server.business.domain.payment.dto.PaymentCommand;
 import com.hhconcert.server.business.domain.payment.dto.PaymentInfo;
 import com.hhconcert.server.business.domain.payment.entity.Payment;
 import com.hhconcert.server.business.domain.payment.persistance.PaymentRepository;
-import com.hhconcert.server.business.domain.queues.persistance.TokenRepository;
 import com.hhconcert.server.business.domain.reservation.entity.Reservation;
 import com.hhconcert.server.business.domain.reservation.persistance.ReservationRepository;
 import com.hhconcert.server.business.domain.user.entity.User;
@@ -22,7 +21,6 @@ public class PaymentService {
     private final PaymentRepository paymentRepository;
     private final ReservationRepository reservationRepository;
     private final UserRepository userRepository;
-    private final TokenRepository tokenRepository;
 
     @Transactional
     public PaymentInfo payment(PaymentCommand command) {
@@ -35,8 +33,6 @@ public class PaymentService {
 
         User user = userRepository.findUser(command.userId());
         user.usePoint(command.amount());
-
-        tokenRepository.dropTokenByUserId(command.userId());
 
         Payment payment = Payment.create(user, reservation, reservation.getPrice());
 
