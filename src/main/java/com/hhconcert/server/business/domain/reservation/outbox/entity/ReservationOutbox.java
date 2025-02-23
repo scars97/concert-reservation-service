@@ -2,7 +2,7 @@ package com.hhconcert.server.business.domain.reservation.outbox.entity;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hhconcert.server.application.event.reservation.ReserveSuccessEvent;
+import com.hhconcert.server.business.domain.reservation.outbox.dto.ReserveSuccessEvent;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

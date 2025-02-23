@@ -1,7 +1,7 @@
 package com.hhconcert.server.application.facade;
 
 import com.hhconcert.server.application.dto.ReservationResult;
-import com.hhconcert.server.application.event.reservation.ReserveSuccessEvent;
+import com.hhconcert.server.business.domain.reservation.outbox.dto.ReserveSuccessEvent;
 import com.hhconcert.server.business.domain.reservation.dto.ReservationInfo;
 import com.hhconcert.server.business.domain.reservation.service.ReservationService;
 import com.hhconcert.server.global.common.lock.DistributedLock;

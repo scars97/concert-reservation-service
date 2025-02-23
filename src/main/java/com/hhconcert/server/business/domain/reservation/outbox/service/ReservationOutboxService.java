@@ -1,6 +1,6 @@
 package com.hhconcert.server.business.domain.reservation.outbox.service;
 
-import com.hhconcert.server.application.event.reservation.ReserveSuccessEvent;
+import com.hhconcert.server.business.domain.reservation.outbox.dto.ReserveSuccessEvent;
 import com.hhconcert.server.business.domain.reservation.outbox.entity.ReservationOutbox;
 import com.hhconcert.server.business.domain.reservation.outbox.repository.ReservationOutboxRepository;
 import lombok.RequiredArgsConstructor;

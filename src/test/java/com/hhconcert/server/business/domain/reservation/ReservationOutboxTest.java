@@ -1,6 +1,8 @@
-package com.hhconcert.server.business.domain.reservation.outbox.entity;
+package com.hhconcert.server.business.domain.reservation;
 
-import com.hhconcert.server.application.event.reservation.ReserveSuccessEvent;
+import com.hhconcert.server.business.domain.reservation.outbox.dto.ReserveSuccessEvent;
+import com.hhconcert.server.business.domain.reservation.outbox.entity.OutboxStatus;
+import com.hhconcert.server.business.domain.reservation.outbox.entity.ReservationOutbox;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.Test;
@@ -19,7 +21,6 @@ class ReservationOutboxTest {
     @Test
     void createOutbox() {
         Long reserveId = 1L;
-        String payload = "test-message";
 
         ReservationOutbox outbox = ReservationOutbox.init(reserveId);
 

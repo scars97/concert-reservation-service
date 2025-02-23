@@ -1,4 +1,4 @@
-package com.hhconcert.server.application.event.reservation;
+package com.hhconcert.server.business.domain.reservation.outbox.dto;
 
 import com.hhconcert.server.business.domain.reservation.dto.ReservationInfo;
 
