@@ -68,6 +68,7 @@ public class TokenConcurrencyTest extends IntegrationTestSupport {
 
             executor.submit(() -> {
                 try {
+                    Thread.sleep(300);
                     results.add(queueFacade.createToken(new TokenRequest(userId)));
                     successCount.incrementAndGet();
                 } catch (Exception e) {
