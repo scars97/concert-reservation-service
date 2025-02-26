@@ -34,6 +34,8 @@ public class TokenActiveScheduler {
 
         Set<String> activationTokens = tokenRepository.getWaitTokensToActivate(availableCount);
         activationTokens.forEach(tokenRepository::addActiveToken);
+
+        log.info("Token Active : {}", activationTokens.size());
     }
 
 }

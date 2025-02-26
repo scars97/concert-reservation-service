@@ -20,19 +20,25 @@ public class ReservationOutboxScheduler {
     private final KafkaTemplate<String, Object> kafkaTemplate;
     private final ReservationOutboxService outboxService;
 
-    @Scheduled(cron = "* 5 * * * *")
+    @Scheduled(cron = "0 0/5 * * * *")
     public void rePublished() {
+        log.info("Outbox 스케줄러 실행");
+        
         List<ReservationOutbox> outboxes = outboxService.findInitOutboxOlderThan(5);
 
-        outboxes.forEach(outbox -> {
-            ReserveSuccessEvent event = outbox.toReserveSuccessEvent();
+        if (!outboxes.isEmpty()) {
+            outboxes.forEach(outbox -> {
+                ReserveSuccessEvent event = outbox.toReserveSuccessEvent();
 
-            try {
-                kafkaTemplate.send("reserve-notification", event);
-            } catch (Exception e) {
-                log.error("Failed Reservation rePublished : {}", event.reserveId());
-            }
-        });
+                try {
+                    kafkaTemplate.send("reserve-notification", event);
+                } catch (Exception e) {
+                    log.error("Failed Reservation rePublished : {}", event.reserveId());
+                }
+            });
+        }
+        
+        log.info("Outbox 스케줄러 종료");
     }
 
 }
