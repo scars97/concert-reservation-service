@@ -15,10 +15,10 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class TokenActiveScheduler {
 
-    private final static int MAX_ACTIVE_TOKEN_COUNT = 10;
+    private final static int MAX_ACTIVE_TOKEN_COUNT = 1000;
     private final TokenRepository tokenRepository;
 
-    @Scheduled(cron = "*/30 * * * * *") // 30초마다 실행
+    @Scheduled(cron = "*/3 * * * * *") // 30초마다 실행
     public void activateTokens() {
         long activeCount = tokenRepository.getCountForActiveTokens();
         if (activeCount >= MAX_ACTIVE_TOKEN_COUNT) {
