@@ -4,6 +4,8 @@ import com.hhconcert.server.business.domain.queues.entity.TokenGenerator;
 import com.hhconcert.server.business.domain.queues.entity.TokenStatus;
 import com.hhconcert.server.business.domain.queues.entity.TokenVO;
 import com.hhconcert.server.business.domain.queues.persistance.TokenRepository;
+import com.hhconcert.server.global.common.error.ErrorCode;
+import com.hhconcert.server.global.common.exception.BusinessException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -11,8 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
-
-import java.io.IOException;
 
 @Slf4j
 @Component
@@ -22,17 +22,17 @@ public class TokenValidationInterceptor implements HandlerInterceptor {
     private final TokenRepository tokenRepository;
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         String token = request.getHeader("Authorization");
 
         log.info("Received request: URI={}, Method={}", request.getRequestURI(), request.getMethod());
 
         if (token == null) {
-            return errorResponse(response, HttpServletResponse.SC_UNAUTHORIZED, "토큰 정보가 누락되었습니다.");
+            throw new BusinessException(ErrorCode.TOKEN_IS_MISSING);
         }
 
         if (!StringUtils.hasText(token) || !token.startsWith("Bearer ")) {
-            return errorResponse(response, HttpServletResponse.SC_FORBIDDEN, "잘못된 토큰입니다.");
+            throw new BusinessException(ErrorCode.INVALID_TOKEN);
         }
 
         TokenVO findToken;
@@ -41,23 +41,14 @@ public class TokenValidationInterceptor implements HandlerInterceptor {
             String restoreUserId = TokenGenerator.tokenIdToUserId(extractedToken);
             findToken = tokenRepository.findTokenBy(restoreUserId);
         } catch (RuntimeException e) {
-            return errorResponse(response, HttpServletResponse.SC_NOT_FOUND, "등록되지 않은 토큰입니다.");
+            throw new BusinessException(ErrorCode.UNREGISTERED_TOKEN);
         }
 
         if (findToken != null && findToken.status() != TokenStatus.ACTIVE) {
-            return errorResponse(response, HttpServletResponse.SC_FORBIDDEN, "이용 가능한 토큰이 아닙니다.");
+            throw new BusinessException(ErrorCode.TOKEN_IS_UNAVAILABLE);
         }
 
         return true;
-    }
-
-    private boolean errorResponse(HttpServletResponse response, int statusCode, String message) throws IOException {
-        log.error("Responding with error: Status={}, Message={}", statusCode, message);
-        response.setCharacterEncoding("UTF-8");
-        response.setContentType("text/plain;charset=UTF-8");
-        response.setStatus(statusCode);
-        response.getWriter().write(message);
-        return false;
     }
 
 }

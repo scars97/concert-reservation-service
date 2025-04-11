@@ -11,6 +11,10 @@ public enum ErrorCode {
 
     // Token
     DUPLICATED_TOKEN(HttpStatus.CONFLICT, "이미 토큰이 존재합니다."),
+    TOKEN_IS_MISSING(HttpStatus.UNAUTHORIZED, "토큰 정보가 누락되었습니다."),
+    INVALID_TOKEN(HttpStatus.FORBIDDEN, "잘못된 토큰입니다."),
+    UNREGISTERED_TOKEN(HttpStatus.NOT_FOUND, "등록되지 않은 토큰입니다."),
+    TOKEN_IS_UNAVAILABLE(HttpStatus.FORBIDDEN, "이용 가능한 토큰이 아닙니다."),
 
     // Reservation
     INVALID_RESERVATION_STATUS(HttpStatus.CONFLICT, "결제할 수 없는 예약 내역입니다."),

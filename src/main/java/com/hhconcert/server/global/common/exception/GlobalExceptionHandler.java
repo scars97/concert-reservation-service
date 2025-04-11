@@ -31,7 +31,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(BusinessException.class)
     public ResponseEntity<ErrorResponse> handleBusinessException(BusinessException e) {
-        log.error("Business Exception occurred : {} - {}", e.getErrorCode(), e.getMessage());
+        log.error("Business Exception occurred : {}", e.getErrorCode());
         return ErrorResponse.of(e.getErrorCode());
     }
 
