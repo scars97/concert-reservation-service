@@ -1,6 +1,6 @@
 package com.hhconcert.server.infrastructure;
 
-import com.hhconcert.server.infrastructure.reservation.ReservationRedisRepository;
+import com.hhconcert.server.infrastructure.persistence.redis.ReservationRedisRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

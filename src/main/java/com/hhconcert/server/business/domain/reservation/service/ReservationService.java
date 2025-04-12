@@ -13,8 +13,8 @@ import com.hhconcert.server.business.domain.seat.persistance.SeatCacheRepository
 import com.hhconcert.server.business.domain.seat.persistance.SeatRepository;
 import com.hhconcert.server.business.domain.user.entity.User;
 import com.hhconcert.server.business.domain.user.persistance.UserRepository;
-import com.hhconcert.server.global.common.error.ErrorCode;
-import com.hhconcert.server.global.common.exception.BusinessException;
+import com.hhconcert.server.global.exception.ErrorCode;
+import com.hhconcert.server.global.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

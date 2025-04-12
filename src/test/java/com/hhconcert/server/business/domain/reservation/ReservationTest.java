@@ -6,8 +6,8 @@ import com.hhconcert.server.business.domain.reservation.entity.ReservationStatus
 import com.hhconcert.server.business.domain.schedule.entity.Schedule;
 import com.hhconcert.server.business.domain.seat.entity.Seat;
 import com.hhconcert.server.business.domain.user.entity.User;
-import com.hhconcert.server.global.common.error.ErrorCode;
-import com.hhconcert.server.global.common.exception.BusinessException;
+import com.hhconcert.server.global.exception.ErrorCode;
+import com.hhconcert.server.global.exception.BusinessException;
 import org.junit.jupiter.api.*;
 import org.springframework.http.HttpStatus;
 

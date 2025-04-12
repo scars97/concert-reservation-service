@@ -1,7 +1,7 @@
 package com.hhconcert.server.interfaces.api.payment;
 
 import com.hhconcert.server.application.facade.PaymentFacade;
-import com.hhconcert.server.global.common.model.ErrorResponse;
+import com.hhconcert.server.global.model.ErrorResponse;
 import com.hhconcert.server.interfaces.api.payment.dto.PaymentRequest;
 import com.hhconcert.server.interfaces.api.payment.dto.PaymentResponse;
 import io.swagger.v3.oas.annotations.Operation;

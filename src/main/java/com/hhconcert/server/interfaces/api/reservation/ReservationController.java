@@ -1,7 +1,7 @@
 package com.hhconcert.server.interfaces.api.reservation;
 
 import com.hhconcert.server.application.facade.ReservationFacade;
-import com.hhconcert.server.global.common.model.ErrorResponse;
+import com.hhconcert.server.global.model.ErrorResponse;
 import com.hhconcert.server.interfaces.api.reservation.dto.ReservationRequest;
 import com.hhconcert.server.interfaces.api.reservation.dto.ReservationResponse;
 import io.swagger.v3.oas.annotations.Operation;

@@ -8,13 +8,13 @@ import com.hhconcert.server.business.domain.reservation.entity.ReservationStatus
 import com.hhconcert.server.business.domain.schedule.entity.Schedule;
 import com.hhconcert.server.business.domain.seat.entity.Seat;
 import com.hhconcert.server.business.domain.user.entity.User;
-import com.hhconcert.server.infrastructure.concert.ConcertJpaRepository;
-import com.hhconcert.server.infrastructure.payment.PaymentJpaRepository;
-import com.hhconcert.server.infrastructure.reservation.ReservationJpaRepository;
-import com.hhconcert.server.infrastructure.reservation.ReservationRedisRepository;
-import com.hhconcert.server.infrastructure.schedule.ScheduleJpaRepository;
-import com.hhconcert.server.infrastructure.seat.SeatJpaRepository;
-import com.hhconcert.server.infrastructure.user.UserJpaRepository;
+import com.hhconcert.server.infrastructure.persistence.jpa.ConcertJpaRepository;
+import com.hhconcert.server.infrastructure.persistence.jpa.PaymentJpaRepository;
+import com.hhconcert.server.infrastructure.persistence.jpa.ReservationJpaRepository;
+import com.hhconcert.server.infrastructure.persistence.redis.ReservationRedisRepository;
+import com.hhconcert.server.infrastructure.persistence.jpa.ScheduleJpaRepository;
+import com.hhconcert.server.infrastructure.persistence.jpa.SeatJpaRepository;
+import com.hhconcert.server.infrastructure.persistence.jpa.UserJpaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

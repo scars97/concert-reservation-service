@@ -1,7 +1,7 @@
 package com.hhconcert.server.interfaces.api.queues;
 
 import com.hhconcert.server.application.facade.QueueFacade;
-import com.hhconcert.server.global.common.model.ErrorResponse;
+import com.hhconcert.server.global.model.ErrorResponse;
 import com.hhconcert.server.interfaces.api.queues.dto.TokenRequest;
 import com.hhconcert.server.interfaces.api.queues.dto.TokenResponse;
 import io.swagger.v3.oas.annotations.Operation;

@@ -1,7 +1,7 @@
 package com.hhconcert.server.interfaces.api.concert;
 
 import com.hhconcert.server.application.facade.ConcertFacade;
-import com.hhconcert.server.global.common.model.ErrorResponse;
+import com.hhconcert.server.global.model.ErrorResponse;
 import com.hhconcert.server.interfaces.api.concert.dto.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;

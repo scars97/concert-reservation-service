@@ -2,7 +2,7 @@ package com.hhconcert.server.business.domain.queues;
 
 import com.hhconcert.server.business.domain.queues.service.TokenExpireScheduler;
 import com.hhconcert.server.config.IntegrationTestSupport;
-import com.hhconcert.server.infrastructure.queues.TokenRedisRepository;
+import com.hhconcert.server.infrastructure.persistence.redis.TokenRedisRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

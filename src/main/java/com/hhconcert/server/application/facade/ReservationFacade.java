@@ -4,7 +4,7 @@ import com.hhconcert.server.application.dto.ReservationResult;
 import com.hhconcert.server.business.domain.reservation.outbox.dto.ReserveSuccessEvent;
 import com.hhconcert.server.business.domain.reservation.dto.ReservationInfo;
 import com.hhconcert.server.business.domain.reservation.service.ReservationService;
-import com.hhconcert.server.global.common.lock.DistributedLock;
+import com.hhconcert.server.global.lock.DistributedLock;
 import com.hhconcert.server.interfaces.api.reservation.dto.ReservationRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;

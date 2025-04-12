@@ -4,7 +4,7 @@ import com.hhconcert.server.application.dto.TokenResult;
 import com.hhconcert.server.application.facade.QueueFacade;
 import com.hhconcert.server.business.domain.user.entity.User;
 import com.hhconcert.server.config.IntegrationTestSupport;
-import com.hhconcert.server.infrastructure.user.UserJpaRepository;
+import com.hhconcert.server.infrastructure.persistence.jpa.UserJpaRepository;
 import com.hhconcert.server.interfaces.api.queues.dto.TokenRequest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

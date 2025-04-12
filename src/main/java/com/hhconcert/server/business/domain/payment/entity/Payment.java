@@ -1,6 +1,6 @@
 package com.hhconcert.server.business.domain.payment.entity;
 
-import com.hhconcert.server.business.domain.BaseEntity;
+import com.hhconcert.server.business.domain.common.BaseEntity;
 import com.hhconcert.server.business.domain.reservation.entity.Reservation;
 import com.hhconcert.server.business.domain.user.entity.User;
 import jakarta.persistence.*;

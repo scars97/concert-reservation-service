@@ -1,7 +1,7 @@
 package com.hhconcert.server.business.domain.queues.persistance;
 
 import com.hhconcert.server.business.domain.queues.entity.TokenVO;
-import com.hhconcert.server.infrastructure.queues.TokenRedisRepository;
+import com.hhconcert.server.infrastructure.persistence.redis.TokenRedisRepository;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

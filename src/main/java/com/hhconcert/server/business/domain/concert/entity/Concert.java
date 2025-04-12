@@ -1,6 +1,6 @@
 package com.hhconcert.server.business.domain.concert.entity;
 
-import com.hhconcert.server.business.domain.BaseEntity;
+import com.hhconcert.server.business.domain.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
