@@ -1,10 +1,10 @@
-package com.hhconcert.server.business.domain.seat.service;
+package com.hhconcert.server.business.domain.concert.service;
 
 import com.hhconcert.server.business.domain.reservation.persistance.ReservationRepository;
-import com.hhconcert.server.business.domain.seat.dto.SeatInfo;
-import com.hhconcert.server.business.domain.seat.entity.Seat;
-import com.hhconcert.server.business.domain.seat.persistance.SeatCacheRepository;
-import com.hhconcert.server.business.domain.seat.persistance.SeatRepository;
+import com.hhconcert.server.business.domain.concert.dto.SeatInfo;
+import com.hhconcert.server.business.domain.concert.entity.Seat;
+import com.hhconcert.server.business.domain.concert.respository.SeatCacheRepository;
+import com.hhconcert.server.business.domain.concert.respository.SeatRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

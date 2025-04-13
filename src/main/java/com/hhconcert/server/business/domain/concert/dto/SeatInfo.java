@@ -1,6 +1,6 @@
-package com.hhconcert.server.business.domain.seat.dto;
+package com.hhconcert.server.business.domain.concert.dto;
 
-import com.hhconcert.server.business.domain.seat.entity.Seat;
+import com.hhconcert.server.business.domain.concert.entity.Seat;
 
 public record SeatInfo(
         Long seatId,

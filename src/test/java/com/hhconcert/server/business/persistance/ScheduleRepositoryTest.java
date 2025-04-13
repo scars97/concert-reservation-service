@@ -1,8 +1,8 @@
 package com.hhconcert.server.business.persistance;
 
 import com.hhconcert.server.business.domain.concert.entity.Concert;
-import com.hhconcert.server.business.domain.schedule.entity.Schedule;
-import com.hhconcert.server.business.domain.schedule.persistance.ScheduleRepository;
+import com.hhconcert.server.business.domain.concert.entity.Schedule;
+import com.hhconcert.server.business.domain.concert.respository.ScheduleRepository;
 import com.hhconcert.server.config.IntegrationTestSupport;
 import com.hhconcert.server.infrastructure.persistence.jpa.ConcertJpaRepository;
 import com.hhconcert.server.infrastructure.persistence.jpa.ScheduleJpaRepository;

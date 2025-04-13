@@ -1,18 +1,18 @@
 package com.hhconcert.server.business.domain.reservation;
 
 import com.hhconcert.server.business.domain.concert.entity.Concert;
-import com.hhconcert.server.business.domain.concert.persistance.ConcertRepository;
+import com.hhconcert.server.business.domain.concert.respository.ConcertRepository;
 import com.hhconcert.server.business.domain.reservation.dto.ReservationCommand;
 import com.hhconcert.server.business.domain.reservation.dto.ReservationInfo;
 import com.hhconcert.server.business.domain.reservation.entity.Reservation;
 import com.hhconcert.server.business.domain.reservation.entity.ReservationStatus;
 import com.hhconcert.server.business.domain.reservation.persistance.ReservationRepository;
 import com.hhconcert.server.business.domain.reservation.service.ReservationService;
-import com.hhconcert.server.business.domain.schedule.entity.Schedule;
-import com.hhconcert.server.business.domain.schedule.persistance.ScheduleRepository;
-import com.hhconcert.server.business.domain.seat.entity.Seat;
-import com.hhconcert.server.business.domain.seat.persistance.SeatCacheRepository;
-import com.hhconcert.server.business.domain.seat.persistance.SeatRepository;
+import com.hhconcert.server.business.domain.concert.entity.Schedule;
+import com.hhconcert.server.business.domain.concert.respository.ScheduleRepository;
+import com.hhconcert.server.business.domain.concert.entity.Seat;
+import com.hhconcert.server.business.domain.concert.respository.SeatCacheRepository;
+import com.hhconcert.server.business.domain.concert.respository.SeatRepository;
 import com.hhconcert.server.business.domain.user.entity.User;
 import com.hhconcert.server.business.domain.user.persistance.UserRepository;
 import com.hhconcert.server.global.exception.ErrorCode;

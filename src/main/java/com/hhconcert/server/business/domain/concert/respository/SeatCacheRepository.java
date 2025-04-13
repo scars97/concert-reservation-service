@@ -1,6 +1,6 @@
-package com.hhconcert.server.business.domain.seat.persistance;
+package com.hhconcert.server.business.domain.concert.respository;
 
-import com.hhconcert.server.business.domain.seat.dto.SeatInfo;
+import com.hhconcert.server.business.domain.concert.dto.SeatInfo;
 
 import java.util.List;
 

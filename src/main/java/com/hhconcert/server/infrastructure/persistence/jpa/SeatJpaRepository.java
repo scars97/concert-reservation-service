@@ -1,6 +1,6 @@
 package com.hhconcert.server.infrastructure.persistence.jpa;
 
-import com.hhconcert.server.business.domain.seat.entity.Seat;
+import com.hhconcert.server.business.domain.concert.entity.Seat;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

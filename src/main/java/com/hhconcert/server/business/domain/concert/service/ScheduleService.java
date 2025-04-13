@@ -1,8 +1,8 @@
-package com.hhconcert.server.business.domain.schedule.service;
+package com.hhconcert.server.business.domain.concert.service;
 
-import com.hhconcert.server.business.domain.schedule.dto.ScheduleInfo;
-import com.hhconcert.server.business.domain.schedule.entity.Schedule;
-import com.hhconcert.server.business.domain.schedule.persistance.ScheduleRepository;
+import com.hhconcert.server.business.domain.concert.dto.ScheduleInfo;
+import com.hhconcert.server.business.domain.concert.entity.Schedule;
+import com.hhconcert.server.business.domain.concert.respository.ScheduleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

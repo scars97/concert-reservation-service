@@ -1,7 +1,6 @@
-package com.hhconcert.server.business.domain.schedule.dto;
+package com.hhconcert.server.business.domain.concert.dto;
 
-import com.hhconcert.server.business.domain.concert.dto.ConcertInfo;
-import com.hhconcert.server.business.domain.schedule.entity.Schedule;
+import com.hhconcert.server.business.domain.concert.entity.Schedule;
 
 import java.time.LocalDate;
 

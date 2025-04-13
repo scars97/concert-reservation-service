@@ -2,7 +2,7 @@ package com.hhconcert.server.business.domain.concert.service;
 
 import com.hhconcert.server.business.domain.concert.dto.ConcertInfo;
 import com.hhconcert.server.business.domain.concert.entity.Concert;
-import com.hhconcert.server.business.domain.concert.persistance.ConcertRepository;
+import com.hhconcert.server.business.domain.concert.respository.ConcertRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -3,8 +3,8 @@ package com.hhconcert.server.business.domain.reservation.dto;
 import com.hhconcert.server.business.domain.concert.dto.ConcertInfo;
 import com.hhconcert.server.business.domain.reservation.entity.Reservation;
 import com.hhconcert.server.business.domain.reservation.entity.ReservationStatus;
-import com.hhconcert.server.business.domain.schedule.dto.ScheduleInfo;
-import com.hhconcert.server.business.domain.seat.dto.SeatInfo;
+import com.hhconcert.server.business.domain.concert.dto.ScheduleInfo;
+import com.hhconcert.server.business.domain.concert.dto.SeatInfo;
 import com.hhconcert.server.business.domain.user.dto.UserInfo;
 
 import java.time.LocalDateTime;

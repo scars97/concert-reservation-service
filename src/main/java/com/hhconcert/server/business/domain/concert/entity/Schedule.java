@@ -1,7 +1,6 @@
-package com.hhconcert.server.business.domain.schedule.entity;
+package com.hhconcert.server.business.domain.concert.entity;
 
 import com.hhconcert.server.business.domain.common.BaseEntity;
-import com.hhconcert.server.business.domain.concert.entity.Concert;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

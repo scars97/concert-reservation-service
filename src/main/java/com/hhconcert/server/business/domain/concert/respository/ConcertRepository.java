@@ -1,4 +1,4 @@
-package com.hhconcert.server.business.domain.concert.persistance;
+package com.hhconcert.server.business.domain.concert.respository;
 
 import com.hhconcert.server.business.domain.concert.entity.Concert;
 

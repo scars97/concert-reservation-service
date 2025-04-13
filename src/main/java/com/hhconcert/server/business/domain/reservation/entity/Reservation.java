@@ -2,8 +2,8 @@ package com.hhconcert.server.business.domain.reservation.entity;
 
 import com.hhconcert.server.business.domain.common.BaseEntity;
 import com.hhconcert.server.business.domain.concert.entity.Concert;
-import com.hhconcert.server.business.domain.schedule.entity.Schedule;
-import com.hhconcert.server.business.domain.seat.entity.Seat;
+import com.hhconcert.server.business.domain.concert.entity.Schedule;
+import com.hhconcert.server.business.domain.concert.entity.Seat;
 import com.hhconcert.server.business.domain.user.entity.User;
 import com.hhconcert.server.global.exception.ErrorCode;
 import com.hhconcert.server.global.exception.BusinessException;

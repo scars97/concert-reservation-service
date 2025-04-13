@@ -1,7 +1,7 @@
 package com.hhconcert.server.business.domain.reservation.service;
 
 import com.hhconcert.server.business.domain.reservation.persistance.ReservationRepository;
-import com.hhconcert.server.business.domain.seat.persistance.SeatCacheRepository;
+import com.hhconcert.server.business.domain.concert.respository.SeatCacheRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
