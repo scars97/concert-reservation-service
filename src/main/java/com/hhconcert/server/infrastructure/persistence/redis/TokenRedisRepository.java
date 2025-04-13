@@ -2,8 +2,8 @@ package com.hhconcert.server.infrastructure.persistence.redis;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hhconcert.server.business.domain.queues.entity.TokenStatus;
-import com.hhconcert.server.business.domain.queues.entity.TokenVO;
+import com.hhconcert.server.business.queues.domain.TokenStatus;
+import com.hhconcert.server.business.queues.domain.TokenVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;

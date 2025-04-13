@@ -1,7 +1,7 @@
 package com.hhconcert.server.infrastructure.persistence.core;
 
-import com.hhconcert.server.business.domain.concert.entity.Concert;
-import com.hhconcert.server.business.domain.concert.respository.ConcertRepository;
+import com.hhconcert.server.business.concert.domain.Concert;
+import com.hhconcert.server.business.concert.respository.ConcertRepository;
 import com.hhconcert.server.infrastructure.persistence.jpa.ConcertJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;

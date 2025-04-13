@@ -1,6 +1,6 @@
 package com.hhconcert.server.interfaces.api.point.dto;
 
-import com.hhconcert.server.business.domain.user.dto.PointCommand;
+import com.hhconcert.server.business.user.dto.PointCommand;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;

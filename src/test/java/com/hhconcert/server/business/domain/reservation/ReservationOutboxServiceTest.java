@@ -1,10 +1,10 @@
 package com.hhconcert.server.business.domain.reservation;
 
-import com.hhconcert.server.business.domain.reservation.outbox.dto.ReserveSuccessEvent;
-import com.hhconcert.server.business.domain.reservation.outbox.entity.OutboxStatus;
-import com.hhconcert.server.business.domain.reservation.outbox.entity.ReservationOutbox;
-import com.hhconcert.server.business.domain.reservation.outbox.repository.ReservationOutboxRepository;
-import com.hhconcert.server.business.domain.reservation.outbox.service.ReservationOutboxService;
+import com.hhconcert.server.business.reservation.dto.ReserveSuccessEvent;
+import com.hhconcert.server.business.reservation.domain.OutboxStatus;
+import com.hhconcert.server.business.reservation.domain.ReservationOutbox;
+import com.hhconcert.server.business.reservation.persistance.ReservationOutboxRepository;
+import com.hhconcert.server.business.reservation.service.ReservationOutboxService;
 import com.hhconcert.server.config.IntegrationTestSupport;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

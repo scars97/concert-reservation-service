@@ -1,6 +1,6 @@
 package com.hhconcert.server.business.domain.queues;
 
-import com.hhconcert.server.business.domain.queues.entity.TokenGenerator;
+import com.hhconcert.server.business.queues.domain.TokenGenerator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

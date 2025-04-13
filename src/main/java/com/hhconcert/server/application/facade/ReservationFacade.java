@@ -1,9 +1,9 @@
 package com.hhconcert.server.application.facade;
 
 import com.hhconcert.server.application.dto.ReservationResult;
-import com.hhconcert.server.business.domain.reservation.outbox.dto.ReserveSuccessEvent;
-import com.hhconcert.server.business.domain.reservation.dto.ReservationInfo;
-import com.hhconcert.server.business.domain.reservation.service.ReservationService;
+import com.hhconcert.server.business.reservation.dto.ReserveSuccessEvent;
+import com.hhconcert.server.business.reservation.dto.ReservationInfo;
+import com.hhconcert.server.business.reservation.service.ReservationService;
 import com.hhconcert.server.global.lock.DistributedLock;
 import com.hhconcert.server.interfaces.api.reservation.dto.ReservationRequest;
 import lombok.RequiredArgsConstructor;

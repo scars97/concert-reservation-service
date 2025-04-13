@@ -1,6 +1,6 @@
 package com.hhconcert.server.interfaces.api.reservation.dto;
 
-import com.hhconcert.server.business.domain.reservation.dto.ReservationCommand;
+import com.hhconcert.server.business.reservation.dto.ReservationCommand;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;

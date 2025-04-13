@@ -1,6 +1,6 @@
 package com.hhconcert.server.application.event.payment;
 
-import com.hhconcert.server.business.domain.queues.service.TokenService;
+import com.hhconcert.server.business.queues.service.TokenService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;

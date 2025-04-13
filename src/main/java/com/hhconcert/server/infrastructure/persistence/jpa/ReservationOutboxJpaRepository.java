@@ -1,6 +1,6 @@
 package com.hhconcert.server.infrastructure.persistence.jpa;
 
-import com.hhconcert.server.business.domain.reservation.outbox.entity.ReservationOutbox;
+import com.hhconcert.server.business.reservation.domain.ReservationOutbox;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

@@ -1,7 +1,7 @@
 package com.hhconcert.server.business.domain.queues;
 
-import com.hhconcert.server.business.domain.queues.entity.TokenStatus;
-import com.hhconcert.server.business.domain.queues.entity.TokenVO;
+import com.hhconcert.server.business.queues.domain.TokenStatus;
+import com.hhconcert.server.business.queues.domain.TokenVO;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

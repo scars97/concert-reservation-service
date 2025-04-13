@@ -2,7 +2,7 @@ package com.hhconcert.server.application;
 
 import com.hhconcert.server.application.dto.ReservationResult;
 import com.hhconcert.server.application.facade.ReservationFacade;
-import com.hhconcert.server.business.domain.reservation.entity.ReservationStatus;
+import com.hhconcert.server.business.reservation.domain.ReservationStatus;
 import com.hhconcert.server.config.IntegrationTestSupport;
 import com.hhconcert.server.fixture.FacadeTestFixture;
 import com.hhconcert.server.interfaces.api.reservation.dto.ReservationRequest;

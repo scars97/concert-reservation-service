@@ -1,7 +1,7 @@
 package com.hhconcert.server.application.event.reservation;
 
-import com.hhconcert.server.business.domain.reservation.outbox.dto.ReserveSuccessEvent;
-import com.hhconcert.server.business.domain.reservation.outbox.service.ReservationOutboxService;
+import com.hhconcert.server.business.reservation.dto.ReserveSuccessEvent;
+import com.hhconcert.server.business.reservation.service.ReservationOutboxService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;

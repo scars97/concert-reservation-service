@@ -1,7 +1,7 @@
 package com.hhconcert.server.interfaces.api.queues.dto;
 
 import com.hhconcert.server.application.dto.TokenResult;
-import com.hhconcert.server.business.domain.queues.entity.TokenStatus;
+import com.hhconcert.server.business.queues.domain.TokenStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.time.LocalDateTime;

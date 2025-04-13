@@ -1,7 +1,7 @@
 package com.hhconcert.server.infrastructure.persistence.core;
 
-import com.hhconcert.server.business.domain.concert.entity.Schedule;
-import com.hhconcert.server.business.domain.concert.respository.ScheduleRepository;
+import com.hhconcert.server.business.concert.domain.Schedule;
+import com.hhconcert.server.business.concert.respository.ScheduleRepository;
 import com.hhconcert.server.infrastructure.persistence.jpa.ScheduleJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;

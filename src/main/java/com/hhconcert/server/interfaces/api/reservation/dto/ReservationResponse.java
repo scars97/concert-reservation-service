@@ -1,7 +1,7 @@
 package com.hhconcert.server.interfaces.api.reservation.dto;
 
 import com.hhconcert.server.application.dto.ReservationResult;
-import com.hhconcert.server.business.domain.reservation.entity.ReservationStatus;
+import com.hhconcert.server.business.reservation.domain.ReservationStatus;
 import com.hhconcert.server.interfaces.api.concert.dto.ConcertResponse;
 import io.swagger.v3.oas.annotations.media.Schema;
 

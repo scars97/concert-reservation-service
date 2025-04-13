@@ -1,7 +1,7 @@
 package com.hhconcert.server.application.dto;
 
-import com.hhconcert.server.business.domain.queues.dto.TokenInfo;
-import com.hhconcert.server.business.domain.queues.entity.TokenStatus;
+import com.hhconcert.server.business.queues.dto.TokenInfo;
+import com.hhconcert.server.business.queues.domain.TokenStatus;
 
 import java.time.LocalDateTime;
 

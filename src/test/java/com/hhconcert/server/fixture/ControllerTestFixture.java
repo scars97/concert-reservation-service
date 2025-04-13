@@ -1,10 +1,10 @@
 package com.hhconcert.server.fixture;
 
 import com.hhconcert.server.application.dto.*;
-import com.hhconcert.server.business.domain.payment.entity.PaymentStatus;
-import com.hhconcert.server.business.domain.queues.entity.TokenGenerator;
-import com.hhconcert.server.business.domain.queues.entity.TokenStatus;
-import com.hhconcert.server.business.domain.reservation.entity.ReservationStatus;
+import com.hhconcert.server.business.payment.domain.PaymentStatus;
+import com.hhconcert.server.business.queues.domain.TokenGenerator;
+import com.hhconcert.server.business.queues.domain.TokenStatus;
+import com.hhconcert.server.business.reservation.domain.ReservationStatus;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

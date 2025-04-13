@@ -2,7 +2,7 @@ package com.hhconcert.server.concurrency;
 
 import com.hhconcert.server.application.dto.PointResult;
 import com.hhconcert.server.application.facade.UserPointFacade;
-import com.hhconcert.server.business.domain.user.entity.User;
+import com.hhconcert.server.business.user.domain.User;
 import com.hhconcert.server.config.IntegrationTestSupport;
 import com.hhconcert.server.infrastructure.persistence.jpa.UserJpaRepository;
 import com.hhconcert.server.interfaces.api.point.dto.PointRequest;

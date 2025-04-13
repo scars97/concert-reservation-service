@@ -2,8 +2,8 @@ package com.hhconcert.server.application.facade;
 
 import com.hhconcert.server.application.dto.PaymentResult;
 import com.hhconcert.server.application.event.payment.PaymentSuccessEvent;
-import com.hhconcert.server.business.domain.payment.dto.PaymentInfo;
-import com.hhconcert.server.business.domain.payment.service.PaymentService;
+import com.hhconcert.server.business.payment.dto.PaymentInfo;
+import com.hhconcert.server.business.payment.service.PaymentService;
 import com.hhconcert.server.interfaces.api.payment.dto.PaymentRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;

@@ -1,9 +1,9 @@
 package com.hhconcert.server.global.interceptor;
 
-import com.hhconcert.server.business.domain.queues.entity.TokenGenerator;
-import com.hhconcert.server.business.domain.queues.entity.TokenStatus;
-import com.hhconcert.server.business.domain.queues.entity.TokenVO;
-import com.hhconcert.server.business.domain.queues.persistance.TokenRepository;
+import com.hhconcert.server.business.queues.domain.TokenGenerator;
+import com.hhconcert.server.business.queues.domain.TokenStatus;
+import com.hhconcert.server.business.queues.domain.TokenVO;
+import com.hhconcert.server.business.queues.persistance.TokenRepository;
 import com.hhconcert.server.global.exception.ErrorCode;
 import com.hhconcert.server.global.exception.BusinessException;
 import jakarta.servlet.http.HttpServletRequest;

@@ -2,7 +2,7 @@ package com.hhconcert.server.application;
 
 import com.hhconcert.server.application.dto.PaymentResult;
 import com.hhconcert.server.application.facade.PaymentFacade;
-import com.hhconcert.server.business.domain.payment.entity.PaymentStatus;
+import com.hhconcert.server.business.payment.domain.PaymentStatus;
 import com.hhconcert.server.config.IntegrationTestSupport;
 import com.hhconcert.server.interfaces.api.payment.dto.PaymentRequest;
 import com.hhconcert.server.fixture.FacadeTestFixture;

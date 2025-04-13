@@ -1,6 +1,6 @@
 package com.hhconcert.server.business.domain.user;
 
-import com.hhconcert.server.business.domain.user.entity.User;
+import com.hhconcert.server.business.user.domain.User;
 import com.hhconcert.server.global.exception.ErrorCode;
 import com.hhconcert.server.global.exception.BusinessException;
 import org.junit.jupiter.api.BeforeEach;

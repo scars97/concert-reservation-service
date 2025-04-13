@@ -2,8 +2,8 @@ package com.hhconcert.server.infrastructure.persistence.redis;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hhconcert.server.business.domain.concert.dto.SeatInfo;
-import com.hhconcert.server.business.domain.concert.respository.SeatCacheRepository;
+import com.hhconcert.server.business.concert.dto.SeatInfo;
+import com.hhconcert.server.business.concert.respository.SeatCacheRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;

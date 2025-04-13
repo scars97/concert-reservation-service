@@ -1,6 +1,6 @@
 package com.hhconcert.server.interfaces.api.payment.dto;
 
-import com.hhconcert.server.business.domain.payment.dto.PaymentCommand;
+import com.hhconcert.server.business.payment.dto.PaymentCommand;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;

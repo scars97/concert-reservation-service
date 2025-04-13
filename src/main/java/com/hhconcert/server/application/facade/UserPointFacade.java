@@ -1,7 +1,7 @@
 package com.hhconcert.server.application.facade;
 
 import com.hhconcert.server.application.dto.PointResult;
-import com.hhconcert.server.business.domain.user.service.UserService;
+import com.hhconcert.server.business.user.service.UserService;
 import com.hhconcert.server.interfaces.api.point.dto.PointRequest;
 import com.hhconcert.server.interfaces.api.point.dto.UserRequest;
 import lombok.RequiredArgsConstructor;

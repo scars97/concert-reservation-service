@@ -1,7 +1,7 @@
 package com.hhconcert.server.application.dto;
 
-import com.hhconcert.server.business.domain.payment.dto.PaymentInfo;
-import com.hhconcert.server.business.domain.payment.entity.PaymentStatus;
+import com.hhconcert.server.business.payment.dto.PaymentInfo;
+import com.hhconcert.server.business.payment.domain.PaymentStatus;
 
 import java.time.LocalDateTime;
 

@@ -1,6 +1,6 @@
 package com.hhconcert.server.infrastructure.persistence.jpa;
 
-import com.hhconcert.server.business.domain.concert.entity.Schedule;
+import com.hhconcert.server.business.concert.domain.Schedule;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

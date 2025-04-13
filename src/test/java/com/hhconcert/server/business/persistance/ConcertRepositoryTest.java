@@ -1,7 +1,7 @@
 package com.hhconcert.server.business.persistance;
 
-import com.hhconcert.server.business.domain.concert.entity.Concert;
-import com.hhconcert.server.business.domain.concert.respository.ConcertRepository;
+import com.hhconcert.server.business.concert.domain.Concert;
+import com.hhconcert.server.business.concert.respository.ConcertRepository;
 import com.hhconcert.server.config.IntegrationTestSupport;
 import com.hhconcert.server.infrastructure.persistence.jpa.ConcertJpaRepository;
 import org.junit.jupiter.api.DisplayName;

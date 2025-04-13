@@ -1,13 +1,13 @@
 package com.hhconcert.server.fixture;
 
-import com.hhconcert.server.business.domain.concert.entity.Concert;
-import com.hhconcert.server.business.domain.payment.entity.Payment;
-import com.hhconcert.server.business.domain.payment.entity.PaymentStatus;
-import com.hhconcert.server.business.domain.reservation.entity.Reservation;
-import com.hhconcert.server.business.domain.reservation.entity.ReservationStatus;
-import com.hhconcert.server.business.domain.concert.entity.Schedule;
-import com.hhconcert.server.business.domain.concert.entity.Seat;
-import com.hhconcert.server.business.domain.user.entity.User;
+import com.hhconcert.server.business.concert.domain.Concert;
+import com.hhconcert.server.business.payment.domain.Payment;
+import com.hhconcert.server.business.payment.domain.PaymentStatus;
+import com.hhconcert.server.business.reservation.domain.Reservation;
+import com.hhconcert.server.business.reservation.domain.ReservationStatus;
+import com.hhconcert.server.business.concert.domain.Schedule;
+import com.hhconcert.server.business.concert.domain.Seat;
+import com.hhconcert.server.business.user.domain.User;
 import com.hhconcert.server.infrastructure.persistence.jpa.ConcertJpaRepository;
 import com.hhconcert.server.infrastructure.persistence.jpa.PaymentJpaRepository;
 import com.hhconcert.server.infrastructure.persistence.jpa.ReservationJpaRepository;

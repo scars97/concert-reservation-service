@@ -1,7 +1,7 @@
 package com.hhconcert.server.application.dto;
 
-import com.hhconcert.server.business.domain.user.dto.PointInfo;
-import com.hhconcert.server.business.domain.user.dto.UserInfo;
+import com.hhconcert.server.business.user.dto.PointInfo;
+import com.hhconcert.server.business.user.dto.UserInfo;
 
 public record PointResult(
         String userId,

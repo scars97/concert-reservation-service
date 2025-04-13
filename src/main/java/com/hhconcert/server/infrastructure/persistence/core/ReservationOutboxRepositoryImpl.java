@@ -1,7 +1,7 @@
 package com.hhconcert.server.infrastructure.persistence.core;
 
-import com.hhconcert.server.business.domain.reservation.outbox.entity.ReservationOutbox;
-import com.hhconcert.server.business.domain.reservation.outbox.repository.ReservationOutboxRepository;
+import com.hhconcert.server.business.reservation.domain.ReservationOutbox;
+import com.hhconcert.server.business.reservation.persistance.ReservationOutboxRepository;
 import com.hhconcert.server.infrastructure.persistence.jpa.ReservationOutboxJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;

@@ -1,7 +1,7 @@
 package com.hhconcert.server.application.dto;
 
-import com.hhconcert.server.business.domain.reservation.dto.ReservationInfo;
-import com.hhconcert.server.business.domain.reservation.entity.ReservationStatus;
+import com.hhconcert.server.business.reservation.dto.ReservationInfo;
+import com.hhconcert.server.business.reservation.domain.ReservationStatus;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

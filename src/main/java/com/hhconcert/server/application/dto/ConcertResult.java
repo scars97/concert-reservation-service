@@ -1,6 +1,6 @@
 package com.hhconcert.server.application.dto;
 
-import com.hhconcert.server.business.domain.concert.dto.ConcertInfo;
+import com.hhconcert.server.business.concert.dto.ConcertInfo;
 
 import java.time.LocalDate;
 

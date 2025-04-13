@@ -1,6 +1,6 @@
 package com.hhconcert.server.application.dto;
 
-import com.hhconcert.server.business.domain.user.dto.UserInfo;
+import com.hhconcert.server.business.user.dto.UserInfo;
 
 public record UserResult(
         String userId,

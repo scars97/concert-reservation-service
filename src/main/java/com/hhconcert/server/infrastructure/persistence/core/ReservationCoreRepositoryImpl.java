@@ -1,7 +1,7 @@
 package com.hhconcert.server.infrastructure.persistence.core;
 
-import com.hhconcert.server.business.domain.reservation.entity.Reservation;
-import com.hhconcert.server.business.domain.reservation.persistance.ReservationRepository;
+import com.hhconcert.server.business.reservation.domain.Reservation;
+import com.hhconcert.server.business.reservation.persistance.ReservationRepository;
 import com.hhconcert.server.infrastructure.persistence.jpa.ReservationJpaRepository;
 import com.hhconcert.server.infrastructure.persistence.redis.ReservationRedisRepository;
 import lombok.RequiredArgsConstructor;

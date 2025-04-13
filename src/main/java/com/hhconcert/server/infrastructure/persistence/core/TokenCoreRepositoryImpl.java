@@ -1,7 +1,7 @@
 package com.hhconcert.server.infrastructure.persistence.core;
 
-import com.hhconcert.server.business.domain.queues.entity.TokenVO;
-import com.hhconcert.server.business.domain.queues.persistance.TokenRepository;
+import com.hhconcert.server.business.queues.domain.TokenVO;
+import com.hhconcert.server.business.queues.persistance.TokenRepository;
 import com.hhconcert.server.infrastructure.persistence.redis.TokenRedisRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;

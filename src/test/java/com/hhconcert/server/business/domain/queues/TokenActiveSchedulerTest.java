@@ -1,9 +1,9 @@
 package com.hhconcert.server.business.domain.queues;
 
-import com.hhconcert.server.business.domain.queues.entity.TokenStatus;
-import com.hhconcert.server.business.domain.queues.entity.TokenVO;
-import com.hhconcert.server.business.domain.queues.persistance.TokenRepository;
-import com.hhconcert.server.business.domain.queues.service.TokenActiveScheduler;
+import com.hhconcert.server.business.queues.domain.TokenStatus;
+import com.hhconcert.server.business.queues.domain.TokenVO;
+import com.hhconcert.server.business.queues.persistance.TokenRepository;
+import com.hhconcert.server.business.queues.service.TokenActiveScheduler;
 import com.hhconcert.server.config.IntegrationTestSupport;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
